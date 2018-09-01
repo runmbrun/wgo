@@ -48,6 +48,12 @@ namespace WGO.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public ActionResult Display(JSONCharacter model, string returnUrl)
         {
             return View(model);
