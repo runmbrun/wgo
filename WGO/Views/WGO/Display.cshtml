@@ -1,0 +1,50 @@
+﻿@using WGO.JSON
+@model JSONCharacter
+@{
+    ViewBag.Title = "Not Found";
+    string name = "default";
+    string level = "default";
+    string charClass = "default";
+    string achPts = "default";
+
+    if (Model != null)
+    {
+        name = Model.Name;
+        level = Model.Level.ToString();
+        charClass = Model.Class.ToString();
+        achPts = Model.AchievementPoints.ToString();
+    }
+}
+
+<h2>Display</h2>
+
+<table border="1" width="39%">
+    <tr>
+        <td width="30%">
+            <b>Name</b>
+        </td>
+        <td width="20%">
+            <b>Level</b>
+        </td>
+        <td width="25%">
+            <b>Class</b>
+        </td>
+        <td width="25%">
+            <b>Achievement Points</b>
+        </td>
+    </tr>
+    <tr>
+        <td width="30%">
+            @name
+        </td>
+        <td width="20%">
+            @level
+        </td>
+        <td width="25%">
+            @charClass
+        </td>
+        <td width="25%">
+            @achPts
+        </td>
+    </tr>
+</table>
