@@ -9,6 +9,9 @@
 
 </head>
 <body>
+
+
+    <!--<div class="navbar navbar-inverse navbar-fixed-top">-->
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -22,6 +25,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Search", "Search", "WGO")</li>
+                    <li>@Html.ActionLink("Guild Roster", "Guild", "WGO")</li>
+                    <li>@Html.ActionLink("Raid Roster", "Raid", "WGO")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
@@ -38,7 +43,11 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    <!-- MVCGrid.Net - Be sure this is after jquery reference -->
+    <script src="~/MVCGridHandler.axd/script.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>

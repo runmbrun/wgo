@@ -14,6 +14,8 @@ namespace WGO.Controllers
 {
     public class WGOController : Controller
     {
+        private WGODBContext db = new WGODBContext();
+
         // GET: WGO
         public ActionResult Index()
         {
@@ -23,11 +25,168 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult Search()
         {
+            // Reset Fields
+            ViewBag.CharacterName = string.Empty;
+            ViewBag.CharacterRealm = string.Empty;
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Search(SearchViewModel model, string returnUrl)
+        {
+            // Reset Fields
+            ViewBag.CharacterName = string.Empty;
+            ViewBag.CharacterRealm = string.Empty;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                List<Character> chars = new List<Character>();
+                JSONCharacter charFromWeb = JSONBase.GetCharacterJSONData(model.Character, model.Realm);
+
+                if (charFromWeb == null)
+                {
+                    ModelState.AddModelError("Character", "Character not found.");
+                    return View(model);
+                }
+                else
+                {
+                    string spec = string.Empty;
+                    string role = string.Empty;
+                    var dbChars = from m in db.Characters select m;
+
+                    ViewBag.CharacterName = model.Character;
+                    ViewBag.CharacterRealm = model.Realm;
+
+                    if (charFromWeb.Talents != null && charFromWeb.Talents.Count > 0)
+                    {
+                        spec = charFromWeb.Talents[0].Spec.Name;
+                        role = charFromWeb.Talents[0].Spec.Role;
+                    }
+
+                    var search = dbChars.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Spec == spec);
+
+                    if (search.Count() > 0)
+                    {
+                        // Already exists in the DB - update it
+                        foreach (Character searchChar in search)
+                        {
+                            chars.Add(searchChar);
+
+                            // Check for differences
+                            if (searchChar.Level != charFromWeb.Level)
+                            {
+                                searchChar.Modified_Level = DateTime.Now;
+                            }
+
+                            if (searchChar.AchievementPoints != charFromWeb.AchievementPoints)
+                            {
+                                searchChar.Modified_AchievementPoints = DateTime.Now;
+                            }
+
+                            if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
+                            {
+                                searchChar.Modified_Equipped_iLevel = DateTime.Now;
+                            }
+
+                            if (searchChar.Max_iLevel != charFromWeb.Items.AverageItemLevel)
+                            {
+                                searchChar.Modified_Max_iLevel = DateTime.Now;
+                            }
+
+                            // Update Character
+                            searchChar.Level = charFromWeb.Level;
+                            searchChar.Class = JSONBase.ConvertClass(charFromWeb.Class);
+                            searchChar.Race = JSONBase.ConvertRace(charFromWeb.Race);
+                            searchChar.AchievementPoints = charFromWeb.AchievementPoints;
+                            searchChar.Max_iLevel = charFromWeb.Items.AverageItemLevel;
+                            searchChar.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
+                            searchChar.LastUpdated = DateTime.Now;
+                            searchChar.Spec = spec;
+                        }
+
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            // no op
+                            ModelState.AddModelError("Character", $"Error saving character: {ex.Message}");
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        // Now copy the data for the 
+                        Character charToDB = new Character();
+                        charToDB.Name = charFromWeb.Name;
+                        charToDB.Level = charFromWeb.Level;
+                        charToDB.Class = JSONBase.ConvertClass(charFromWeb.Class);
+                        charToDB.Race = JSONBase.ConvertRace(charFromWeb.Race);
+                        charToDB.AchievementPoints = charFromWeb.AchievementPoints;
+                        charToDB.Max_iLevel = charFromWeb.Items.AverageItemLevel;
+                        charToDB.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
+                        charToDB.LastUpdated = DateTime.Now;
+                        charToDB.Realm = charFromWeb.Realm;
+                        charToDB.Spec = spec;
+                        charToDB.Modified_AchievementPoints = DateTime.Now;
+                        charToDB.Modified_Equipped_iLevel = DateTime.Now;
+                        charToDB.Modified_Max_iLevel = DateTime.Now;
+                        charToDB.Modified_Level = DateTime.Now;
+                        charToDB.Roster = 1;
+
+                        // does it exist in the db?  then add it!
+                        chars.Add(charToDB);
+                        db.Characters.Add(charToDB);
+
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            // no op
+                            ModelState.AddModelError("Character", $"Error saving character: {ex.Message}");
+                            return View(model);
+                        }
+                    }
+
+                    // Now display it!
+                    return View();
+                }
+            }
+        }
+
+        /// <summary>
+        /// todo: not used anymore
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        public ActionResult Display(IEnumerable<Character> model, string returnUrl)
+        {
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Guild()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Raid()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Raid(SearchViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -35,141 +194,128 @@ namespace WGO.Controllers
             }
             else
             {
-                JSONCharacter character = this.GetCharacterJSONData(model.Character, model.Realm);
+                JSONCharacter charFromWeb = JSONBase.GetCharacterJSONData(model.Character, model.Realm);
 
-                if (character == null)
+                if (charFromWeb == null)
                 {
                     ModelState.AddModelError("Character", "Character not found.");
                     return View(model);
                 }
-
-                //return Display(character);
-                return View("Display", character);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
-        public ActionResult Display(JSONCharacter model, string returnUrl)
-        {
-            return View(model);
-        }
-
-        /// <summary>
-        /// Example: https://us.api.battle.net/wow/character/Thrall/Purdee?fields=items%2Cprofessions%2Ctalents&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa                
-        /// </summary>
-        /// <param name="requestUrl"></param>
-        /// <returns></returns>
-        public JSONCharacter GetCharacterJSONData(string characterName, string realm)
-        {
-            JSONCharacter result = null;
-            string requestUrl = $"{Session["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=items,professions,talents&apikey={Session["APIKey"]}";
-            string responseData = GetJSONData(requestUrl);
-
-            // Convert the data to the proper object
-            if (!string.IsNullOrEmpty(responseData))
-            {
-                result = JsonConvert.DeserializeObject<JSONCharacter>(responseData);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Requests data from a RESTful site.  Response is in string format and will need to be converted to class format.
-        /// </summary>
-        /// <param name="requestUrl"></param>
-        /// <returns></returns>
-        private string GetJSONData(string requestUrl)
-        {
-            string result = null;
-
-            if (Convert.ToBoolean(Session["WebSiteOnline"]))
-            {
-                try
+                else
                 {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                    string spec = string.Empty;
+                    string role = string.Empty;
+                    var dbChars = from m in db.Characters select m;
 
-                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                    ViewBag.CharacterName = model.Character;
+                    ViewBag.CharacterRealm = model.Realm;
+
+                    if (charFromWeb.Talents != null && charFromWeb.Talents.Count > 0)
                     {
-                        if (response.StatusCode != HttpStatusCode.OK)
+                        spec = charFromWeb.Talents[0].Spec.Name;
+                        role = charFromWeb.Talents[0].Spec.Role;
+                    }
+
+                    var search = dbChars.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Spec == spec);
+
+                    if (search.Count() > 0)
+                    {
+                        // Already exists in the DB - update it
+                        foreach (Character searchChar in search)
                         {
-                            throw new Exception($"Server error (HTTP {response.StatusCode}: {response.StatusDescription}).");
-                        }
-
-                        Stream receiveStream = response.GetResponseStream();
-                        Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
-
-                        // Pipes the stream to a higher level stream reader with the required encoding format. 
-                        using (StreamReader readStream = new StreamReader(receiveStream, encode))
-                        {
-                            Char[] read = new Char[256];
-
-                            // Reads 256 characters at a time.    
-                            int count = readStream.Read(read, 0, 256);
-
-                            while (count > 0)
+                            // Check for differences
+                            if (searchChar.Level != charFromWeb.Level)
                             {
-                                // Dumps the 256 characters on a string and displays the string to the console.
-                                String str = new String(read, 0, count);
-                                result += str;
-                                count = readStream.Read(read, 0, 256);
+                                searchChar.Modified_Level = DateTime.Now;
+                            }
+
+                            if (searchChar.AchievementPoints != charFromWeb.AchievementPoints)
+                            {
+                                searchChar.Modified_AchievementPoints = DateTime.Now;
+                            }
+
+                            if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
+                            {
+                                searchChar.Modified_Equipped_iLevel = DateTime.Now;
+                            }
+
+                            if (searchChar.Max_iLevel != charFromWeb.Items.AverageItemLevel)
+                            {
+                                searchChar.Modified_Max_iLevel = DateTime.Now;
+                            }
+
+                            // Update Character
+                            searchChar.Level = charFromWeb.Level;
+                            searchChar.Class = JSONBase.ConvertClass(charFromWeb.Class);
+                            searchChar.Race = JSONBase.ConvertRace(charFromWeb.Race);
+                            searchChar.AchievementPoints = charFromWeb.AchievementPoints;
+                            searchChar.Max_iLevel = charFromWeb.Items.AverageItemLevel;
+                            searchChar.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
+                            searchChar.LastUpdated = DateTime.Now;
+                            searchChar.Spec = spec;
+
+                            if (searchChar.Roster == 1)
+                            {
+                                searchChar.Roster = 3;
                             }
                         }
-                    }
-                }
-                catch (WebException ex)
-                {
-                    string errorCheck = string.Empty;
 
-                    if (ex.Response != null)
-                    {
-                        using (WebResponse response = ex.Response)
+                        try
                         {
-                            HttpWebResponse httpResponse = (HttpWebResponse)response;
-                            Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
-
-                            using (Stream data = response.GetResponseStream())
-
-                            using (var reader = new StreamReader(data))
-                            {
-                                errorCheck = reader.ReadToEnd();
-                                Console.WriteLine(errorCheck);
-                            }
+                            db.SaveChanges();
                         }
-                    }
-
-                    // Web Exception Errors were found!
-                    if (errorCheck.StartsWith(@"{""status"":""nok"", ""reason"": "))
-                    {
-                        //Logging.Debug($"Character could not be found on the Battle.net Site any more... ignoring.");
-                    }
-                    else if (ex.HResult == -2146233079)
-                    {
-                        // Battle.Net cannot be reached
-                        //Logging.DisplayError($"Battle.Net cannot be reached: {ex.Message}");
-                        Session["WebSiteOnline"] = false;
+                        catch (Exception ex)
+                        {
+                            // no op
+                            ModelState.AddModelError("Character", $"Error saving character: {ex.Message}");
+                            return View(model);
+                        }
                     }
                     else
                     {
-                        // This is a 404 error, usually because a character hasn't been logged into for a while
-                        //   collect this error for use in the function that is calling this function
-                        //Logging.Debug($"(404) {ex.Message} in Parse() in GetWebSiteData.cs");
+                        // Now copy the data for the 
+                        Character charToDB = new Character();
+                        charToDB.Name = charFromWeb.Name;
+                        charToDB.Level = charFromWeb.Level;
+                        charToDB.Class = JSONBase.ConvertClass(charFromWeb.Class);
+                        charToDB.Race = JSONBase.ConvertRace(charFromWeb.Race);
+                        charToDB.AchievementPoints = charFromWeb.AchievementPoints;
+                        charToDB.Max_iLevel = charFromWeb.Items.AverageItemLevel;
+                        charToDB.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
+                        charToDB.LastUpdated = DateTime.Now;
+                        charToDB.Realm = charFromWeb.Realm;
+                        charToDB.Spec = spec;
+                        charToDB.Modified_AchievementPoints = DateTime.Now;
+                        charToDB.Modified_Equipped_iLevel = DateTime.Now;
+                        charToDB.Modified_Max_iLevel = DateTime.Now;
+                        charToDB.Modified_Level = DateTime.Now;
+                        charToDB.Roster = 2;
+
+                        // does it exist in the db?  then add it!
+                        db.Characters.Add(charToDB);
+
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            // no op
+                            ModelState.AddModelError("Character", $"Error saving character: {ex.Message}");
+                            return View(model);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    //Logging.Log($"ERROR: {ex.Message} in GetCharacterJSONData() in GetWebJSONData.cs");
-                    //Logging.DisplayError($"ERROR: {ex.Message} in GetCharacterJSONData() in GetWebJSONData.cs");
+
+                    // Now display it!
+                    return View();
                 }
             }
+        }
 
-            return result;
+        [HttpGet]
+        public ActionResult Character()
+        {
+            return View();
         }
     }
 }

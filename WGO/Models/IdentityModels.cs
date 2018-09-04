@@ -29,5 +29,7 @@ namespace WGO.Models
         {
             return new ApplicationDbContext();
         }
+
+        //public System.Data.Entity.DbSet<WGO.Models.Character> Characters { get; set; }
     }
 }

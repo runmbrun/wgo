@@ -1,31 +1,45 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+
+    // todo:
+    string dataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
+    string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    bool foundFile = System.IO.File.Exists(Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "WGO.mdf"));
+
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>World of Warcraft Guild Organizer</h1>
+    <p class="lead">
+        This World of Warcraft Guild Organizer will allow users to collect and display character data for a guild in the game World of Warcraft.
+        Users can also keep track of item levels for a raid roster too, including an audit of the raid roster feature.
+    </p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>Search</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Search for an individual character's data...
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href='@Url.Action("Search", "WGO")'>Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Guild Roster</h2>
+        <p>View all characters from a guild.</p>
+        <p><a class="btn btn-default" href='@Url.Action("Guild", "WGO")'>Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>Raid Roster</h2>
+        <p>View a the current raid roster, and do an audit check.</p>
+        <p><a class="btn btn-default" href='@Url.Action("Raid", "WGO")'>Learn more &raquo;</a></p>
     </div>
+</div>
+
+<div>
+    DataDirectory = [@dataDirectory]
+    <br />
+    baseDirectory = [@baseDirectory]
+    <br />
+    foundFile = [@foundFile]
 </div>

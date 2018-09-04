@@ -1,50 +1,57 @@
-﻿@using WGO.JSON
-@model JSONCharacter
+﻿@model List<WGO.Models.Character>
+
 @{
     ViewBag.Title = "Not Found";
-    string name = "default";
-    string level = "default";
-    string charClass = "default";
-    string achPts = "default";
+    string message = string.Empty;
 
-    if (Model != null)
+    if (Model == null || Model.Count == 0)
     {
-        name = Model.Name;
-        level = Model.Level.ToString();
-        charClass = Model.Class.ToString();
-        achPts = Model.AchievementPoints.ToString();
+        message = "No characters could be found.";
     }
 }
 
 <h2>Display</h2>
 
-<table border="1" width="39%">
-    <tr>
-        <td width="30%">
-            <b>Name</b>
-        </td>
-        <td width="20%">
-            <b>Level</b>
-        </td>
-        <td width="25%">
-            <b>Class</b>
-        </td>
-        <td width="25%">
-            <b>Achievement Points</b>
-        </td>
-    </tr>
-    <tr>
-        <td width="30%">
-            @name
-        </td>
-        <td width="20%">
-            @level
-        </td>
-        <td width="25%">
-            @charClass
-        </td>
-        <td width="25%">
-            @achPts
-        </td>
-    </tr>
-</table>
+@if (!string.IsNullOrWhiteSpace(message))
+{
+    <div>@message</div>
+}
+else
+{
+    <table border="1">
+        <tr>
+            <td width="30%">
+                <b>Name</b>
+            </td>
+            <td width="20%">
+                <b>Level</b>
+            </td>
+            <td width="25%">
+                <b>Class</b>
+            </td>
+            <td width="25%">
+                <b>Achievement Points</b>
+            </td>
+        </tr>
+        @foreach (WGO.Models.Character c in Model)
+        {
+            if (c != null)
+            {
+                <tr>
+                    <td width="30%">
+                        @c.Name
+                    </td>
+                    <td width="20%">
+                        @c.Level
+                    </td>
+                    <td width="25%">
+                        @c.Class
+                    </td>
+                    <td width="25%">
+                        @c.AchievementPoints
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+}

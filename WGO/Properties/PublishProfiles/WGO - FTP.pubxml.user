@@ -11,13 +11,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
-      <publishTime>08/30/2018 12:31:49</publishTime>
+      <publishTime>09/01/2018 13:22:44</publishTime>
+    </File>
+    <File Include="App_Data/WGO.mdf">
+      <publishTime>09/03/2018 18:07:07</publishTime>
+    </File>
+    <File Include="App_Data/WGO_log.ldf">
+      <publishTime>09/03/2018 18:07:07</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>02/22/2013 07:43:40</publishTime>
     </File>
+    <File Include="bin/Antlr3.Runtime.pdb">
+      <publishTime>02/22/2013 07:43:40</publishTime>
+    </File>
     <File Include="bin/ApplicationInsights.config">
-      <publishTime>08/30/2018 12:31:49</publishTime>
+      <publishTime>09/01/2018 13:22:44</publishTime>
+    </File>
+    <File Include="bin/App_Data/WGO.mdf">
+      <publishTime>09/03/2018 18:07:07</publishTime>
+    </File>
+    <File Include="bin/App_Data/WGO_log.ldf">
+      <publishTime>09/03/2018 18:07:07</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 08:32:26</publishTime>
@@ -88,6 +103,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
+    <File Include="bin/MVCGrid.dll">
+      <publishTime>03/07/2017 23:57:54</publishTime>
+    </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>
     </File>
@@ -151,11 +169,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>01/28/2015 03:04:30</publishTime>
     </File>
+    <File Include="bin/WebActivatorEx.dll">
+      <publishTime>02/08/2013 16:42:28</publishTime>
+    </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WGO.dll">
-      <publishTime>08/30/2018 13:25:34</publishTime>
+      <publishTime>09/03/2018 19:36:18</publishTime>
+    </File>
+    <File Include="bin/WGO.pdb">
+      <publishTime>09/03/2018 19:36:18</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>08/30/2018 11:17:03</publishTime>
@@ -164,28 +188,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2018 11:17:03</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="favicon.ico">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/01/2018 13:36:48</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
-      <publishTime>08/30/2018 11:17:03</publishTime>
+      <publishTime>09/01/2018 13:36:48</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.svg">
-      <publishTime>08/30/2018 11:17:03</publishTime>
+      <publishTime>09/01/2018 13:36:48</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.ttf">
-      <publishTime>08/30/2018 11:17:03</publishTime>
+      <publishTime>09/01/2018 13:36:48</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff">
-      <publishTime>08/30/2018 11:17:03</publishTime>
+      <publishTime>09/01/2018 13:36:48</publishTime>
     </File>
     <File Include="Global.asax">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>08/30/2018 11:17:19</publishTime>
+      <publishTime>09/02/2018 08:21:12</publishTime>
     </File>
     <File Include="Scripts/ai.0.22.9-build00167.js">
       <publishTime>08/30/2018 11:17:19</publishTime>
@@ -233,91 +257,109 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2018 11:17:06</publishTime>
     </File>
     <File Include="Service References/Application Insights/ConnectedService.json">
-      <publishTime>08/30/2018 12:31:54</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginFailure.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ForgotPassword.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ForgotPasswordConfirmation.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ResetPassword.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/ResetPasswordConfirmation.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/SendCode.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/VerifyCode.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Home/Contact.cshtml">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/03/2018 19:36:11</publishTime>
     </File>
     <File Include="Views/Manage/AddPhoneNumber.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Manage/ChangePassword.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Manage/Index.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Manage/ManageLogins.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Manage/SetPassword.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Manage/VerifyPhoneNumber.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Shared/Lockout.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/02/2018 23:02:03</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
-      <publishTime>08/30/2018 11:17:08</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
+    </File>
+    <File Include="Views/Shared/_MVCGridToolbar.cshtml">
+      <publishTime>09/03/2018 11:57:22</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/02/2018 08:21:12</publishTime>
+    </File>
+    <File Include="Views/WGO/Character.cshtml">
+      <publishTime>09/03/2018 17:34:34</publishTime>
+    </File>
+    <File Include="Views/WGO/Display.cshtml">
+      <publishTime>09/02/2018 12:10:00</publishTime>
+    </File>
+    <File Include="Views/WGO/Guild.cshtml">
+      <publishTime>09/03/2018 11:57:16</publishTime>
+    </File>
+    <File Include="Views/WGO/Raid.cshtml">
+      <publishTime>09/03/2018 17:43:12</publishTime>
+    </File>
+    <File Include="Views/WGO/Search.cshtml">
+      <publishTime>09/03/2018 17:29:10</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
-      <publishTime>08/30/2018 11:17:00</publishTime>
+      <publishTime>09/01/2018 13:12:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/30/2018 13:25:37</publishTime>
+      <publishTime>09/03/2018 18:07:22</publishTime>
     </File>
   </ItemGroup>
 </Project>
