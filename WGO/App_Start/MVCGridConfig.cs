@@ -2,22 +2,24 @@
 
 namespace WGO
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
     using System.Linq;
     using System.Collections.Generic;
 
     using MVCGrid.Models;
     using MVCGrid.Web;
-    using WGO.JSON;
+    using JSON;
+    using System.Web.Mvc;
+    using System;
 
-    public static class MVCGridConfig 
+    public static class MVCGridConfig
     {
+        /// <summary>
+        /// Register all the MVCGrid.Net
+        /// </summary>
         public static void RegisterGrids()
         {
-            
-            /*
+            #region " MVCGrid.Net Example "
+            /* Example: 
             MVCGridDefinitionTable.Add("UsageExample", new MVCGridBuilder<YourModelItem>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
                 .AddColumns(cols =>
@@ -45,7 +47,9 @@ namespace WGO
                 })
             );
             */
+            #endregion
 
+            #region " The Search Page Grid "
             // The Search Page
             MVCGridDefinitionTable.Add("SearchGrid", new MVCGridBuilder<Models.Character>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
@@ -59,22 +63,26 @@ namespace WGO
                     cols.Add().WithColumnName("Level")
                         .WithHeaderText("Level")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Level.ToString());
+                        .WithValueExpression(i => i.Level.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "success" : "");
                     cols.Add().WithColumnName("Class")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Class);
                     cols.Add().WithColumnName("AchievementPoints")
                         .WithHeaderText("Achievement Points")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.AchievementPoints.ToString());
+                        .WithValueExpression(i => i.AchievementPoints.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "success" : "");
                     cols.Add().WithColumnName("MaxiLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Max_iLevel.ToString());
+                        .WithValueExpression(i => i.Max_iLevel.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "success" : "");
                     cols.Add().WithColumnName("EquippediLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Equipped_iLevel.ToString());
+                        .WithValueExpression(i => i.Equipped_iLevel.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "success" : "");
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
@@ -85,7 +93,7 @@ namespace WGO
                 .WithPreloadData(false)
                 .WithSorting(true, "Level, Name, EquippediLevel")
                 .WithPaging(true, 20)
-                
+
                 .WithRetrieveDataMethod((context) =>
                 {
                     // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
@@ -104,12 +112,14 @@ namespace WGO
                         Items = search,
 
                         // if paging is enabled, return the total number of records of all pages
-                        TotalRecords = search.Count() 
+                        TotalRecords = search.Count()
                     };
 
                 })
             );
+            #endregion
 
+            #region " The Guild Page Grid "
             // The Guild Page
             MVCGridDefinitionTable.Add("GuildRoster", new MVCGridBuilder<WGO.Models.Character>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
@@ -119,26 +129,31 @@ namespace WGO
                     cols.Add().WithColumnName("Name")
                         .WithHeaderText("Name")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Name); // use the Value Expression to return the cell text for this column
+                        .WithValueTemplate("<a href='{Value}'>{Model.Name}</a>", false)
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name }));
                     cols.Add().WithColumnName("Level")
                         .WithHeaderText("Level")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Level.ToString());
+                        .WithValueExpression(i => i.Level.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "success" : "");
                     cols.Add().WithColumnName("Class")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Class);
                     cols.Add().WithColumnName("AchievementPoints")
                         .WithHeaderText("Achievement Points")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.AchievementPoints.ToString());
+                        .WithValueExpression(i => i.AchievementPoints.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "success" : "");
                     cols.Add().WithColumnName("MaxiLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Max_iLevel.ToString());
+                        .WithValueExpression(i => i.Max_iLevel.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "success" : "");
                     cols.Add().WithColumnName("EquippediLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Equipped_iLevel.ToString());
+                        .WithValueExpression(i => i.Equipped_iLevel.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "success" : "");
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
@@ -150,29 +165,73 @@ namespace WGO
                         .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button'>Reload</a>");
                 })
                 .WithPreloadData(false)
-                .WithSorting(true, "Level, Name, EquippediLevel")
-                .WithPaging(true, 20)
+                .WithSorting(sorting: true, defaultSortColumn: "EquippediLevel", defaultSortDirection: SortDirection.Dsc)
+                .WithPaging(paging: true, itemsPerPage: 20, allowChangePageSize: true, maxItemsPerPage: 100)
+                .WithAdditionalQueryOptionNames("search")
                 .WithRetrieveDataMethod((context) =>
                 {
                     // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
                     // Use Entity Framework, a module from your IoC Container, or any other method.
                     // Return QueryResult object containing IEnumerable<YouModelItem>
-                    Models.WGODBContext db = new Models.WGODBContext();
-                    var dbChars = from m in db.Characters select m;
-                    var guild = dbChars.Where(s => s.Roster == 1 || s.Roster == 3);
+                    var options = context.QueryOptions;
+                    string globalSearch = options.GetAdditionalQueryOptionString("search");
+                    string sortColumn = options.GetSortColumnData<string>();
+                    var result = new QueryResult<Models.Character>();
 
-                    return new QueryResult<Models.Character>()
+                    /* todo: Dependency Testing...
+                    //var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
+                    //var items = repo.GetData(out totalRecords, globalSearch == null ? string.Empty : globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(), options.SortColumnName, options.SortDirection == SortDirection.Dsc);
+                    */
+
+                    // Get the current data now...
+                    using (var db = new Models.WGODBContext())
                     {
-                        // Return a list of the characters
-                        Items = guild,
+                        // Get the data
+                        var query = db.Characters.AsQueryable().Where(s => s.Roster == 1 || s.Roster == 3);
 
-                        // if paging is enabled, return the total number of records of all pages
-                        TotalRecords = guild.Count()
-                };
+                        // Sort the data
+                        switch (options.SortColumnName.ToLower())
+                        {
+                            case "name":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
+                                break;
 
+                            case "level":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Level) : query.OrderByDescending(p => p.Level);
+                                break;
+
+                            case "achievementpoints":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.AchievementPoints) : query.OrderByDescending(p => p.AchievementPoints);
+                                break;
+
+                            case "maxilevel":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Max_iLevel) : query.OrderByDescending(p => p.Max_iLevel);
+                                break;
+
+                            case "equippedilevel":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Equipped_iLevel) : query.OrderByDescending(p => p.Equipped_iLevel);
+                                break;
+
+                            case "lastmodified":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.LastUpdated) : query.OrderByDescending(p => p.LastUpdated);
+                                break;
+
+                            default:
+                                query = query.OrderBy(p => p.Name).OrderByDescending(p => p.Equipped_iLevel).OrderByDescending(p => p.Level);
+                                break;
+                        }
+
+                        // Store the data
+                        result.Items = query.ToList();
+                        result.TotalRecords = result.Items.Count();
+                    }
+                    
+                    return result;
                 })
             );
+            #endregion
 
+            #region " The Raid Page Grid "
             // The Raid page
             MVCGridDefinitionTable.Add("RaidRoster", new MVCGridBuilder<Models.Character>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
@@ -182,126 +241,267 @@ namespace WGO
                     cols.Add().WithColumnName("Name")
                         .WithHeaderText("Name")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Name); // use the Value Expression to return the cell text for this column
+                        .WithValueTemplate("<a href='{Value}'>{Model.Name}</a>", false)
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name }));
                     cols.Add().WithColumnName("Level")
                         .WithHeaderText("Level")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Level.ToString());
+                        .WithValueExpression(i => i.Level.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "success" : "");
                     cols.Add().WithColumnName("Class")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Class);
                     cols.Add().WithColumnName("AchievementPoints")
                         .WithHeaderText("Achievement Points")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.AchievementPoints.ToString());
+                        .WithValueExpression(i => i.AchievementPoints.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "success" : "");
                     cols.Add().WithColumnName("MaxiLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Max_iLevel.ToString());
+                        .WithValueExpression(i => i.Max_iLevel.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "success" : "");
                     cols.Add().WithColumnName("EquippediLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Equipped_iLevel.ToString());
+                        .WithValueExpression(i => i.Equipped_iLevel.ToString())
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "success" : "");
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
                         .WithValueExpression(i => i.LastUpdated.ToString());
-                    cols.Add("Reload").WithHtmlEncoding(false)
+                    cols.Add("Recan").WithHtmlEncoding(false)
                         .WithSorting(false)
                         .WithHeaderText(" ")
-                        .WithValueExpression((p, c) => c.UrlHelper.Action("Raid", "WGO", new { id = "Reload" }))
-                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button'>Reload</a>");
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("RaidFunctions", "WGO", new { function = "Rescan", name = p.Name, realm = p.Realm }))
+                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button' onclick=$.blockUI()>Rescan</a>");
+                    cols.Add("Delete").WithHtmlEncoding(false)
+                        .WithSorting(false)
+                        .WithHeaderText(" ")
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("RaidFunctions", "WGO", new { function = "Delete", name = p.Name, realm = p.Realm }))
+                        .WithValueTemplate("<a href='{Value}' class='btn btn-danger' role='button' onclick=$.blockUI()>Delete</a>");
                 })
                 .WithPreloadData(false)
-                .WithSorting(true, "Level, Name, EquippediLevel")
+                //.WithSorting(true, "Level, Name, EquippediLevel")
+                .WithSorting(sorting: true, defaultSortColumn: "EquippediLevel", defaultSortDirection: SortDirection.Dsc)
                 .WithPaging(true, 20)
+                .WithClientSideLoadingCompleteFunctionName("hideLoading")
                 .WithRetrieveDataMethod((context) =>
                 {
                     // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
                     // Use Entity Framework, a module from your IoC Container, or any other method.
                     // Return QueryResult object containing IEnumerable<YouModelItem>
-                    Models.WGODBContext db = new Models.WGODBContext();
+                    /*Models.WGODBContext db = new Models.WGODBContext();
                     var dbChars = from m in db.Characters select m;
-                    var raider = dbChars.Where(s => s.Roster == 2 || s.Roster == 3);
+                    var raiders = dbChars.Where(s => s.Roster == 2 || s.Roster == 3).OrderByDescending(p => p.Equipped_iLevel).OrderByDescending(p => p.Level).OrderBy(p => p.Name);
 
                     return new QueryResult<Models.Character>()
                     {
                         // The list of characters
-                        Items = raider,
+                        Items = raiders.ToList(),
 
                         // if paging is enabled, return the total number of records of all pages
-                        TotalRecords = raider.Count() 
-                    };
+                        TotalRecords = raiders.Count() 
+                    };*/
+                    var options = context.QueryOptions;
+                    string globalSearch = options.GetAdditionalQueryOptionString("search");
+                    string sortColumn = options.GetSortColumnData<string>();
+                    var result = new QueryResult<Models.Character>();
 
-                })
-            );
+                    /* todo: Dependency Testing...
+                    //var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
+                    //var items = repo.GetData(out totalRecords, globalSearch == null ? string.Empty : globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(), options.SortColumnName, options.SortDirection == SortDirection.Dsc);
+                    */
 
-            // The Raid page - Rescan
-            MVCGridDefinitionTable.Add("RescanRaidRoster", new MVCGridBuilder<JSONCharacter>()
-                .WithAuthorizationType(AuthorizationType.AllowAnonymous)
-                .AddColumns(cols =>
-                {
-                    // Add your columns here
-                    cols.Add().WithColumnName("Name")
-                        .WithHeaderText("Name")
-                        .WithSorting(true)
-                        .WithValueExpression(i => i.Name); // use the Value Expression to return the cell text for this column
-                    cols.Add().WithColumnName("Level")
-                        .WithHeaderText("Level")
-                        .WithSorting(true)
-                        .WithValueExpression(i => i.Level.ToString());
-                    cols.Add().WithColumnName("Class")
-                        .WithSorting(true)
-                        .WithValueExpression(i => JSONBase.ConvertClass(i.Class));
-                    cols.Add().WithColumnName("AchievementPoints")
-                        .WithHeaderText("Achievement Points")
-                        .WithSorting(true)
-                        .WithValueExpression(i => i.AchievementPoints.ToString());
-                    cols.Add().WithColumnName("MaxiLevel")
-                        .WithHeaderText("Max iLevel")
-                        .WithSorting(true)
-                        .WithValueExpression(i => i.Items.AverageItemLevel.ToString());
-                    cols.Add().WithColumnName("EquippediLevel")
-                        .WithHeaderText("Equipped iLevel")
-                        .WithSorting(true)
-                        .WithValueExpression(i => i.Items.AverageItemLevelEquipped.ToString());
-                    cols.Add().WithColumnName("LastModified")
-                        .WithHeaderText("Last Modified")
-                        .WithSorting(true)
-                        .WithValueExpression(i => i.LastModified.ToString());
-                    cols.Add("Reload").WithHtmlEncoding(false)
-                        .WithSorting(false)
-                        .WithHeaderText(" ")
-                        .WithValueExpression((p, c) => c.UrlHelper.Action("Raid", "WGO", new { id = "Reload" }))
-                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button'>Reload</a>");
-                })
-                .WithQueryOnPageLoad(false)
-                .WithPreloadData(false)
-                .WithSorting(true, "Level, Name, EquippediLevel")
-                .WithPaging(true, 20)
-                .WithRetrieveDataMethod((context) =>
-                {
-                    // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
-                    // Use Entity Framework, a module from your IoC Container, or any other method.
-                    // Return QueryResult object containing IEnumerable<YouModelItem>
-                    int totalRecords = 3;
-                    var items = new List<JSONCharacter>();
-
-                    items.Add(JSONBase.GetCharacterJSONData("Purdee", "Thrall"));
-                    items.Add(JSONBase.GetCharacterJSONData("Mervrick", "Thrall"));
-                    items.Add(JSONBase.GetCharacterJSONData("Elinga", "Thrall"));
-
-                    return new QueryResult<JSONCharacter>()
+                    // Get the current data now...
+                    using (var db = new Models.WGODBContext())
                     {
-                        // Return a list of characters
-                        Items = items,
+                        // Get the data
+                        var query = db.Characters.AsQueryable().Where(s => s.Roster == 2 || s.Roster == 3);
 
-                        // if paging is enabled, return the total number of records of all pages
-                        TotalRecords = totalRecords 
-                    };
+                        // Sort the data
+                        switch (options.SortColumnName.ToLower())
+                        {
+                            case "name":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
+                                break;
 
+                            case "level":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Level) : query.OrderByDescending(p => p.Level);
+                                break;
+
+                            case "achievementpoints":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.AchievementPoints) : query.OrderByDescending(p => p.AchievementPoints);
+                                break;
+
+                            case "maxilevel":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Max_iLevel) : query.OrderByDescending(p => p.Max_iLevel);
+                                break;
+
+                            case "equippedilevel":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Equipped_iLevel) : query.OrderByDescending(p => p.Equipped_iLevel);
+                                break;
+
+                            case "lastmodified":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.LastUpdated) : query.OrderByDescending(p => p.LastUpdated);
+                                break;
+
+                            default:
+                                query = query.OrderBy(p => p.Name).OrderByDescending(p => p.Level).OrderByDescending(p => p.Equipped_iLevel);
+                                break;
+                        }
+
+                        // Store the data
+                        result.Items = query.ToList();
+                        result.TotalRecords = result.Items.Count();
+                    }
+
+                    return result;
                 })
             );
+            #endregion
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private static bool DateModifiedLately(DateTime? date)
+        {
+            bool result = false;
+
+            if (date != null)
+            {
+                // Is this date less than 24 hours old?
+                if (DateTime.Now.AddHours(-2) <= date.Value)
+                {
+                    result = true;
+                }
+            }
+            else
+            {
+                result = true;
+            }
+
+            return result;
+        }
+    }
+
+
+    public interface ICharacterRepository
+    {
+        IEnumerable<Models.Character> GetData(out int totalRecords, string globalSearch, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
+        IEnumerable<Models.Character> GetData(out int totalRecords, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
+        IEnumerable<Models.Character> GetData(out int totalRecords, string filterFirstName, string filterLastName, bool? filterActive, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
+    }
+    public class CharacterRepository : ICharacterRepository
+    {
+        public IEnumerable<Models.Character> GetData(out int totalRecords, string filterFirstName, string filterLastName, bool? filterActive, int? limitOffset, int? limitRowCount, string orderBy, bool desc)
+        {
+            return GetData(out totalRecords, null, filterFirstName, filterLastName, filterActive, limitOffset, limitRowCount, orderBy, desc);
+        }
+
+        public IEnumerable<Models.Character> GetData(out int totalRecords, string globalSearch, int? limitOffset, int? limitRowCount, string orderBy, bool desc)
+        {
+            return GetData(out totalRecords, globalSearch, null, null, null, limitOffset, limitRowCount, orderBy, desc);
+        }
+
+        public IEnumerable<Models.Character> GetData(out int totalRecords, string globalSearch, string filterName, string filterLastName, bool? filterActive, int? limitOffset, int? limitRowCount, string orderBy, bool desc)
+        {
+            //using (var db = new SampleDatabaseEntities())
+            using (Models.WGODBContext db = new Models.WGODBContext())
+            {
+                var query = db.Characters.AsQueryable();
+
+                if (!string.IsNullOrWhiteSpace(filterName))
+                {
+                    query = query.Where(p => p.Name.Contains(filterName));
+                }
+
+                /*if (!string.IsNullOrWhiteSpace(filterLastName))
+                {
+                    query = query.Where(p => p.LastName.Contains(filterLastName));
+                }
+                if (filterActive.HasValue)
+                {
+                    query = query.Where(p => p.Active == filterActive.Value);
+                }
+
+                if (!string.IsNullOrWhiteSpace(globalSearch))
+                {
+                    query = query.Where(p => (p.FirstName + " " + p.LastName).Contains(globalSearch));
+                }*/
+
+                totalRecords = query.Count();
+
+                if (!string.IsNullOrWhiteSpace(orderBy))
+                {
+                    switch (orderBy.ToLower())
+                    {
+                        case "name":
+                            if (!desc)
+                                query = query.OrderBy(p => p.Name);
+                            else
+                                query = query.OrderByDescending(p => p.Name);
+                            break;
+                        /*case "lastname":
+                            if (!desc)
+                                query = query.OrderBy(p => p.LastName);
+                            else
+                                query = query.OrderByDescending(p => p.LastName);
+                            break;
+                        case "active":
+                            if (!desc)
+                                query = query.OrderBy(p => p.Active);
+                            else
+                                query = query.OrderByDescending(p => p.Active);
+                            break;
+                        case "email":
+                            if (!desc)
+                                query = query.OrderBy(p => p.Email);
+                            else
+                                query = query.OrderByDescending(p => p.Email);
+                            break;
+                        case "gender":
+                            if (!desc)
+                                query = query.OrderBy(p => p.Gender);
+                            else
+                                query = query.OrderByDescending(p => p.Gender);
+                            break;
+                        case "id":
+                            if (!desc)
+                                query = query.OrderBy(p => p.Id);
+                            else
+                                query = query.OrderByDescending(p => p.Id);
+                            break;
+                        case "startdate":
+                            if (!desc)
+                                query = query.OrderBy(p => p.StartDate);
+                            else
+                                query = query.OrderByDescending(p => p.StartDate);
+                            break;*/
+                        default:
+                            if (!desc)
+                                query = query.OrderBy(p => p.Name);
+                            else
+                                query = query.OrderByDescending(p => p.Name);
+                            break;
+                    }
+                }
+
+                if (limitOffset.HasValue)
+                {
+                    //query = query.Skip(limitOffset.Value).Take(limitRowCount.Value);
+                }
+
+                return query.ToList();
+            }
+        }
+
+        public IEnumerable<Models.Character> GetData(out int totalRecords, int? limitOffset, int? limitRowCount, string orderBy, bool desc)
+        {
+            return GetData(out totalRecords, null, null, null, limitOffset, limitRowCount, orderBy, desc);
         }
     }
 }

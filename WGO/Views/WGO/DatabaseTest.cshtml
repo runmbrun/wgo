@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "DatabaseTest";
+
+    int guildCount = 0;
+    int raidCount = 0;
+    string errorMessage = string.Empty;
+
+    if (ViewBag.GuildCount != null)
+    {
+        guildCount = Convert.ToInt32(ViewBag.GuildCount);
+    }
+
+    if (ViewBag.RaidCount != null)
+    {
+        raidCount = Convert.ToInt32(ViewBag.RaidCount);
+    }
+
+    if (ViewBag.ErrorMessage != null && !string.IsNullOrWhiteSpace(ViewBag.ErrorMessage))
+    {
+        errorMessage = ViewBag.ErrorMessage;
+    }
+}
+
+<h2>DatabaseTest</h2>
+
+<p>
+    Guild Roster Count = @guildCount
+</p>
+<p>
+    Raid Roster Count = @raidCount
+</p>
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+<p>
+    @errorMessage
+</p>
+}

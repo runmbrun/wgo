@@ -1,11 +1,5 @@
 ﻿@{
     ViewBag.Title = "Home Page";
-
-    // todo:
-    string dataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
-    string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-    bool foundFile = System.IO.File.Exists(Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "WGO.mdf"));
-
 }
 
 <div class="jumbotron">
@@ -34,12 +28,4 @@
         <p>View a the current raid roster, and do an audit check.</p>
         <p><a class="btn btn-default" href='@Url.Action("Raid", "WGO")'>Learn more &raquo;</a></p>
     </div>
-</div>
-
-<div>
-    DataDirectory = [@dataDirectory]
-    <br />
-    baseDirectory = [@baseDirectory]
-    <br />
-    foundFile = [@foundFile]
 </div>
