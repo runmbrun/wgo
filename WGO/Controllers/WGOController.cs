@@ -45,7 +45,7 @@ namespace WGO.Controllers
             }
             else
             {
-                if (this.RetrieveCharacter(model.Character, model.Realm, true))
+                if (!this.RetrieveCharacter(model.Character, model.Realm, true))
                 {
                     return View(model);
                 }
@@ -168,20 +168,24 @@ namespace WGO.Controllers
         private bool RetrieveCharacter(string character, string realm, bool isGuild)
         {
             bool result = false;
-            JSONCharacter charFromWeb = JSONBase.GetCharacterJSONData(character, realm);
+            JSONCharacter charFromWeb = JSONBase.GetCharacterJSON(character, realm);
+
+            ViewBag.CharacterName = character;
+            ViewBag.CharacterRealm = realm;
 
             if (charFromWeb == null)
             {
-                ModelState.AddModelError("Raid", "Character not found.");
+                ModelState.AddModelError(string.Empty, "Character not found.");
+
+                foreach (string e in JSONBase.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, $"Error: {e}");
+                }
             }
             else
             {
                 string spec = string.Empty;
                 string role = string.Empty;
-                var dbChars = from m in db.Characters select m;
-
-                ViewBag.CharacterName = character;
-                ViewBag.CharacterRealm = realm;
 
                 if (charFromWeb.Talents != null && charFromWeb.Talents.Count > 0)
                 {
@@ -189,6 +193,7 @@ namespace WGO.Controllers
                     role = charFromWeb.Talents[0].Spec.Role;
                 }
 
+                var dbChars = from m in db.Characters select m;
                 var search = dbChars.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Spec == spec);
 
                 if (search.Count() > 0)
@@ -251,7 +256,7 @@ namespace WGO.Controllers
                     catch (Exception ex)
                     {
                         // no op
-                        ModelState.AddModelError("Character", $"Error saving character: {ex.Message}");
+                        ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
                 else
@@ -281,7 +286,7 @@ namespace WGO.Controllers
                     {
                         charToDB.Roster = 2;
                     }
-                    
+
 
                     // does it exist in the db?  then add it!
                     db.Characters.Add(charToDB);
@@ -293,7 +298,7 @@ namespace WGO.Controllers
                     }
                     catch (Exception ex)
                     {
-                        ModelState.AddModelError("Character", $"Error saving character: {ex.Message}");
+                        ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
             }
@@ -361,6 +366,73 @@ namespace WGO.Controllers
             }
 
             return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GuildRosterRetrieve()
+        {
+            string guild = "Secondnorth";
+            string realm = "Thrall";
+
+            this.RetrieveGuild(guild, realm);
+
+            return RedirectToAction("Guild");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <param name="realm"></param>
+        /// <returns></returns>
+        private bool RetrieveGuild(string guild, string realm)
+        {
+            bool result = false;
+
+            try
+            {
+                JSONGuild data = JSONBase.GetGuildJSON(guild, realm);
+
+                if (data != null && data.Members.Count > 0)
+                {
+                    foreach (JSONGuildCharacter guildie in data.Members)
+                    {
+                        /*
+                        // now save all the data into the format we are expecting
+                        // TODO: should it stay this way?  Or make a new format?
+                        GuildMember temp = new GuildMember();
+
+                        temp.Name = guildie.Character.Name;
+                        temp.Race = Converter.ConvertRace(guildie.Character.Race);
+                        temp.Class = Converter.ConvertClass(guildie.Character.Class);
+                        temp.Level = guildie.Character.Level;
+                        temp.AchievementPoints = guildie.Character.AchievementPoints;
+                        temp.EquipediLevel = 0;
+                        temp.MaxiLevel = 0;
+
+                        this.Characters.Add(temp);
+                        */
+                        if (!RetrieveCharacter(guildie.Character.Name, realm, true))
+                        {
+                            ModelState.AddModelError(string.Empty, $"Error: retrieving character data for: {guildie.Character.Name}");
+                            break;
+                        }
+                    }
+
+                    // No errors up to this point?  Success!
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message} in CollectJSONData() in GetGuildInfo.cs");
+            }
+
+            return result;
         }
     }
 }

@@ -216,6 +216,7 @@
     <Compile Include="JSON\JSONBase.cs" />
     <Compile Include="JSON\JSONCharacter.cs" />
     <Compile Include="JSON\JSONCharacterItem.cs" />
+    <Compile Include="JSON\JSONGuild.cs" />
     <Compile Include="JSON\JSONSpec.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
