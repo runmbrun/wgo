@@ -200,6 +200,10 @@ namespace WGO
                                 query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Level) : query.OrderByDescending(p => p.Level);
                                 break;
 
+                            case "class":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Class) : query.OrderByDescending(p => p.Class);
+                                break;
+
                             case "achievementpoints":
                                 query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.AchievementPoints) : query.OrderByDescending(p => p.AchievementPoints);
                                 break;
@@ -221,7 +225,13 @@ namespace WGO
                                 break;
                         }
 
-                        // Store the data
+                        // Paging
+                        if (options.GetLimitOffset().HasValue)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+
+                        // Done!
                         result.Items = query.ToList();
                         result.TotalRecords = result.Items.Count();
                     }
@@ -238,6 +248,10 @@ namespace WGO
                 .AddColumns(cols =>
                 {
                     // Add your columns here
+                    cols.Add().WithColumnName("Role")
+                        .WithHeaderText("Role")
+                        .WithSorting(true)
+                        .WithValueExpression(i => i.Role);
                     cols.Add().WithColumnName("Name")
                         .WithHeaderText("Name")
                         .WithSorting(true)
@@ -282,7 +296,6 @@ namespace WGO
                         .WithValueTemplate("<a href='{Value}' class='btn btn-danger' role='button' onclick=$.blockUI()>Delete</a>");
                 })
                 .WithPreloadData(false)
-                //.WithSorting(true, "Level, Name, EquippediLevel")
                 .WithSorting(sorting: true, defaultSortColumn: "EquippediLevel", defaultSortDirection: SortDirection.Dsc)
                 .WithPaging(true, 20)
                 .WithClientSideLoadingCompleteFunctionName("hideLoading")
@@ -330,6 +343,10 @@ namespace WGO
                                 query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Level) : query.OrderByDescending(p => p.Level);
                                 break;
 
+                            case "class":
+                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Class) : query.OrderByDescending(p => p.Class);
+                                break;
+
                             case "achievementpoints":
                                 query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.AchievementPoints) : query.OrderByDescending(p => p.AchievementPoints);
                                 break;
@@ -351,7 +368,13 @@ namespace WGO
                                 break;
                         }
 
-                        // Store the data
+                        // Paging
+                        if (options.GetLimitOffset().HasValue)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+
+                        // Done!
                         result.Items = query.ToList();
                         result.TotalRecords = result.Items.Count();
                     }

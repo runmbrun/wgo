@@ -23,6 +23,7 @@ namespace WGO.Models
         public DateTime? Modified_AchievementPoints { get; set; }
 
         public int Roster { get; set; }
+        public string Role { get; set; }
     }
 
     //public class WGODBContext : DbContext
