@@ -59,7 +59,8 @@ namespace WGO
                     cols.Add().WithColumnName("Name")
                         .WithHeaderText("Name")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.Name); // use the Value Expression to return the cell text for this column
+                        .WithValueTemplate("<a href='{Value}'>{Model.Name}</a>", false)
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name, realm = p.Realm }));
                     cols.Add().WithColumnName("Level")
                         .WithHeaderText("Level")
                         .WithSorting(true)
@@ -91,9 +92,8 @@ namespace WGO
                 .WithPageParameterNames("name")
                 .WithPageParameterNames("realm")
                 .WithPreloadData(false)
-                .WithSorting(true, "Level, Name, EquippediLevel")
+                .WithSorting(true, "EquippediLevel")
                 .WithPaging(true, 20)
-
                 .WithRetrieveDataMethod((context) =>
                 {
                     // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
@@ -103,16 +103,17 @@ namespace WGO
                     string searchName = options.GetPageParameterString("name");
                     string searchRealm = options.GetPageParameterString("realm");
                     Models.WGODBContext db = new Models.WGODBContext();
-                    var dbChars = from m in db.Characters select m;
-                    var search = dbChars.Where(s => s.Name == searchName && s.Realm == searchRealm);
+                    var query = db.Characters.Where(s => s.Name == searchName && s.Realm == searchRealm).OrderByDescending(s => s.Equipped_iLevel);
+
+                    int itemCount = query.Count();
 
                     return new QueryResult<Models.Character>()
                     {
                         // Return the List of Characters
-                        Items = search,
+                        Items = query,
 
                         // if paging is enabled, return the total number of records of all pages
-                        TotalRecords = search.Count()
+                        TotalRecords = query.Count()
                     };
 
                 })
@@ -130,7 +131,7 @@ namespace WGO
                         .WithHeaderText("Name")
                         .WithSorting(true)
                         .WithValueTemplate("<a href='{Value}'>{Model.Name}</a>", false)
-                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name }));
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name, realm = p.Realm }));
                     cols.Add().WithColumnName("Level")
                         .WithHeaderText("Level")
                         .WithSorting(true)
@@ -166,7 +167,7 @@ namespace WGO
                 })
                 .WithPreloadData(false)
                 .WithSorting(sorting: true, defaultSortColumn: "EquippediLevel", defaultSortDirection: SortDirection.Dsc)
-                .WithPaging(paging: true, itemsPerPage: 20, allowChangePageSize: true, maxItemsPerPage: 100)
+                .WithPaging(paging: true, itemsPerPage: 10, allowChangePageSize: true, maxItemsPerPage: 100)
                 .WithAdditionalQueryOptionNames("search")
                 .WithRetrieveDataMethod((context) =>
                 {
@@ -177,6 +178,8 @@ namespace WGO
                     string globalSearch = options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>();
                     var result = new QueryResult<Models.Character>();
+                    int guildRoster = JSONBase.GetGuildRoster();
+                    int allRoster = JSONBase.GetAllRoster();
 
                     /* todo: Dependency Testing...
                     //var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
@@ -187,7 +190,7 @@ namespace WGO
                     using (var db = new Models.WGODBContext())
                     {
                         // Get the data
-                        var query = db.Characters.AsQueryable().Where(s => s.Roster == 1 || s.Roster == 3);
+                        var query = db.Characters.AsQueryable().Where(s => s.Roster == guildRoster || s.Roster == allRoster);
 
                         // Sort the data
                         switch (options.SortColumnName.ToLower())
@@ -209,11 +212,11 @@ namespace WGO
                                 break;
 
                             case "maxilevel":
-                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Max_iLevel) : query.OrderByDescending(p => p.Max_iLevel);
+                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Max_iLevel).ThenBy(p => p.Name);
                                 break;
 
                             case "equippedilevel":
-                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Equipped_iLevel) : query.OrderByDescending(p => p.Equipped_iLevel);
+                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
                                 break;
 
                             case "lastmodified":
@@ -221,9 +224,11 @@ namespace WGO
                                 break;
 
                             default:
-                                query = query.OrderBy(p => p.Name).OrderByDescending(p => p.Equipped_iLevel).OrderByDescending(p => p.Level);
+                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
                                 break;
                         }
+
+                        result.TotalRecords = query.Count();
 
                         // Paging
                         if (options.GetLimitOffset().HasValue)
@@ -233,7 +238,6 @@ namespace WGO
 
                         // Done!
                         result.Items = query.ToList();
-                        result.TotalRecords = result.Items.Count();
                     }
                     
                     return result;
@@ -256,7 +260,7 @@ namespace WGO
                         .WithHeaderText("Name")
                         .WithSorting(true)
                         .WithValueTemplate("<a href='{Value}'>{Model.Name}</a>", false)
-                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name }));
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name, realm = p.Realm }));
                     cols.Add().WithColumnName("Level")
                         .WithHeaderText("Level")
                         .WithSorting(true)
@@ -320,6 +324,8 @@ namespace WGO
                     string globalSearch = options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>();
                     var result = new QueryResult<Models.Character>();
+                    int raidRoster = JSONBase.GetRaidRoster();
+                    int allRoster = JSONBase.GetAllRoster();
 
                     /* todo: Dependency Testing...
                     //var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
@@ -330,7 +336,7 @@ namespace WGO
                     using (var db = new Models.WGODBContext())
                     {
                         // Get the data
-                        var query = db.Characters.AsQueryable().Where(s => s.Roster == 2 || s.Roster == 3);
+                        var query = db.Characters.AsQueryable().Where(s => s.Roster == raidRoster || s.Roster == allRoster);
 
                         // Sort the data
                         switch (options.SortColumnName.ToLower())
@@ -352,11 +358,11 @@ namespace WGO
                                 break;
 
                             case "maxilevel":
-                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Max_iLevel) : query.OrderByDescending(p => p.Max_iLevel);
+                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Max_iLevel).ThenBy(p => p.Name);
                                 break;
 
                             case "equippedilevel":
-                                query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Equipped_iLevel) : query.OrderByDescending(p => p.Equipped_iLevel);
+                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
                                 break;
 
                             case "lastmodified":
@@ -364,9 +370,12 @@ namespace WGO
                                 break;
 
                             default:
-                                query = query.OrderBy(p => p.Name).OrderByDescending(p => p.Level).OrderByDescending(p => p.Equipped_iLevel);
+                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
                                 break;
                         }
+
+                        // Get the full record count, before the paging
+                        result.TotalRecords = query.Count();
 
                         // Paging
                         if (options.GetLimitOffset().HasValue)
@@ -376,7 +385,6 @@ namespace WGO
 
                         // Done!
                         result.Items = query.ToList();
-                        result.TotalRecords = result.Items.Count();
                     }
 
                     return result;

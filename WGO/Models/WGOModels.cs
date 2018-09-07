@@ -26,7 +26,9 @@ namespace WGO.Models
         public string Role { get; set; }
     }
 
-    //public class WGODBContext : DbContext
+    /// <summary>
+    /// 
+    /// </summary>
     public class WGODBContext : DbContext
     {
         public WGODBContext() : base("WGOConnection")

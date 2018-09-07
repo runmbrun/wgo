@@ -215,6 +215,7 @@
     </Compile>
     <Compile Include="JSON\JSONBase.cs" />
     <Compile Include="JSON\JSONCharacter.cs" />
+    <Compile Include="JSON\JSONCharacterAudit.cs" />
     <Compile Include="JSON\JSONCharacterItem.cs" />
     <Compile Include="JSON\JSONGuild.cs" />
     <Compile Include="JSON\JSONSpec.cs" />

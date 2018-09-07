@@ -20,4 +20,10 @@ namespace WGO.Models
         [Display(Name = "Character")]
         public string Character { get; set; }
     }
+
+    public class CharacterViewModel
+    {
+        public Character Character { get; set; }
+        public JSON.JSONCharacterAudit Audit { get; set; }
+    }
 }

@@ -1,17 +1,115 @@
-﻿
+﻿@model WGO.Models.CharacterViewModel
+
 @{
-    ViewBag.Title = "Character";
+    string name = "Character could not be found.";
+    bool nameFound = false;
+    bool auditFound = false;
+
+    if (Model.Character != null)
+    {
+        name = Model.Character.Name;
+        nameFound = true;
+    }
+
+    if (Model.Audit != null)
+    {
+        auditFound = true;
+    }
 }
 
-<h2>Character</h2>
+<h1>@name</h1>
 
-@if (!string.IsNullOrWhiteSpace(ViewBag.Name))
+<p>
+    <a href="@ViewBag.ReturnUrl">Return</a>
+</p>
+
+@if (nameFound)
 {
-    <p>
-        Name: @ViewBag.Name
-    </p>
-
-    <p>
-        <a href="@ViewBag.ReturnUrl">Return</a>
-    </p>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2>Gear</h2>
+            <table border="1">
+                <tr>
+                    <td width="20%">
+                        <b>Slot</b>
+                    </td>
+                    <td width="30%">
+                        <b>Name</b>
+                    </td>
+                    <td width="20%">
+                        <b>Level</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Head
+                    </td>
+                    <td width="30%" style="color:purple">
+                        Greathelm of Rezan's Bladeguard
+                    </td>
+                    <td width="20%">
+                        340
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+@if (auditFound)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2>Audit</h2>
+            <table border="1">
+                <tr>
+                    <td width="20%">
+                        <b>Number of Issues</b>
+                    </td>
+                    <td width="30%">
+                        <b>@Model.Audit.Audit.NumberOfIssues</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Empty Glyph Slots
+                    </td>
+                    <td width="30%">
+                        @Model.Audit.Audit.EmptyGlyphSlots
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Unspent Talent Points
+                    </td>
+                    <td width="30%">
+                        @Model.Audit.Audit.UnspentTalentPoints
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        No Spec
+                    </td>
+                    <td width="30%">
+                        @Model.Audit.Audit.NoSpec
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Empty Sockets
+                    </td>
+                    <td width="30%">
+                        @Model.Audit.Audit.EmptySockets
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Low Level Threshold
+                    </td>
+                    <td width="30%">
+                        @Model.Audit.Audit.LowLevelThreshold
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 }

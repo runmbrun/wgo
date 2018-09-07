@@ -45,7 +45,7 @@ namespace WGO.Controllers
             }
             else
             {
-                if (!this.RetrieveCharacter(model.Character, model.Realm, true))
+                if (this.RetrieveCharacter(model.Character, model.Realm, true) == 0)
                 {
                     return View(model);
                 }
@@ -112,11 +112,11 @@ namespace WGO.Controllers
                     var dbRaiders = from m in db.Characters where (m.Roster == 2 || m.Roster == 3) && m.Name == name && m.Realm == realm select m;
                     foreach (Character c in dbRaiders)
                     {
-                        if (c.Roster == 3)
+                        if (c.Roster == JSONBase.GetAllRoster())
                         {
-                            c.Roster = 1;
+                            c.Roster = JSONBase.GetGuildRoster();
                         }
-                        else if (c.Roster == 2)
+                        else if (c.Roster == JSONBase.GetRaidRoster())
                         {
                             db.Characters.Remove(c);
                         }
@@ -149,7 +149,7 @@ namespace WGO.Controllers
             }
             else
             {
-                if (this.RetrieveCharacter(model.Character, model.Realm, false))
+                if (this.RetrieveCharacter(model.Character, model.Realm, false) == 0)
                 {
                     return View(model);
                 }
@@ -160,14 +160,16 @@ namespace WGO.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Result = 0 -> Error
+        /// Result = 1 -> Success
+        /// Result = 2 -> Character not found, but no errors.
         /// </summary>
         /// <param name="character"></param>
         /// <param name="realm"></param>
         /// <returns></returns>
-        private bool RetrieveCharacter(string character, string realm, bool isGuild)
+        private int RetrieveCharacter(string character, string realm, bool isGuild)
         {
-            bool result = false;
+            int result = 0;
             JSONCharacter charFromWeb = JSONBase.GetCharacterJSON(character, realm);
 
             ViewBag.CharacterName = character;
@@ -175,11 +177,17 @@ namespace WGO.Controllers
 
             if (charFromWeb == null)
             {
-                ModelState.AddModelError(string.Empty, "Character not found.");
-
-                foreach (string e in JSONBase.Errors)
+                if (JSONBase.CharacterNotFound)
                 {
-                    ModelState.AddModelError(string.Empty, $"Error: {e}");
+                    ModelState.AddModelError(string.Empty, $"Character {character} from {realm} not found.");
+                    result = 2;
+                }
+                else
+                {
+                    foreach (string e in JSONBase.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, $"Error: {e}");
+                    }
                 }
             }
             else
@@ -194,7 +202,7 @@ namespace WGO.Controllers
                 }
 
                 var dbChars = from m in db.Characters select m;
-                var search = dbChars.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Spec == spec);
+                var search = dbChars.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Role == role);
 
                 if (search.Count() > 0)
                 {
@@ -231,19 +239,20 @@ namespace WGO.Controllers
                         searchChar.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
                         searchChar.LastUpdated = DateTime.Now;
                         searchChar.Spec = spec;
+                        searchChar.Role = role;
 
                         if (isGuild)
                         {
-                            if (searchChar.Roster == 2)
+                            if (searchChar.Roster == JSONBase.GetRaidRoster())
                             {
-                                searchChar.Roster = 3;
+                                searchChar.Roster = JSONBase.GetAllRoster();
                             }
                         }
                         else
                         {
-                            if (searchChar.Roster == 1)
+                            if (searchChar.Roster == JSONBase.GetGuildRoster())
                             {
-                                searchChar.Roster = 3;
+                                searchChar.Roster = JSONBase.GetAllRoster();
                             }
                         }
                     }
@@ -251,7 +260,7 @@ namespace WGO.Controllers
                     try
                     {
                         db.SaveChanges();
-                        result = true;
+                        result = 1;
                     }
                     catch (Exception ex)
                     {
@@ -280,11 +289,11 @@ namespace WGO.Controllers
 
                     if (isGuild)
                     {
-                        charToDB.Roster = 1;
+                        charToDB.Roster = JSONBase.GetGuildRoster();
                     }
                     else
                     {
-                        charToDB.Roster = 2;
+                        charToDB.Roster = JSONBase.GetRaidRoster();
                     }
 
 
@@ -294,7 +303,7 @@ namespace WGO.Controllers
                     try
                     {
                         db.SaveChanges();
-                        result = true;
+                        result = 1;
                     }
                     catch (Exception ex)
                     {
@@ -312,8 +321,9 @@ namespace WGO.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Character(string name)
+        public ActionResult Character(string name, string realm)
         {
+            // Calculate the UrlReferrer link, for a return Url
             if (System.Web.HttpContext.Current.Request.UrlReferrer != null)
             {
                 if (!string.IsNullOrWhiteSpace(name))
@@ -331,7 +341,25 @@ namespace WGO.Controllers
                 }
             }
 
-            return View();
+            // Get the Character info
+            CharacterViewModel model = new CharacterViewModel();
+            model.Character = null;
+            var chars = db.Characters.Where(s => s.Name == name && s.Realm == realm);
+
+            if (chars.Any())
+            {
+                // Store the Character data
+                model.Character = chars.First();
+
+                // Now get the Audit Data
+                JSONCharacterAudit audit = JSONBase.GetCharacterAuditJSON(model.Character.Name, model.Character.Realm);
+                if (audit != null)
+                {
+                    model.Audit = audit;
+                }
+            }
+
+            return View(model);
         }
 
         /// <summary>
@@ -344,8 +372,8 @@ namespace WGO.Controllers
             try
             {
                 var dbChars = from m in db.Characters select m;
-                var guildCount = dbChars.Where(s => s.Roster == 1 || s.Roster == 3);
-                var raidCount = dbChars.Where(s => s.Roster == 2 || s.Roster == 3);
+                var guildCount = dbChars.Where(s => s.Roster == JSONBase.GetGuildRoster() || s.Roster == JSONBase.GetAllRoster());
+                var raidCount = dbChars.Where(s => s.Roster == JSONBase.GetRaidRoster() || s.Roster == JSONBase.GetAllRoster());
 
                 ViewBag.GuildCount = 0;
                 ViewBag.RaidCount = 0;
@@ -401,22 +429,7 @@ namespace WGO.Controllers
                 {
                     foreach (JSONGuildCharacter guildie in data.Members)
                     {
-                        /*
-                        // now save all the data into the format we are expecting
-                        // TODO: should it stay this way?  Or make a new format?
-                        GuildMember temp = new GuildMember();
-
-                        temp.Name = guildie.Character.Name;
-                        temp.Race = Converter.ConvertRace(guildie.Character.Race);
-                        temp.Class = Converter.ConvertClass(guildie.Character.Class);
-                        temp.Level = guildie.Character.Level;
-                        temp.AchievementPoints = guildie.Character.AchievementPoints;
-                        temp.EquipediLevel = 0;
-                        temp.MaxiLevel = 0;
-
-                        this.Characters.Add(temp);
-                        */
-                        if (!RetrieveCharacter(guildie.Character.Name, realm, true))
+                        if (RetrieveCharacter(guildie.Character.Name, realm, true) == 0)
                         {
                             ModelState.AddModelError(string.Empty, $"Error: retrieving character data for: {guildie.Character.Name}");
                             break;

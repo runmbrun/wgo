@@ -9,12 +9,17 @@
 
 @Html.ValidationSummary()
 
-@Html.Partial("_MVCGridToolbar", new MVCGridToolbarModel()
-{
-    MVCGridName = "GuildRoster",
-    PageSize = true,
-    ColumnVisibility = true,
-    Export = true,
-    GlobalSearch = true
-})
-@Html.MVCGrid("GuildRoster")
+<div class="panel panel-default">
+    <div class="panel-body">
+        @Html.Partial("_MVCGridToolbar", new MVCGridToolbarModel()
+        {
+            MVCGridName = "GuildRoster",
+            PageSize = true,
+            ColumnVisibility = true,
+            Export = true,
+            GlobalSearch = true
+        })
+        @Html.MVCGrid("GuildRoster")
+    </div>
+</div>
+

@@ -15,14 +15,12 @@ namespace WGO
 
             routes.MapRoute(
                 name: "CharacterName",
-                //url: "WGO/Character/{name}",
-                url: "WGO/Character/{name}",
-                defaults: new { controller = "WGO", action = "Character", name = UrlParameter.Optional }
+                url: "WGO/Character/{name}/{realm}",
+                defaults: new { controller = "WGO", action = "Character", name = UrlParameter.Optional, realm = UrlParameter.Optional }
                 );
 
             routes.MapRoute(
                 name: "RaidReload",
-                //url: "WGO/Raid/{action}/{name}/{realm}",
                 url: "WGO/RaidFunctions/{function}/{name}/{realm}",
                 defaults: new { controller = "WGO", action = "RaidFunctions", function = UrlParameter.Optional, name = UrlParameter.Optional, realm = UrlParameter.Optional }
                 );

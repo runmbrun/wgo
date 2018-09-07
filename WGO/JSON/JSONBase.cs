@@ -11,7 +11,73 @@ namespace WGO.JSON
 {
     static public class JSONBase
     {
-        public static List<string> Errors { get; set; } = new List<string>(); 
+        #region " Properties "
+        /// <summary>
+        /// 
+        /// </summary>
+        public static List<string> Errors { get; set; } = new List<string>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static bool CharacterNotFound { get; set; } = false;
+        #endregion
+
+        #region " Enums "
+        /// <summary>
+        /// 
+        /// </summary>
+        public enum Rosters
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            None,
+
+            /// <summary>
+            /// 
+            /// </summary>
+            Guild,
+
+            /// <summary>
+            /// 
+            /// </summary>
+            Raid,
+
+            /// <summary>
+            /// 
+            /// </summary>
+            All
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        static public int GetGuildRoster()
+        {
+            return (int)Rosters.Guild;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        static public int GetRaidRoster()
+        {
+            return (int)Rosters.Raid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        static public int GetAllRoster()
+        {
+            return (int)Rosters.All;
+        }
+        #endregion
+
 
         /// <summary>
         /// Example: https://us.api.battle.net/wow/character/Thrall/Purdee?fields=items%2Cprofessions%2Ctalents&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
@@ -20,6 +86,9 @@ namespace WGO.JSON
         /// <returns></returns>
         static public JSONCharacter GetCharacterJSON(string characterName, string realm)
         {
+            // Reset Character Not Found First...
+            CharacterNotFound = false;
+
             JSONCharacter result = null;
             string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=items,professions,talents&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";            
             string responseData = GetJSONData(requestUrl);
@@ -28,6 +97,29 @@ namespace WGO.JSON
             if (!string.IsNullOrEmpty(responseData))
             {
                 result = JsonConvert.DeserializeObject<JSONCharacter>(responseData);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Example: https://us.api.battle.net/wow/character/Thrall/Purdee?fields=audit&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <returns></returns>
+        static public JSONCharacterAudit GetCharacterAuditJSON(string characterName, string realm)
+        {
+            // Reset Character Not Found First...
+            CharacterNotFound = false;
+
+            JSONCharacterAudit result = null;
+            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=audit&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";
+            string responseData = GetJSONData(requestUrl);
+
+            // Convert the data to the proper object
+            if (!string.IsNullOrEmpty(responseData))
+            {
+                result = JsonConvert.DeserializeObject<JSONCharacterAudit>(responseData);
             }
 
             return result;
@@ -124,6 +216,7 @@ namespace WGO.JSON
                 if (errorCheck.StartsWith(@"{""status"":""nok"", ""reason"": "))
                 {
                     Errors.Add($"Character could not be found on the Battle.net Site any more... ignoring.");
+                    CharacterNotFound = true;
                 }
                 else if (ex.HResult == -2146233079)
                 {

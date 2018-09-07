@@ -17,6 +17,7 @@ namespace WGO
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Database.SetInitializer<Models.WGODBContext>(null);
         }
 
         public void Session_Start()
