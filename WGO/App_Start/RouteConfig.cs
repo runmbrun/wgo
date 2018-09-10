@@ -20,9 +20,15 @@ namespace WGO
                 );
 
             routes.MapRoute(
-                name: "RaidReload",
-                url: "WGO/RaidFunctions/{function}/{name}/{realm}",
-                defaults: new { controller = "WGO", action = "RaidFunctions", function = UrlParameter.Optional, name = UrlParameter.Optional, realm = UrlParameter.Optional }
+                name: "Rescan",
+                url: "WGO/Rescan/{name}/{realm}",
+                defaults: new { controller = "WGO", action = "Rescan", name = UrlParameter.Optional, realm = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
+                name: "Delete",
+                url: "WGO/Delete/{name}/{realm}",
+                defaults: new { controller = "WGO", action = "Delete", name = UrlParameter.Optional, realm = UrlParameter.Optional }
                 );
 
             // Default Route

@@ -77,56 +77,115 @@ namespace WGO.Controllers
         {
             return View();
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult RaidFunctions(string function, string name, string realm)
+        public ActionResult Rescan(string name, string realm)
         {
-            if (!string.IsNullOrWhiteSpace(function) && !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(realm))
+            string returnTo = "Guild";
+
+            // Calculate the UrlReferrer link, for a return Url
+            if (System.Web.HttpContext.Current.Request.UrlReferrer != null)
             {
-                if (function == "Rescan")
+                if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Guild"))
                 {
-                    if (name == "@All")
-                    {
-                        // Rescan all the characters
-                        List<Character> rescan = (from m in db.Characters where m.Roster == 2 || m.Roster == 3 select m).ToList();
-
-                        foreach (Character c in rescan)
-                        {
-                            this.RetrieveCharacter(c.Name, c.Realm, false);
-                        }
-                    }
-                    else
-                    {
-                        // Reload just 1 character
-                        this.RetrieveCharacter(name, realm, false);
-                    }
+                    ViewBag.ReturnUrl = "/WGO/Guild";
                 }
-                else if (function == "Delete")
+                else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Raid"))
                 {
-                    // Delete a user from the Raid Roster
-                    var dbRaiders = from m in db.Characters where (m.Roster == 2 || m.Roster == 3) && m.Name == name && m.Realm == realm select m;
-                    foreach (Character c in dbRaiders)
-                    {
-                        if (c.Roster == JSONBase.GetAllRoster())
-                        {
-                            c.Roster = JSONBase.GetGuildRoster();
-                        }
-                        else if (c.Roster == JSONBase.GetRaidRoster())
-                        {
-                            db.Characters.Remove(c);
-                        }
-                    }
-
-                    db.SaveChanges();
+                    ViewBag.ReturnUrl = "/WGO/Raid";
+                    returnTo = "Raid";
                 }
             }
 
-            return RedirectToAction("Raid");
+            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(realm))
+            {
+                if (name == "@All")
+                {
+                    // Rescan all the characters
+                    List<Character> rescan = null;
+
+                    if (returnTo == "Guild")
+                    {
+                        rescan = (from m in db.Characters where m.Roster == 1 || m.Roster == 3 select m).ToList();
+                    }
+                    else
+                    {
+                        rescan = (from m in db.Characters where m.Roster == 2 || m.Roster == 3 select m).ToList();
+                    }
+
+                    foreach (Character c in rescan)
+                    {
+                        this.RetrieveCharacter(c.Name, c.Realm, returnTo == "Guild" ? true : false);
+                    }
+                }
+                else
+                {
+                    // Reload just 1 character
+                    this.RetrieveCharacter(name, realm, returnTo == "Guild" ? true : false);
+                }
+            }
+
+            return RedirectToAction(returnTo);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Delete(string name, string realm)
+        {
+            string returnTo = "Guild";
+
+            // Calculate the UrlReferrer link, for a return Url
+            if (System.Web.HttpContext.Current.Request.UrlReferrer != null)
+            {
+                if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Guild"))
+                {
+                    ViewBag.ReturnUrl = "/WGO/Guild";
+                }
+                else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Raid"))
+                {
+                    ViewBag.ReturnUrl = "/WGO/Raid";
+                    returnTo = "Raid";
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(realm))
+            {
+                // Delete a user from the Raid Roster
+                List<Character> delete = null;
+                if (returnTo == "Guild")
+                {
+                    delete = (from m in db.Characters where (m.Roster == 1 || m.Roster == 3) && m.Name == name && m.Realm == realm select m).ToList();
+                }
+                else
+                {
+                    delete = (from m in db.Characters where (m.Roster == 2 || m.Roster == 3) && m.Name == name && m.Realm == realm select m).ToList();
+                }
+
+                foreach (Character c in delete)
+                {
+                    if (c.Roster == JSONBase.GetAllRoster())
+                    {
+                        c.Roster = JSONBase.GetGuildRoster();
+                    }
+                    else if (c.Roster == JSONBase.GetRaidRoster())
+                    {
+                        db.Characters.Remove(c);
+                    }
+                }
+
+                db.SaveChanges();                
+            }
+
+            return RedirectToAction(returnTo);
         }
 
         [HttpGet]
@@ -282,6 +341,7 @@ namespace WGO.Controllers
                     charToDB.LastUpdated = DateTime.Now;
                     charToDB.Realm = charFromWeb.Realm;
                     charToDB.Spec = spec;
+                    charToDB.Role = role;
                     charToDB.Modified_AchievementPoints = DateTime.Now;
                     charToDB.Modified_Equipped_iLevel = DateTime.Now;
                     charToDB.Modified_Max_iLevel = DateTime.Now;
@@ -331,11 +391,11 @@ namespace WGO.Controllers
                     ViewBag.Name = name;
                 }
 
-                if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("Guild"))
+                if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Guild"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Guild";
                 }
-                else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("Raid"))
+                else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Raid"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Raid";
                 }
@@ -371,10 +431,13 @@ namespace WGO.Controllers
         {
             try
             {
+                int guildRoster = JSONBase.GetGuildRoster();
+                int raidRoster = JSONBase.GetRaidRoster();
+                int allRoster = JSONBase.GetAllRoster();
                 var dbChars = from m in db.Characters select m;
-                var guildCount = dbChars.Where(s => s.Roster == JSONBase.GetGuildRoster() || s.Roster == JSONBase.GetAllRoster());
-                var raidCount = dbChars.Where(s => s.Roster == JSONBase.GetRaidRoster() || s.Roster == JSONBase.GetAllRoster());
-
+                var guildCount = dbChars.Where(s => s.Roster == guildRoster || s.Roster == allRoster);
+                var raidCount = dbChars.Where(s => s.Roster == raidRoster || s.Roster == allRoster);
+                
                 ViewBag.GuildCount = 0;
                 ViewBag.RaidCount = 0;
 
@@ -387,6 +450,19 @@ namespace WGO.Controllers
                 {
                     ViewBag.RaidCount = raidCount.Count();
                 }
+
+                /*
+                // *** DEBUGGING *** //
+                var test = dbChars.Where(s => s.Role == null);
+                if (test.Count() > 0)
+                {
+                    foreach (Character c in test)
+                    {
+                        db.Characters.Remove(c);
+                    }
+
+                    db.SaveChanges();
+                }//*/
             }
             catch (Exception ex)
             {

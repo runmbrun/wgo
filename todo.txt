@@ -1,0 +1,21 @@
+========
+| TODO |
+========
+
+
+General
+  - Add item functionality: 
+      - need new item table 
+      - new field in the character table for the character item JSON data
+  - Finish the Character View 
+      - Show all the items
+      - Show all the Audit info
+  
+Guild tab
+  - Make Reload work
+  - Make Search work
+  - Make Page Size work
+
+Raid Roster tab
+  - Add Role functionality
+  
