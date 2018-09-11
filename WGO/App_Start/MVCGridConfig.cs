@@ -177,7 +177,6 @@ namespace WGO
                     string sortColumn = options.GetSortColumnData<string>() == null ? string.Empty : options.GetSortColumnData<string>();
                     var result = new QueryResult<Models.Character>();
                     int guildRoster = JSONBase.GetGuildRoster();
-                    int allRoster = JSONBase.GetAllRoster();
 
                     // Dependency Testing...
                     //CharacterRepository charRepo2 = new CharacterRepository();
@@ -198,7 +197,7 @@ namespace WGO
                         using (var db = new Models.WGODBContext())
                         {
                             // Get the data
-                            var query = db.Characters.AsQueryable().Where(s => s.Roster == guildRoster || s.Roster == allRoster);
+                            var query = db.Characters.AsQueryable().Where(s => s.Roster == guildRoster);
 
                             // Sort the data
                             switch (options.SortColumnName.ToLower())
@@ -334,22 +333,20 @@ namespace WGO
                     string sortColumn = options.GetSortColumnData<string>();
                     var result = new QueryResult<Models.Character>();
                     int raidRoster = JSONBase.GetRaidRoster();
-                    int allRoster = JSONBase.GetAllRoster();
-
-                    /* todo: Dependency Testing...
-                    //var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
-                    //var items = repo.GetData(out totalRecords, globalSearch == null ? string.Empty : globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(), options.SortColumnName, options.SortDirection == SortDirection.Dsc);
-                    */
-
+                    
                     // Get the current data now...
                     using (var db = new Models.WGODBContext())
                     {
                         // Get the data
-                        var query = db.Characters.AsQueryable().Where(s => s.Roster == raidRoster || s.Roster == allRoster);
+                        var query = db.Characters.AsQueryable().Where(s => s.Roster == raidRoster);
 
                         // Sort the data
                         switch (options.SortColumnName.ToLower())
                         {
+                            case "role":
+                                query = query.OrderByDescending(p => p.Role).ThenByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
+                                break;
+
                             case "name":
                                 query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
                                 break;
@@ -367,11 +364,11 @@ namespace WGO
                                 break;
 
                             case "maxilevel":
-                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Max_iLevel).ThenBy(p => p.Name);
+                                query = query.OrderByDescending(p => p.Role).ThenByDescending(p => p.Level).ThenByDescending(p => p.Max_iLevel).ThenBy(p => p.Name);
                                 break;
 
                             case "equippedilevel":
-                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
+                                query = query.OrderByDescending(p => p.Role).ThenByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
                                 break;
 
                             case "lastmodified":
@@ -379,7 +376,7 @@ namespace WGO
                                 break;
 
                             default:
-                                query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
+                                query = query.OrderByDescending(p => p.Role).ThenByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
                                 break;
                         }
 

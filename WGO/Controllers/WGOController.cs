@@ -172,11 +172,7 @@ namespace WGO.Controllers
 
                 foreach (Character c in delete)
                 {
-                    if (c.Roster == JSONBase.GetAllRoster())
-                    {
-                        c.Roster = JSONBase.GetGuildRoster();
-                    }
-                    else if (c.Roster == JSONBase.GetRaidRoster())
+                    if (c.Roster == JSONBase.GetRaidRoster())
                     {
                         db.Characters.Remove(c);
                     }
@@ -260,8 +256,16 @@ namespace WGO.Controllers
                     role = charFromWeb.Talents[0].Spec.Role;
                 }
 
-                var dbChars = from m in db.Characters select m;
-                var search = dbChars.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Role == role);
+                List<Character> search = null;
+
+                if (isGuild)
+                {
+                    search = db.Characters.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
+                }
+                else
+                {
+                    search= db.Characters.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Role == role).ToList();
+                }
 
                 if (search.Count() > 0)
                 {
@@ -302,17 +306,11 @@ namespace WGO.Controllers
 
                         if (isGuild)
                         {
-                            if (searchChar.Roster == JSONBase.GetRaidRoster())
-                            {
-                                searchChar.Roster = JSONBase.GetAllRoster();
-                            }
+                            searchChar.Roster = JSONBase.GetGuildRoster();
                         }
                         else
                         {
-                            if (searchChar.Roster == JSONBase.GetGuildRoster())
-                            {
-                                searchChar.Roster = JSONBase.GetAllRoster();
-                            }
+                            searchChar.Roster = JSONBase.GetRaidRoster();
                         }
                     }
 
@@ -327,7 +325,7 @@ namespace WGO.Controllers
                         ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
-                else
+                else if (isGuild || (!isGuild && ))
                 {
                     // Now insert the data inot the database
                     Character charToDB = new Character();
