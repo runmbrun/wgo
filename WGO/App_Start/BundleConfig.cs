@@ -9,10 +9,11 @@ namespace WGO
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                        //"~/Scripts/jquery-{version}.slim.min.js"));
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate.min.*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryblock").Include(
                         "~/Scripts/jquery.blockUI*"));
@@ -23,11 +24,19 @@ namespace WGO
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
+                      //"~/Scripts/popper.min.js",
+                      "~/Scripts/bootstrap.min.js",
+                      "~/Scripts/popperUMD.min.js",
+                      //"~/Scripts/bootstrap.js",
+                      //"~/Scripts/bootstrap.bundle.js",                      
+                      //"~/Scripts/popper-utils.js",
+                      //"~/Scripts/respond.min.js"));
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      //"~/Scripts/bootstrap-grid.css",
+                      //"~/Scripts/bootstrap-reboot.css",
                       "~/Content/site.css"));
         }
     }

@@ -4,10 +4,12 @@
     string name = "Character could not be found.";
     bool nameFound = false;
     bool auditFound = false;
+    WGO.JSON.JSONCharacterItems items = null;
 
     if (Model.Character != null)
     {
         name = Model.Character.Name;
+        items = Newtonsoft.Json.JsonConvert.DeserializeObject<WGO.JSON.JSONCharacterItems>(Model.Character.Items);
         nameFound = true;
     }
 
@@ -42,13 +44,35 @@
                 </tr>
                 <tr>
                     <td width="20%">
-                        Head
+                        TEST
                     </td>
                     <td width="30%" style="color:purple">
                         Greathelm of Rezan's Bladeguard
                     </td>
                     <td width="20%">
                         340
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Head
+                    </td>
+                    <td width="30%" style="color:@(items.Head.Quality == 4 ? "purple" : items.Head.Quality == 3 ? "green" : "White")">
+                        @items.Head.Name
+                    </td>
+                    <td width="20%">
+                        @items.Head.ItemLevel
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%">
+                        Shoulder
+                    </td>
+                    <td width="30%" style="color:@(items.Shoulder.Quality == 4 ? "purple" : items.Shoulder.Quality == 3 ? "green" : "White")">
+                        @items.Shoulder.Name
+                    </td>
+                    <td width="20%">
+                        @items.Shoulder.ItemLevel
                     </td>
                 </tr>
             </table>

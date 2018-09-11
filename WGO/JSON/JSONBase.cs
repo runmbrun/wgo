@@ -47,7 +47,7 @@ namespace WGO.JSON
             /// <summary>
             /// 
             /// </summary>
-            All
+            My
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace WGO.JSON
         /// 
         /// </summary>
         /// <returns></returns>
-        static public int GetAllRoster()
+        static public int GetMyRoster()
         {
-            return (int)Rosters.All;
+            return (int)Rosters.My;
         }
         #endregion
 

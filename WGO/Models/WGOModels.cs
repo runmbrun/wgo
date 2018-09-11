@@ -24,6 +24,7 @@ namespace WGO.Models
 
         public int Roster { get; set; }
         public string Role { get; set; }
+        public string Items { get; set; }
     }
 
     /// <summary>
