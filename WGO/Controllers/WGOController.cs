@@ -563,6 +563,27 @@ namespace WGO.Controllers
 
             return RedirectToAction("Raid");
         }
+
+        /// <summary>
+        /// Deletes an entire guild roster.
+        /// </summary>
+        /// <returns>Action Result</returns>
+        [HttpGet]
+        public ActionResult DeleteAllRosters()
+        {
+            var test = db.Characters.AsQueryable();
+            if (test.Count() > 0)
+            {
+                foreach (Character c in test)
+                {
+                    db.Characters.Remove(c);
+                }
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
         #endregion
     }
 }

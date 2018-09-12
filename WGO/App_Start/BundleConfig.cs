@@ -25,8 +25,8 @@ namespace WGO
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       //"~/Scripts/popper.min.js",
+                      "~/Scripts/UMD/popper.min.js",
                       "~/Scripts/bootstrap.min.js",
-                      "~/Scripts/popperUMD.min.js",
                       //"~/Scripts/bootstrap.js",
                       //"~/Scripts/bootstrap.bundle.js",                      
                       //"~/Scripts/popper-utils.js",

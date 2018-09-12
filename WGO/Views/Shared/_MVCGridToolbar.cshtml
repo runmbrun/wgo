@@ -29,7 +29,7 @@
                 @if (Model.ColumnVisibility)
                 {
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Fields
                         </button>
                         <ul class="dropdown-menu" role="menu" data-mvcgrid-type="columnVisibilityList" data-mvcgrid-name="@(gridName)"></ul>
@@ -37,7 +37,7 @@
                 }
                 @if (Model.Export)
                 {
-                    <button class="btn btn-default" data-mvcgrid-type="export" data-mvcgrid-name="@(gridName)">
+                    <button class="btn btn-secondary" data-mvcgrid-type="export" data-mvcgrid-name="@(gridName)">
                         <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Export
                     </button>
                 }

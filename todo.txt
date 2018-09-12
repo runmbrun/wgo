@@ -4,18 +4,25 @@
 
 
 General
+  - Make CSS changes to match site before Bootstrap 4 changes.
+    - Search page
+      - Move Realm and Character labels to be right handed and bold them
+    - Guild Roster page
+    - Raid Roster page
+    - About page
+    - Contact page
+    - Register page
+    - Login page    
+  - Finish the Character View 
+        - Show all the items
+      - Show all the Audit info
   - Add item functionality: 
       - need new item table 
       - new field in the character table for the character item JSON data
-  - Finish the Character View 
-      - Show all the items
-      - Show all the Audit info
   
 Guild tab
-  - Make Reload work
-  - Make Search work
-  - Make Page Size work
-
+  - 
+  
 Raid Roster tab
   - Add Role functionality
   

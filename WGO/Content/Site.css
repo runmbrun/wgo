@@ -23,13 +23,1214 @@ textarea {
     max-width: 280px;
 }
 
-/* From MVCGrid.Net - Needed to move them here because of Bootstrap Upgrade to 4 disabled how they were viewed. */
+/* *************************
+    From MVCGrid.Net 
+     - Needed to move them here because of Bootstrap Upgrade to 4 disabled how they were viewed. 
+** ************************* */
+/*
 .pull-right {
     float: right!important;
 }
 
 .col-xs-6 {
     width: 50%;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: bold
+}
+
+.form-horizontal .form-group:after {
+    clear: both
+}
+
+@media(min-width:768px) {
+    .form-horizontal .col-form-label {
+        text-align: right
+    }
+}
+
+.btn-secondary {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc
+}
+
+    .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open .dropdown-toggle.btn-secondary {
+        color: #333;
+        background-color: #ebebeb;
+        border-color: #adadad
+    }
+
+    .btn-secondary:active, .btn-secondary.active, .open .dropdown-toggle.btn-secondary {
+        background-image: none
+    }
+
+    .btn-secondary.disabled, .btn-secondary[disabled], fieldset[disabled] .btn-secondary, .btn-secondary.disabled:hover, .btn-secondary[disabled]:hover, fieldset[disabled] .btn-secondary:hover, .btn-secondary.disabled:focus, .btn-secondary[disabled]:focus, fieldset[disabled] .btn-secondary:focus, .btn-secondary.disabled:active, .btn-secondary[disabled]:active, fieldset[disabled] .btn-secondary:active, .btn-secondary.disabled.active, .btn-secondary[disabled].active, fieldset[disabled] .btn-secondary.active {
+        background-color: #fff;
+        border-color: #ccc
+    }
+
+.btn-primary {
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd
+}
+
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+        color: #fff;
+        background-color: #3276b1;
+        border-color: #285e8e
+    }
+
+    .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+        background-image: none
+    }
+
+    .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
+        background-color: #428bca;
+        border-color: #357ebd
+    }
+
+.btn-warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236
+}
+
+    .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning {
+        color: #fff;
+        background-color: #ed9c28;
+        border-color: #d58512
+    }
+
+    .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning {
+        background-image: none
+    }
+
+    .btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active {
+        background-color: #f0ad4e;
+        border-color: #eea236
+    }
+
+.btn-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a
+}
+
+    .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
+        color: #fff;
+        background-color: #d2322d;
+        border-color: #ac2925
+    }
+
+    .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
+        background-image: none
+    }
+
+    .btn-danger.disabled, .btn-danger[disabled], fieldset[disabled] .btn-danger, .btn-danger.disabled:hover, .btn-danger[disabled]:hover, fieldset[disabled] .btn-danger:hover, .btn-danger.disabled:focus, .btn-danger[disabled]:focus, fieldset[disabled] .btn-danger:focus, .btn-danger.disabled:active, .btn-danger[disabled]:active, fieldset[disabled] .btn-danger:active, .btn-danger.disabled.active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger.active {
+        background-color: #d9534f;
+        border-color: #d43f3a
+    }
+
+.btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c
+}
+
+    .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+        color: #fff;
+        background-color: #47a447;
+        border-color: #398439
+    }
+
+    .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+        background-image: none
+    }
+
+    .btn-success.disabled, .btn-success[disabled], fieldset[disabled] .btn-success, .btn-success.disabled:hover, .btn-success[disabled]:hover, fieldset[disabled] .btn-success:hover, .btn-success.disabled:focus, .btn-success[disabled]:focus, fieldset[disabled] .btn-success:focus, .btn-success.disabled:active, .btn-success[disabled]:active, fieldset[disabled] .btn-success:active, .btn-success.disabled.active, .btn-success[disabled].active, fieldset[disabled] .btn-success.active {
+        background-color: #5cb85c;
+        border-color: #4cae4c
+    }
+
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da
+}
+
+    .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
+        color: #fff;
+        background-color: #39b3d7;
+        border-color: #269abc
+    }
+
+    .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
+        background-image: none
+    }
+
+    .btn-info.disabled, .btn-info[disabled], fieldset[disabled] .btn-info, .btn-info.disabled:hover, .btn-info[disabled]:hover, fieldset[disabled] .btn-info:hover, .btn-info.disabled:focus, .btn-info[disabled]:focus, fieldset[disabled] .btn-info:focus, .btn-info.disabled:active, .btn-info[disabled]:active, fieldset[disabled] .btn-info:active, .btn-info.disabled.active, .btn-info[disabled].active, fieldset[disabled] .btn-info.active {
+        background-color: #5bc0de;
+        border-color: #46b8da
+    }
+
+.btn-link {
+    font-weight: normal;
+    color: #428bca;
+    cursor: pointer;
+    border-radius: 0
+}
+
+    .btn-link, .btn-link:active, .btn-link[disabled], fieldset[disabled] .btn-link {
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+        .btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active {
+            border-color: transparent
+        }
+
+            .btn-link:hover, .btn-link:focus {
+                color: #2a6496;
+                text-decoration: underline;
+                background-color: transparent
+            }
+
+            .btn-link[disabled]:hover, fieldset[disabled] .btn-link:hover, .btn-link[disabled]:focus, fieldset[disabled] .btn-link:focus {
+                color: #999;
+                text-decoration: none
+            }
+
+.btn-lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px
+}
+
+.btn-md, .btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px
+}
+
+.btn-xs {
+    padding: 1px 5px
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0
+}
+
+    .btn-block + .btn-block {
+        margin-top: 5px
+    }
+
+input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="button"].btn-block {
+    width: 100%
+}
+
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity .15s linear;
+    transition: opacity .15s linear
+}
+
+    .fade.in {
+        opacity: 1
+    }
+
+.collapse {
+    display: none
+}
+
+    .collapse.in {
+        display: block
+    }
+
+.collapsing {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: height .35s ease;
+    transition: height .35s ease
+}
+
+/* todo: is this needed?
+    @font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('./fonts/glyphicons-halflings-regular.eot');
+    src: url('./fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),url('./fonts/glyphicons-halflings-regular.woff') format('woff'),url('./fonts/glyphicons-halflings-regular.ttf') format('truetype'),url('./fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg')
+}* /
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1
+}
+
+.glyphicon-asterisk:before {
+    content: "*"
+}
+
+.glyphicon-plus:before {
+    content: "+"
+}
+
+.glyphicon-euro:before {
+    content: "€"
+}
+
+.glyphicon-minus:before {
+    content: "−"
+}
+
+.glyphicon-cloud:before {
+    content: "☁"
+}
+
+.glyphicon-envelope:before {
+    content: "✉"
+}
+
+.glyphicon-pencil:before {
+    content: "✏"
+}
+
+.glyphicon-glass:before {
+    content: ""
+}
+
+.glyphicon-music:before {
+    content: ""
+}
+
+.glyphicon-search:before {
+    content: ""
+}
+
+.glyphicon-heart:before {
+    content: ""
+}
+
+.glyphicon-star:before {
+    content: ""
+}
+
+.glyphicon-star-empty:before {
+    content: ""
+}
+
+.glyphicon-user:before {
+    content: ""
+}
+
+.glyphicon-film:before {
+    content: ""
+}
+
+.glyphicon-th-large:before {
+    content: ""
+}
+
+.glyphicon-th:before {
+    content: ""
+}
+
+.glyphicon-th-list:before {
+    content: ""
+}
+
+.glyphicon-ok:before {
+    content: ""
+}
+
+.glyphicon-remove:before {
+    content: ""
+}
+
+.glyphicon-zoom-in:before {
+    content: ""
+}
+
+.glyphicon-zoom-out:before {
+    content: ""
+}
+
+.glyphicon-off:before {
+    content: ""
+}
+
+.glyphicon-signal:before {
+    content: ""
+}
+
+.glyphicon-cog:before {
+    content: ""
+}
+
+.glyphicon-trash:before {
+    content: ""
+}
+
+.glyphicon-home:before {
+    content: ""
+}
+
+.glyphicon-file:before {
+    content: ""
+}
+
+.glyphicon-time:before {
+    content: ""
+}
+
+.glyphicon-road:before {
+    content: ""
+}
+
+.glyphicon-download-alt:before {
+    content: ""
+}
+
+.glyphicon-download:before {
+    content: ""
+}
+
+.glyphicon-upload:before {
+    content: ""
+}
+
+.glyphicon-inbox:before {
+    content: ""
+}
+
+.glyphicon-play-circle:before {
+    content: ""
+}
+
+.glyphicon-repeat:before {
+    content: ""
+}
+
+.glyphicon-refresh:before {
+    content: ""
+}
+
+.glyphicon-list-alt:before {
+    content: ""
+}
+
+.glyphicon-flag:before {
+    content: ""
+}
+
+.glyphicon-headphones:before {
+    content: ""
+}
+
+.glyphicon-volume-off:before {
+    content: ""
+}
+
+.glyphicon-volume-down:before {
+    content: ""
+}
+
+.glyphicon-volume-up:before {
+    content: ""
+}
+
+.glyphicon-qrcode:before {
+    content: ""
+}
+
+.glyphicon-barcode:before {
+    content: ""
+}
+
+.glyphicon-tag:before {
+    content: ""
+}
+
+.glyphicon-tags:before {
+    content: ""
+}
+
+.glyphicon-book:before {
+    content: ""
+}
+
+.glyphicon-print:before {
+    content: ""
+}
+
+.glyphicon-font:before {
+    content: ""
+}
+
+.glyphicon-bold:before {
+    content: ""
+}
+
+.glyphicon-italic:before {
+    content: ""
+}
+
+.glyphicon-text-height:before {
+    content: ""
+}
+
+.glyphicon-text-width:before {
+    content: ""
+}
+
+.glyphicon-align-left:before {
+    content: ""
+}
+
+.glyphicon-align-center:before {
+    content: ""
+}
+
+.glyphicon-align-right:before {
+    content: ""
+}
+
+.glyphicon-align-justify:before {
+    content: ""
+}
+
+.glyphicon-list:before {
+    content: ""
+}
+
+.glyphicon-indent-left:before {
+    content: ""
+}
+
+.glyphicon-indent-right:before {
+    content: ""
+}
+
+.glyphicon-facetime-video:before {
+    content: ""
+}
+
+.glyphicon-picture:before {
+    content: ""
+}
+
+.glyphicon-map-marker:before {
+    content: ""
+}
+
+.glyphicon-adjust:before {
+    content: ""
+}
+
+.glyphicon-tint:before {
+    content: ""
+}
+
+.glyphicon-edit:before {
+    content: ""
+}
+
+.glyphicon-share:before {
+    content: ""
+}
+
+.glyphicon-check:before {
+    content: ""
+}
+
+.glyphicon-move:before {
+    content: ""
+}
+
+.glyphicon-step-backward:before {
+    content: ""
+}
+
+.glyphicon-fast-backward:before {
+    content: ""
+}
+
+.glyphicon-backward:before {
+    content: ""
+}
+
+.glyphicon-play:before {
+    content: ""
+}
+
+.glyphicon-pause:before {
+    content: ""
+}
+
+.glyphicon-stop:before {
+    content: ""
+}
+
+.glyphicon-forward:before {
+    content: ""
+}
+
+.glyphicon-fast-forward:before {
+    content: ""
+}
+
+.glyphicon-step-forward:before {
+    content: ""
+}
+
+.glyphicon-eject:before {
+    content: ""
+}
+
+.glyphicon-chevron-left:before {
+    content: ""
+}
+
+.glyphicon-chevron-right:before {
+    content: ""
+}
+
+.glyphicon-plus-sign:before {
+    content: ""
+}
+
+.glyphicon-minus-sign:before {
+    content: ""
+}
+
+.glyphicon-remove-sign:before {
+    content: ""
+}
+
+.glyphicon-ok-sign:before {
+    content: ""
+}
+
+.glyphicon-question-sign:before {
+    content: ""
+}
+
+.glyphicon-info-sign:before {
+    content: ""
+}
+
+.glyphicon-screenshot:before {
+    content: ""
+}
+
+.glyphicon-remove-circle:before {
+    content: ""
+}
+
+.glyphicon-ok-circle:before {
+    content: ""
+}
+
+.glyphicon-ban-circle:before {
+    content: ""
+}
+
+.glyphicon-arrow-left:before {
+    content: ""
+}
+
+.glyphicon-arrow-right:before {
+    content: ""
+}
+
+.glyphicon-arrow-up:before {
+    content: ""
+}
+
+.glyphicon-arrow-down:before {
+    content: ""
+}
+
+.glyphicon-share-alt:before {
+    content: ""
+}
+
+.glyphicon-resize-full:before {
+    content: ""
+}
+
+.glyphicon-resize-small:before {
+    content: ""
+}
+
+.glyphicon-exclamation-sign:before {
+    content: ""
+}
+
+.glyphicon-gift:before {
+    content: ""
+}
+
+.glyphicon-leaf:before {
+    content: ""
+}
+
+.glyphicon-eye-open:before {
+    content: ""
+}
+
+.glyphicon-eye-close:before {
+    content: ""
+}
+
+.glyphicon-warning-sign:before {
+    content: ""
+}
+
+.glyphicon-plane:before {
+    content: ""
+}
+
+.glyphicon-random:before {
+    content: ""
+}
+
+.glyphicon-comment:before {
+    content: ""
+}
+
+.glyphicon-magnet:before {
+    content: ""
+}
+
+.glyphicon-chevron-up:before {
+    content: ""
+}
+
+.glyphicon-chevron-down:before {
+    content: ""
+}
+
+.glyphicon-retweet:before {
+    content: ""
+}
+
+.glyphicon-shopping-cart:before {
+    content: ""
+}
+
+.glyphicon-folder-close:before {
+    content: ""
+}
+
+.glyphicon-folder-open:before {
+    content: ""
+}
+
+.glyphicon-resize-vertical:before {
+    content: ""
+}
+
+.glyphicon-resize-horizontal:before {
+    content: ""
+}
+
+.glyphicon-hdd:before {
+    content: ""
+}
+
+.glyphicon-bullhorn:before {
+    content: ""
+}
+
+.glyphicon-certificate:before {
+    content: ""
+}
+
+.glyphicon-thumbs-up:before {
+    content: ""
+}
+
+.glyphicon-thumbs-down:before {
+    content: ""
+}
+
+.glyphicon-hand-right:before {
+    content: ""
+}
+
+.glyphicon-hand-left:before {
+    content: ""
+}
+
+.glyphicon-hand-up:before {
+    content: ""
+}
+
+.glyphicon-hand-down:before {
+    content: ""
+}
+
+.glyphicon-circle-arrow-right:before {
+    content: ""
+}
+
+.glyphicon-circle-arrow-left:before {
+    content: ""
+}
+
+.glyphicon-circle-arrow-up:before {
+    content: ""
+}
+
+.glyphicon-circle-arrow-down:before {
+    content: ""
+}
+
+.glyphicon-globe:before {
+    content: ""
+}
+
+.glyphicon-tasks:before {
+    content: ""
+}
+
+.glyphicon-filter:before {
+    content: ""
+}
+
+.glyphicon-fullscreen:before {
+    content: ""
+}
+
+.glyphicon-dashboard:before {
+    content: ""
+}
+
+.glyphicon-heart-empty:before {
+    content: ""
+}
+
+.glyphicon-link:before {
+    content: ""
+}
+
+.glyphicon-phone:before {
+    content: ""
+}
+
+.glyphicon-usd:before {
+    content: ""
+}
+
+.glyphicon-gbp:before {
+    content: ""
+}
+
+.glyphicon-sort:before {
+    content: ""
+}
+
+.glyphicon-sort-by-alphabet:before {
+    content: ""
+}
+
+.glyphicon-sort-by-alphabet-alt:before {
+    content: ""
+}
+
+.glyphicon-sort-by-order:before {
+    content: ""
+}
+
+.glyphicon-sort-by-order-alt:before {
+    content: ""
+}
+
+.glyphicon-sort-by-attributes:before {
+    content: ""
+}
+
+.glyphicon-sort-by-attributes-alt:before {
+    content: ""
+}
+
+.glyphicon-unchecked:before {
+    content: ""
+}
+
+.glyphicon-expand:before {
+    content: ""
+}
+
+.glyphicon-collapse-down:before {
+    content: ""
+}
+
+.glyphicon-collapse-up:before {
+    content: ""
+}
+
+.glyphicon-log-in:before {
+    content: ""
+}
+
+.glyphicon-flash:before {
+    content: ""
+}
+
+.glyphicon-log-out:before {
+    content: ""
+}
+
+.glyphicon-new-window:before {
+    content: ""
+}
+
+.glyphicon-record:before {
+    content: ""
+}
+
+.glyphicon-save:before {
+    content: ""
+}
+
+.glyphicon-open:before {
+    content: ""
+}
+
+.glyphicon-saved:before {
+    content: ""
+}
+
+.glyphicon-import:before {
+    content: ""
+}
+
+.glyphicon-export:before {
+    content: ""
+}
+
+.glyphicon-send:before {
+    content: ""
+}
+
+.glyphicon-floppy-disk:before {
+    content: ""
+}
+
+.glyphicon-floppy-saved:before {
+    content: ""
+}
+
+.glyphicon-floppy-remove:before {
+    content: ""
+}
+
+.glyphicon-floppy-save:before {
+    content: ""
+}
+
+.glyphicon-floppy-open:before {
+    content: ""
+}
+
+.glyphicon-credit-card:before {
+    content: ""
+}
+
+.glyphicon-transfer:before {
+    content: ""
+}
+
+.glyphicon-cutlery:before {
+    content: ""
+}
+
+.glyphicon-header:before {
+    content: ""
+}
+
+.glyphicon-compressed:before {
+    content: ""
+}
+
+.glyphicon-earphone:before {
+    content: ""
+}
+
+.glyphicon-phone-alt:before {
+    content: ""
+}
+
+.glyphicon-tower:before {
+    content: ""
+}
+
+.glyphicon-stats:before {
+    content: ""
+}
+
+.glyphicon-sd-video:before {
+    content: ""
+}
+
+.glyphicon-hd-video:before {
+    content: ""
+}
+
+.glyphicon-subtitles:before {
+    content: ""
+}
+
+.glyphicon-sound-stereo:before {
+    content: ""
+}
+
+.glyphicon-sound-dolby:before {
+    content: ""
+}
+
+.glyphicon-sound-5-1:before {
+    content: ""
+}
+
+.glyphicon-sound-6-1:before {
+    content: ""
+}
+
+.glyphicon-sound-7-1:before {
+    content: ""
+}
+
+.glyphicon-copyright-mark:before {
+    content: ""
+}
+
+.glyphicon-registration-mark:before {
+    content: ""
+}
+
+.glyphicon-cloud-download:before {
+    content: ""
+}
+
+.glyphicon-cloud-upload:before {
+    content: ""
+}
+
+.glyphicon-tree-conifer:before {
+    content: ""
+}
+
+.glyphicon-tree-deciduous:before {
+    content: ""
+}
+
+.glyphicon-briefcase:before {
+    content: "💼"
+}
+
+.glyphicon-calendar:before {
+    content: "📅"
+}
+
+.glyphicon-pushpin:before {
+    content: "📌"
+}
+
+.glyphicon-paperclip:before {
+    content: "📎"
+}
+
+.glyphicon-camera:before {
+    content: "📷"
+}
+
+.glyphicon-lock:before {
+    content: "🔒"
+}
+
+.glyphicon-bell:before {
+    content: "🔔"
+}
+
+.glyphicon-bookmark:before {
+    content: "🔖"
+}
+
+.glyphicon-fire:before {
+    content: "🔥"
+}
+
+.glyphicon-wrench:before {
+    content: "🔧"
+}
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px solid #000;
+    border-right: 4px solid transparent;
+    border-bottom: 0 dotted;
+    border-left: 4px solid transparent;
+    content: ""
+}
+
+.dropdown {
+    position: relative
+}
+
+.dropdown-toggle:focus {
+    outline: 0
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    background-clip: padding-box
+}
+
+    .dropdown-menu.pull-right {
+        right: 0;
+        left: auto
+    }
+
+    .dropdown-menu .divider {
+        height: 1px;
+        margin: 9px 0;
+        overflow: hidden;
+        background-color: #e5e5e5
+    }
+
+    .dropdown-menu > li > a {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.428571429;
+        color: #333;
+        white-space: nowrap
+    }
+
+        .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+            color: #fff;
+            text-decoration: none;
+            background-color: #428bca
+        }
+
+    .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+        color: #fff;
+        text-decoration: none;
+        background-color: #428bca;
+        outline: 0
+    }
+
+    .dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
+        color: #999
+    }
+
+        .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
+            text-decoration: none;
+            cursor: not-allowed;
+            background-color: transparent;
+            background-image: none;
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false)
+        }
+
+.open > .dropdown-menu {
+    display: block
+}
+
+.open > a {
+    outline: 0
+}
+
+.dropdown-header {
+    display: block;
+    padding: 3px 20px;
+    font-size: 12px;
+    line-height: 1.428571429;
+    color: #999
+}
+
+.dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 990
+}
+
+.pull-right > .dropdown-menu {
+    right: 0;
+    left: auto
+}
+
+.dropup .caret, .navbar-fixed-bottom .dropdown .caret {
+    border-top: 0 dotted;
+    border-bottom: 4px solid #000;
+    content: ""
+}
+
+.dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu {
+    top: auto;
+    bottom: 100%;
+    margin-bottom: 1px
+}
+
+@media(min-width:768px) {
+    .navbar-right .dropdown-menu {
+        right: 0;
+        left: auto
+    }
+}
+
+.btn-secondary .caret {
+    border-top-color: #333
+}
+
+.btn-primary .caret, .btn-success .caret, .btn-warning .caret, .btn-danger .caret, .btn-info .caret {
+    border-top-color: #fff
+}
+
+.dropup .btn-secondary .caret {
+    border-bottom-color: #333
 }
 
 .pagination > li {
@@ -162,3 +1363,75 @@ textarea {
         cursor: not-allowed;
         background-color: #fff
     }
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em
+}
+
+.label[href]:hover, .label[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer
+}
+
+.label:empty {
+    display: none
+}
+
+.label-default {
+    background-color: #999
+}
+
+.label-default[href]:hover, .label-default[href]:focus {
+    background-color: gray
+}
+
+.label-primary {
+    background-color: #428bca
+}
+
+.label-primary[href]:hover, .label-primary[href]:focus {
+    background-color: #3071a9
+}
+
+.label-success {
+    background-color: #5cb85c
+}
+
+.label-success[href]:hover, .label-success[href]:focus {
+    background-color: #449d44
+}
+
+.label-info {
+    background-color: #5bc0de
+}
+
+.label-info[href]:hover, .label-info[href]:focus {
+    background-color: #31b0d5
+}
+
+.label-warning {
+    background-color: #f0ad4e
+}
+
+.label-warning[href]:hover, .label-warning[href]:focus {
+    background-color: #ec971f
+}
+
+.labeldanger {
+    background-color: #d9534f
+}
+
+.label-danger[href]:hover, .label-danger[href]:focus {
+    background-color: #c9302c
+}
+*/

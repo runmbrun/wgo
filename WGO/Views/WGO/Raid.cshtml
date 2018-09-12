@@ -8,13 +8,13 @@
 
 <h2>Raid Roster</h2>
 
-<div class="default">
-    <div class="default-body">
+<div class="card">
+    <div class="card-body">
         @Html.MVCGrid("RaidRoster")
     </div>
 </div>
 
-<button class="btn btn-default" id="reloadButton">Rescan Raid Roster</button>
+<button class="btn btn-primary" id="reloadButton" style="margin: 1em 0em 1em 0em">Rescan Raid Roster</button>
 
 @using (Html.BeginForm("Raid", "WGO"))
 {
@@ -26,35 +26,54 @@
                 <h4>Add a new character to the Raid Roster.</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Realm, new { @class = "col-md-2 control-label" })
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Realm, new { @class = "col-md-2 col-form-label" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.Realm, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Realm, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Character, new { @class = "col-md-2 control-label" })
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Character, new { @class = "col-md-2 col-form-label" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.Character, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Character, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group">
-                    @*@Html.LabelFor(m => m.Character, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.Co(m => m.Character, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Character, "", new { @class = "text-danger" })
-                    </div>*@
-                    <select id="wow-role">
-                        <option value="DPS">DPS</option>
-                        <option value="Tank">Tank</option>
-                        <option value="Healer">Healer</option>
-                    </select>
+                <div class="form-group row">
+                    @*@Html.LabelFor(m => m.Character, new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                @Html.Co(m => m.Character, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Character, "", new { @class = "text-danger" })
+            </div>*@
+                    @*<select id="wow-role" class="offset-lg-2">
+                <option value="DPS">DPS</option>
+                <option value="Tank">Tank</option>
+                <option value="Healer">Healer</option>
+            </select>*@
+                    @*<div id="myDropDown" class="dropdown col-md-10 offset-md-2">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Choose Role
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" value="DPS" href="#">DPS</a>
+                        <a class="dropdown-item" value="TANK" href="#">TANK</a>
+                        <a class="dropdown-item" value="HEALING" href="#">HEALING</a>
+                        <input type="submit" value="DPS" class="dropdown-item" />
+                    </div>
+                </div>*@
+                    <div class="btn-group col-md-10 offset-md-2">
+                        <a class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" href="#">Select a Role</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">DPS</a></li>
+                            <li><a href="#">TANK</a></li>
+                            <li><a href="#">HEALING</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Add" class="btn btn-default" />
+                <div class="form-group row">
+                    <div class="offset-md-2 col-md-10">
+                        <input type="submit" value="Add" class="btn btn-primary" />
                     </div>
                 </div>
             </section>
@@ -70,6 +89,15 @@
             $('#reloadButton').click(function () {
                 $.blockUI();
                 window.location.href = '/WGO/RaidFunctions/Rescan/@@All/@@All';
+            });
+
+            /*$('#myDropDown').on('hidden.bs.dropdown', function () {
+                // do something…
+                alert("selected value = " + $('#myDropDown').val);
+            })*/
+            $(".dropdown-menu li a").click(function () {
+                var selText = $(this).text();
+                $(this).parents('.btn-group').find('.dropdown-toggle').html(selText);
             });
         });
         function showLoading() {
