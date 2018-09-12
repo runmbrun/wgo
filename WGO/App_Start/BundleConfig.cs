@@ -24,19 +24,11 @@ namespace WGO
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      //"~/Scripts/popper.min.js",
                       "~/Scripts/UMD/popper.min.js",
                       "~/Scripts/bootstrap.min.js",
-                      //"~/Scripts/bootstrap.js",
-                      //"~/Scripts/bootstrap.bundle.js",                      
-                      //"~/Scripts/popper-utils.js",
-                      //"~/Scripts/respond.min.js"));
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      
-                      //"~/Scripts/bootstrap-grid.css",
-                      //"~/Scripts/bootstrap-reboot.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap.css"));
         }

@@ -63,7 +63,7 @@ namespace WGO
                         .WithHeaderText("Level")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Level.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "table-success" : "");
                     cols.Add().WithColumnName("Class")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Class);
@@ -71,17 +71,17 @@ namespace WGO
                         .WithHeaderText("Achievement Points")
                         .WithSorting(true)
                         .WithValueExpression(i => i.AchievementPoints.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "table-success" : "");
                     cols.Add().WithColumnName("MaxiLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Max_iLevel.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "table-success" : "");
                     cols.Add().WithColumnName("EquippediLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Equipped_iLevel.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "table-success" : "");
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
@@ -136,7 +136,7 @@ namespace WGO
                         .WithHeaderText("Level")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Level.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "table-success" : "");
                     cols.Add().WithColumnName("Class")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Class);
@@ -144,17 +144,17 @@ namespace WGO
                         .WithHeaderText("Achievement Points")
                         .WithSorting(true)
                         .WithValueExpression(i => i.AchievementPoints.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "table-success" : "");
                     cols.Add().WithColumnName("MaxiLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Max_iLevel.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "table-success" : "");
                     cols.Add().WithColumnName("EquippediLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Equipped_iLevel.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "table-success" : "");
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
@@ -271,7 +271,7 @@ namespace WGO
                         .WithHeaderText("Level")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Level.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Level) ? "table-success" : "");
                     cols.Add().WithColumnName("Class")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Class);
@@ -279,17 +279,17 @@ namespace WGO
                         .WithHeaderText("Achievement Points")
                         .WithSorting(true)
                         .WithValueExpression(i => i.AchievementPoints.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "table-success" : "");
                     cols.Add().WithColumnName("MaxiLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Max_iLevel.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "table-success" : "");
                     cols.Add().WithColumnName("EquippediLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Equipped_iLevel.ToString())
-                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "success" : "");
+                        .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "table-success" : "");
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)

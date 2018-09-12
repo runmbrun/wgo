@@ -1,5 +1,4 @@
 ﻿@using WGO.Models
-@using MVCGrid.Web;
 
 @model SearchViewModel
 @{
@@ -41,27 +40,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    @*@Html.LabelFor(m => m.Character, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.Co(m => m.Character, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Character, "", new { @class = "text-danger" })
-            </div>*@
-                    @*<select id="wow-role" class="offset-lg-2">
-                <option value="DPS">DPS</option>
-                <option value="Tank">Tank</option>
-                <option value="Healer">Healer</option>
-            </select>*@
-                    @*<div id="myDropDown" class="dropdown col-md-10 offset-md-2">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Choose Role
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" value="DPS" href="#">DPS</a>
-                        <a class="dropdown-item" value="TANK" href="#">TANK</a>
-                        <a class="dropdown-item" value="HEALING" href="#">HEALING</a>
-                        <input type="submit" value="DPS" class="dropdown-item" />
-                    </div>
-                </div>*@
                     <div class="btn-group col-md-10 offset-md-2">
                         <a class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" href="#">Select a Role</a>
                         <ul class="dropdown-menu">

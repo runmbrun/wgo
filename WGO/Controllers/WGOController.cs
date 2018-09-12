@@ -268,11 +268,11 @@ namespace WGO.Controllers
 
                 if (roster == JSONBase.Rosters.Guild)
                 {
-                    search = db.Characters.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
+                    search = db.Characters.Where(s => s.Roster == 1 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
                 }
                 else if (roster == JSONBase.Rosters.Raid)
                 {
-                    search= db.Characters.Where(s => s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Role == role).ToList();
+                    search= db.Characters.Where(s => s.Roster == 2 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Role == role).ToList();
                 }
 
                 if (search.Count() > 0)
@@ -336,7 +336,7 @@ namespace WGO.Controllers
                         ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
-                else if ((roster == JSONBase.Rosters.Guild) || (roster == JSONBase.Rosters.Raid && role == search[0].Role))
+                else //if ((roster == JSONBase.Rosters.Guild) || (roster == JSONBase.Rosters.Raid && role == search[0].Role))
                 {
                     // Now insert the data inot the database
                     Character charToDB = new Character();
