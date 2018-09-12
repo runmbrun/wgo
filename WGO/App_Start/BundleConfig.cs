@@ -34,10 +34,11 @@ namespace WGO
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      
                       //"~/Scripts/bootstrap-grid.css",
                       //"~/Scripts/bootstrap-reboot.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/bootstrap.css"));
         }
     }
 }

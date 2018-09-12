@@ -31,7 +31,7 @@
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationMessageFor(m => m.Character)
-                <h4>Search for any character, just fill out the Realm and Character Name.</h4>
+                <h5>Search for any character, just fill out the Realm and Character Name.</h5>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
