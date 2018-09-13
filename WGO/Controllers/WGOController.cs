@@ -491,7 +491,7 @@ namespace WGO.Controllers
         /// <param name="guild">The guild to retrieve.</param>
         /// <param name="realm">The realm to retrieve.</param>
         /// <returns>True if retrieval was successful.</returns>
-        private bool RetrieveGuild(string guild, string realm)
+        public bool RetrieveGuild(string guild, string realm)
         {
             bool result = false;
 

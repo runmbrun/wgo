@@ -27,41 +27,36 @@ textarea {
 .pull-right {
     float: right !important;
 }
-/*
-.col-xs-6 {
-    width: 50%;
-}
-    */
 
 .pagination > li {
     display: inline
 }
 
-    .pagination > li > a, .pagination > li > span {
-        position: relative;
-        float: left;
-        padding: 6px 12px;
-        margin-left: -1px;
-        line-height: 1.428571429;
-        text-decoration: none;
-        background-color: #fff;
-        border: 1px solid #ddd
-    }
+.pagination > li > a, .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.428571429;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd
+}
 
-    .pagination > li:first-child > a, .pagination > li:first-child > span {
-        margin-left: 0;
-        border-bottom-left-radius: 4px;
-        border-top-left-radius: 4px
-    }
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    margin-left: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px
+}
 
-    .pagination > li:last-child > a, .pagination > li:last-child > span {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px
-    }
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px
+}
 
-    .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
-        background-color: #eee
-    }
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    background-color: #eee
+}
 
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
     z-index: 2;
@@ -108,60 +103,44 @@ textarea {
     border-bottom-right-radius: 3px
 }
 
-/*
-.pager {
-    padding-left: 0;
-    margin: 20px 0;
-    text-align: center;
-    list-style: none
+
+/********/
+
+/*.bg-purple {
+    background-color: purple!important;
+}*/
+
+.text-purple {
+    background-color: purple;
 }
 
-    .pager:before, .pager:after {
-        display: table;
-        content: " "
-    }
+/*[class*="col-"] {*/
+/*.container.row.col-sm-4.card {*/
+.card-purple {
+    /*padding-top: .5rem;*/
+    /*padding-bottom: .5rem;*/
+    /*border: 5px solid rgba(148, 0, 221, .2);*/
+    border: 5px solid rgba(128, 0, 128, .2);
+    border-radius: 15px 15px 15px 15px;
+    /*color: white;
+    background-color: purple;*/
+}
 
-    .pager:after {
-        clear: both
-    }
+.card-green {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border: 1px solid rgba(86, 61, 124, .2);
+    border-radius: 15px 15px 15px 15px;
+    color: white;
+    background-color: green;
+}
 
-    .pager:before, .pager:after {
-        display: table;
-        content: " "
-    }
+.card-white {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border: 1px solid rgba(86, 61, 124, .2);
+    border-radius: 15px 15px 15px 15px;
+    color: black;
+    background-color: white;
+}
 
-    .pager:after {
-        clear: both
-    }
-
-    .pager li {
-        display: inline
-    }
-
-        .pager li > a, .pager li > span {
-            display: inline-block;
-            padding: 5px 14px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 15px
-        }
-
-            .pager li > a:hover, .pager li > a:focus {
-                text-decoration: none;
-                background-color: #eee
-            }
-
-    .pager .next > a, .pager .next > span {
-        float: right
-    }
-
-    .pager .previous > a, .pager .previous > span {
-        float: left
-    }
-
-    .pager .disabled > a, .pager .disabled > a:hover, .pager .disabled > a:focus, .pager .disabled > span {
-        color: #999;
-        cursor: not-allowed;
-        background-color: #fff
-    }
-    */
