@@ -21,14 +21,14 @@ namespace WGO
 
             routes.MapRoute(
                 name: "Rescan",
-                url: "WGO/Rescan/{name}/{realm}",
-                defaults: new { controller = "WGO", action = "Rescan", name = UrlParameter.Optional, realm = UrlParameter.Optional }
+                url: "WGO/Rescan/{name}/{realm}/{role}",
+                defaults: new { controller = "WGO", action = "Rescan", name = UrlParameter.Optional, realm = UrlParameter.Optional, role = UrlParameter.Optional }
                 );
 
             routes.MapRoute(
                 name: "Delete",
-                url: "WGO/Delete/{name}/{realm}",
-                defaults: new { controller = "WGO", action = "Delete", name = UrlParameter.Optional, realm = UrlParameter.Optional }
+                url: "WGO/Delete/{name}/{realm}/{role}",
+                defaults: new { controller = "WGO", action = "Delete", name = UrlParameter.Optional, realm = UrlParameter.Optional, role = UrlParameter.Optional }
                 );
 
             // Default Route

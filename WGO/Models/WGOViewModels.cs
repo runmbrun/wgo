@@ -19,6 +19,11 @@ namespace WGO.Models
         [Required]
         [Display(Name = "Character")]
         public string Character { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> Roles { get; set; }
     }
 
     public class CharacterViewModel

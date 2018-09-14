@@ -114,33 +114,41 @@ textarea {
     background-color: purple;
 }
 
+.card-bronze {
+    border: 5px solid #cd7f32;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.card-orange {
+    border: 5px solid orange;
+    border-radius: 15px 15px 15px 15px;
+}
+
 /*[class*="col-"] {*/
 /*.container.row.col-sm-4.card {*/
 .card-purple {
     /*padding-top: .5rem;*/
     /*padding-bottom: .5rem;*/
     /*border: 5px solid rgba(148, 0, 221, .2);*/
-    border: 5px solid rgba(128, 0, 128, .2);
+    /*border: 5px solid rgba(128, 0, 128, .4);*/
+    border: 5px solid purple;
     border-radius: 15px 15px 15px 15px;
     /*color: white;
     background-color: purple;*/
 }
 
-.card-green {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border: 1px solid rgba(86, 61, 124, .2);
+.card-blue {
+    border: 5px solid blue;
     border-radius: 15px 15px 15px 15px;
-    color: white;
-    background-color: green;
+}
+
+.card-green {
+    border: 5px solid green;
+    border-radius: 15px 15px 15px 15px;
 }
 
 .card-white {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border: 1px solid rgba(86, 61, 124, .2);
+    border: 5px solid white;
     border-radius: 15px 15px 15px 15px;
-    color: black;
-    background-color: white;
 }
 

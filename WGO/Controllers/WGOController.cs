@@ -84,7 +84,7 @@ namespace WGO.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Rescan(string name, string realm)
+        public ActionResult Rescan(string name, string realm, string role)
         {
             JSONBase.Rosters roster = JSONBase.Rosters.None;
             string returnTo = string.Empty;
@@ -124,13 +124,13 @@ namespace WGO.Controllers
 
                     foreach (Character c in rescan)
                     {
-                        this.RetrieveCharacter(c.Name, c.Realm, roster);
+                        this.RetrieveCharacter(c.Name, c.Realm, roster, roster == JSONBase.Rosters.Raid ? c.Role : string.Empty);
                     }
                 }
                 else
                 {
                     // Reload just 1 character
-                    this.RetrieveCharacter(name, realm, roster);
+                    this.RetrieveCharacter(name, realm, roster, roster == JSONBase.Rosters.Raid && string.IsNullOrWhiteSpace(role) ? role : string.Empty);
                 }
             }
 
@@ -143,7 +143,7 @@ namespace WGO.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Delete(string name, string realm)
+        public ActionResult Delete(string name, string realm, string role)
         {
             string returnTo = "Guild";
 
@@ -167,11 +167,18 @@ namespace WGO.Controllers
                 List<Character> delete = null;
                 if (returnTo == "Guild")
                 {
-                    delete = (from m in db.Characters where (m.Roster == 1 || m.Roster == 3) && m.Name == name && m.Realm == realm select m).ToList();
+                    delete = (from m in db.Characters where (m.Roster == 1) && m.Name == name && m.Realm == realm select m).ToList();
                 }
                 else
                 {
-                    delete = (from m in db.Characters where (m.Roster == 2 || m.Roster == 3) && m.Name == name && m.Realm == realm select m).ToList();
+                    if (!string.IsNullOrWhiteSpace(role))
+                    {
+                        delete = (from m in db.Characters where m.Roster == 2 && m.Name == name && m.Realm == realm && m.Role == role select m).ToList();
+                    }
+                    else
+                    {
+                        delete = (from m in db.Characters where (m.Roster == 2) && m.Name == name && m.Realm == realm select m).ToList();
+                    }
                 }
 
                 foreach (Character c in delete)
@@ -195,7 +202,17 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult Raid()
         {
-            return View();
+            var model = new SearchViewModel
+            {
+                Roles = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "DPS", Value = "DPS"},
+                    new SelectListItem { Selected = false, Text = "Tank", Value = "TANK"},
+                    new SelectListItem { Selected = false, Text = "Healing", Value = "HEALING"},
+                }, "Value", "Text", 1)
+            };
+
+            return View(model);
         }
 
         /// <summary>
@@ -206,20 +223,27 @@ namespace WGO.Controllers
         [HttpPost]
         public ActionResult Raid(SearchViewModel model)
         {
+            model.Roles = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Selected = true, Text = "DPS", Value = "DPS"},
+                new SelectListItem { Selected = false, Text = "Tank", Value = "TANK"},
+                new SelectListItem { Selected = false, Text = "Healing", Value = "HEALING"},
+            }, "Value", "Text", 1);
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             else
             {
-                if (this.RetrieveCharacter(model.Character, model.Realm, JSONBase.Rosters.Raid) == 0)
+                if (this.RetrieveCharacter(model.Character, model.Realm, JSONBase.Rosters.Raid, model.Role) == 0)
                 {
                     return View(model);
                 }
             }
 
             // Now display it!
-            return View();
+            return View(model);
         }
 
         /// <summary>
@@ -230,7 +254,7 @@ namespace WGO.Controllers
         /// <param name="character"></param>
         /// <param name="realm"></param>
         /// <returns></returns>
-        private int RetrieveCharacter(string character, string realm, JSONBase.Rosters roster)
+        private int RetrieveCharacter(string character, string realm, JSONBase.Rosters roster, string charRole = "")
         {
             int result = 0;
             JSONCharacter charFromWeb = JSONBase.GetCharacterJSON(character, realm);
@@ -283,22 +307,17 @@ namespace WGO.Controllers
                         // Check for differences
                         if (searchChar.Level != charFromWeb.Level)
                         {
-                            searchChar.Modified_Level = DateTime.Now;
+                            searchChar.Modified_Level = GetCentralTime();
                         }
 
                         if (searchChar.AchievementPoints != charFromWeb.AchievementPoints)
                         {
-                            searchChar.Modified_AchievementPoints = DateTime.Now;
-                        }
-
-                        if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
-                        {
-                            searchChar.Modified_Equipped_iLevel = DateTime.Now;
+                            searchChar.Modified_AchievementPoints = GetCentralTime();
                         }
 
                         if (searchChar.Max_iLevel != charFromWeb.Items.AverageItemLevel)
                         {
-                            searchChar.Modified_Max_iLevel = DateTime.Now;
+                            searchChar.Modified_Max_iLevel = GetCentralTime();
                         }
 
                         // Update Character
@@ -306,12 +325,24 @@ namespace WGO.Controllers
                         searchChar.Class = JSONBase.ConvertClass(charFromWeb.Class);
                         searchChar.Race = JSONBase.ConvertRace(charFromWeb.Race);
                         searchChar.AchievementPoints = charFromWeb.AchievementPoints;
-                        searchChar.Max_iLevel = charFromWeb.Items.AverageItemLevel;
-                        searchChar.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
-                        searchChar.LastUpdated = DateTime.Now;
-                        searchChar.Spec = spec;
-                        searchChar.Role = role;
 
+                        if (roster == JSONBase.Rosters.Raid && role != search[0].Role)
+                        {
+                            // This is a different Role than we are tracking... so don't update these fields
+                            if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
+                            {
+                                searchChar.Modified_Equipped_iLevel = GetCentralTime();
+                            }
+
+                            searchChar.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
+                            searchChar.Spec = spec;
+                            searchChar.Role = role;
+                            searchChar.Items = JsonConvert.SerializeObject(charFromWeb.Items);
+                        }
+
+                        searchChar.Max_iLevel = charFromWeb.Items.AverageItemLevel;
+                        searchChar.LastUpdated = GetCentralTime();
+                        
                         if (roster == JSONBase.Rosters.Guild)
                         {
                             searchChar.Roster = JSONBase.GetGuildRoster();
@@ -320,9 +351,6 @@ namespace WGO.Controllers
                         {
                             searchChar.Roster = JSONBase.GetRaidRoster();
                         }
-
-                        // Items = List<CharacterItems> 
-                        searchChar.Items = JsonConvert.SerializeObject(charFromWeb.Items);
                     }
 
                     try
@@ -336,7 +364,7 @@ namespace WGO.Controllers
                         ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
-                else //if ((roster == JSONBase.Rosters.Guild) || (roster == JSONBase.Rosters.Raid && role == search[0].Role))
+                else if ((roster == JSONBase.Rosters.Guild) || (roster == JSONBase.Rosters.Raid && charRole == role))
                 {
                     // Now insert the data inot the database
                     Character charToDB = new Character();
@@ -347,14 +375,14 @@ namespace WGO.Controllers
                     charToDB.AchievementPoints = charFromWeb.AchievementPoints;
                     charToDB.Max_iLevel = charFromWeb.Items.AverageItemLevel;
                     charToDB.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
-                    charToDB.LastUpdated = DateTime.Now;
+                    charToDB.LastUpdated = GetCentralTime();
                     charToDB.Realm = charFromWeb.Realm;
                     charToDB.Spec = spec;
                     charToDB.Role = role;
-                    charToDB.Modified_AchievementPoints = DateTime.Now;
-                    charToDB.Modified_Equipped_iLevel = DateTime.Now;
-                    charToDB.Modified_Max_iLevel = DateTime.Now;
-                    charToDB.Modified_Level = DateTime.Now;
+                    charToDB.Modified_AchievementPoints = GetCentralTime();
+                    charToDB.Modified_Equipped_iLevel = GetCentralTime();
+                    charToDB.Modified_Max_iLevel = GetCentralTime();
+                    charToDB.Modified_Level = GetCentralTime();
 
                     if (roster == JSONBase.Rosters.Guild)
                     {
@@ -585,5 +613,13 @@ namespace WGO.Controllers
             return RedirectToAction("Index", "Home");
         }
         #endregion
+
+        private DateTime GetCentralTime()
+        {
+            DateTime clientDateTime = DateTime.Now;
+            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(clientDateTime, "Central Standard Time");
+
+            return centralDateTime;
+        }
     }
 }

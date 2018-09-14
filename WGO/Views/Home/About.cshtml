@@ -24,3 +24,32 @@
 <p>
     @Html.ActionLink("Delete all Rosters...", "DeleteAllRosters", "WGO")
 </p>
+
+
+<button class="btn btn-primary" id="reloadGuildButton" style="margin: 1em 0em 1em 0em">Rescan Guild Roster</button>
+
+
+<p style="padding-top:5em;">
+    Current Time is: @DateTime.Now
+    <br />
+    Current Central Time is: @TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time")
+</p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryblock")
+    <script type="text/javascript">
+        $(function () {
+            $('#reloadGuildButton').click(function () {
+                $.blockUI();
+                window.location.href = '/WGO/GuildRosterRetrieve';
+            });
+        });
+        function showLoading() {
+            $.blockUI();
+        }
+        function hideLoading() {
+            $.unblockUI();
+        }
+    </script>
+}

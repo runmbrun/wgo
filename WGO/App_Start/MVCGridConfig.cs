@@ -159,7 +159,7 @@ namespace WGO
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
                         .WithValueExpression(i => i.LastUpdated.ToString());
-                    cols.Add("Reload").WithHtmlEncoding(false)
+                    cols.Add("Rescan").WithHtmlEncoding(false)
                         .WithSorting(false)
                         .WithHeaderText(" ")
                         .WithValueExpression((p, c) => c.UrlHelper.Action("Rescan", "WGO", new { name = p.Name, realm = p.Realm }))
@@ -297,12 +297,12 @@ namespace WGO
                     cols.Add("Recan").WithHtmlEncoding(false)
                         .WithSorting(false)
                         .WithHeaderText(" ")
-                        .WithValueExpression((p, c) => c.UrlHelper.Action("Rescan", "WGO", new { name = p.Name, realm = p.Realm }))
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Rescan", "WGO", new { name = p.Name, realm = p.Realm, role = p.Role }))
                         .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button' onclick=$.blockUI()>Rescan</a>");
                     cols.Add("Delete").WithHtmlEncoding(false)
                         .WithSorting(false)
                         .WithHeaderText(" ")
-                        .WithValueExpression((p, c) => c.UrlHelper.Action("Delete", "WGO", new { name = p.Name, realm = p.Realm }))
+                        .WithValueExpression((p, c) => c.UrlHelper.Action("Delete", "WGO", new { name = p.Name, realm = p.Realm, role = p.Role }))
                         .WithValueTemplate("<a href='{Value}' class='btn btn-danger' role='button' onclick=$.blockUI()>Delete</a>");
                 })
                 .WithPreloadData(false)
@@ -311,21 +311,6 @@ namespace WGO
                 .WithClientSideLoadingCompleteFunctionName("hideLoading")
                 .WithRetrieveDataMethod((context) =>
                 {
-                    // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
-                    // Use Entity Framework, a module from your IoC Container, or any other method.
-                    // Return QueryResult object containing IEnumerable<YouModelItem>
-                    /*Models.WGODBContext db = new Models.WGODBContext();
-                    var dbChars = from m in db.Characters select m;
-                    var raiders = dbChars.Where(s => s.Roster == 2 || s.Roster == 3).OrderByDescending(p => p.Equipped_iLevel).OrderByDescending(p => p.Level).OrderBy(p => p.Name);
-
-                    return new QueryResult<Models.Character>()
-                    {
-                        // The list of characters
-                        Items = raiders.ToList(),
-
-                        // if paging is enabled, return the total number of records of all pages
-                        TotalRecords = raiders.Count() 
-                    };*/
                     var options = context.QueryOptions;
                     string globalSearch = options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>();
@@ -410,8 +395,10 @@ namespace WGO
 
             if (date != null)
             {
-                // Is this date less than 2 hours old?
-                if (DateTime.Now.AddHours(-2) <= date.Value)
+                // Is this date less than 2 hours old?  All Central Time Zone
+                DateTime clientDateTime = DateTime.Now;
+                DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(clientDateTime, "Central Standard Time");
+                if (centralDateTime.AddHours(-2) <= date.Value)
                 {
                     result = true;
                 }
