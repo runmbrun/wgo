@@ -5,10 +5,12 @@
     bool nameFound = false;
     bool auditFound = false;
     WGO.JSON.JSONCharacterItems items = null;
+    ViewBag.Title = "Character";
 
     if (Model.Character != null)
     {
         name = Model.Character.Name;
+        ViewBag.Title = name;
         items = Newtonsoft.Json.JsonConvert.DeserializeObject<WGO.JSON.JSONCharacterItems>(Model.Character.Items);
         nameFound = true;
     }
@@ -50,7 +52,7 @@
                     <td width="10%">
                         Head
                     </td>
-                    <td width="30%" style="color:@(items.Head.Quality == 4 ? "purple" : (items.Head.Quality == 3 ? "blue" : (items.Head.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Head.Quality == 6 ? "#cd7f32" : (items.Head.Quality == 5 ? "orange" : (items.Head.Quality == 4 ? "purple" : (items.Head.Quality == 3 ? "blue" : (items.Head.Quality == 2 ? "green" : "White")))))">
                         @items.Head.Name
                     </td>
                     <td width="10%">
@@ -61,7 +63,7 @@
                     <td width="10%">
                         Head
                     </td>
-                    <td width="30%" style="color:@(items.Neck.Quality == 6 ? "#cd7f32" : (items.Neck.Quality == 5 ? "orange" : (items.Neck.Quality == 4 ? "purple" : (items.Neck.Quality == 3 ? "blue" : (items.Neck.Quality == 3 ? "green" : "White")))))">
+                    <td width="30%" style="color:@(items.Neck.Quality == 6 ? "#cd7f32" : (items.Neck.Quality == 5 ? "orange" : (items.Neck.Quality == 4 ? "purple" : (items.Neck.Quality == 3 ? "blue" : (items.Neck.Quality == 2 ? "green" : "White")))))">
                         @items.Neck.Name
                     </td>
                     <td width="10%">
@@ -72,7 +74,7 @@
                     <td width="10%">
                         Shoulder
                     </td>
-                    <td width="30%" style="color:@(items.Shoulder.Quality == 4 ? "purple" : (items.Shoulder.Quality == 3 ? "blue" : (items.Shoulder.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Shoulder.Quality == 6 ? "#cd7f32" : (items.Shoulder.Quality == 5 ? "orange" : (items.Shoulder.Quality == 4 ? "purple" : (items.Shoulder.Quality == 3 ? "blue" : (items.Shoulder.Quality == 2 ? "green" : "White")))))">
                         @items.Shoulder.Name
                     </td>
                     <td width="10%">
@@ -83,7 +85,7 @@
                     <td width="10%">
                         Back
                     </td>
-                    <td width="30%" style="color:@(items.Back.Quality == 4 ? "purple" : (items.Back.Quality == 3 ? "blue" : (items.Back.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Back.Quality == 6 ? "#cd7f32" : (items.Back.Quality == 5 ? "orange" : (items.Back.Quality == 4 ? "purple" : (items.Back.Quality == 3 ? "blue" : (items.Back.Quality == 2 ? "green" : "White")))))">
                         @items.Back.Name
                     </td>
                     <td width="10%">
@@ -94,7 +96,7 @@
                     <td width="10%">
                         Chest
                     </td>
-                    <td width="30%" style="color:@(items.Chest.Quality == 4 ? "purple" : (items.Chest.Quality == 3 ? "blue" : (items.Chest.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Chest.Quality == 6 ? "#cd7f32" : (items.Chest.Quality == 5 ? "orange" : (items.Chest.Quality == 4 ? "purple" : (items.Chest.Quality == 3 ? "blue" : (items.Chest.Quality == 2 ? "green" : "White")))))">
                         @items.Chest.Name
                     </td>
                     <td width="10%">
@@ -105,7 +107,7 @@
                     <td width="10%">
                         Wrist
                     </td>
-                    <td width="30%" style="color:@(items.Wrist.Quality == 4 ? "purple" : (items.Wrist.Quality == 3 ? "blue" : (items.Wrist.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Wrist.Quality == 6 ? "#cd7f32" : (items.Wrist.Quality == 5 ? "orange" : (items.Wrist.Quality == 4 ? "purple" : (items.Wrist.Quality == 3 ? "blue" : (items.Wrist.Quality == 2 ? "green" : "White")))))">
                         @items.Wrist.Name
                     </td>
                     <td width="10%">
@@ -116,7 +118,7 @@
                     <td width="10%">
                         Hands
                     </td>
-                    <td width="30%" style="color:@(items.Hands.Quality == 4 ? "purple" : (items.Hands.Quality == 3 ? "blue" : (items.Hands.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Hands.Quality == 6 ? "#cd7f32" : (items.Hands.Quality == 5 ? "orange" : (items.Hands.Quality == 4 ? "purple" : (items.Hands.Quality == 3 ? "blue" : (items.Hands.Quality == 2 ? "green" : "White")))))">
                         @items.Hands.Name
                     </td>
                     <td width="10%">
@@ -127,7 +129,7 @@
                     <td width="10%">
                         Waist
                     </td>
-                    <td width="30%" style="color:@(items.Waist.Quality == 4 ? "purple" : (items.Waist.Quality == 3 ? "blue" : (items.Waist.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Waist.Quality == 6 ? "#cd7f32" : (items.Waist.Quality == 5 ? "orange" : (items.Waist.Quality == 4 ? "purple" : (items.Waist.Quality == 3 ? "blue" : (items.Waist.Quality == 2 ? "green" : "White")))))">
                         @items.Waist.Name
                     </td>
                     <td width="10%">
@@ -138,7 +140,7 @@
                     <td width="10%">
                         Legs
                     </td>
-                    <td width="30%" style="color:@(items.Legs.Quality == 4 ? "purple" : (items.Legs.Quality == 3 ? "blue" : (items.Legs.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Legs.Quality == 6 ? "#cd7f32" : (items.Legs.Quality == 5 ? "orange" : (items.Legs.Quality == 4 ? "purple" : (items.Legs.Quality == 3 ? "blue" : (items.Legs.Quality == 2 ? "green" : "White")))))">
                         @items.Legs.Name
                     </td>
                     <td width="10%">
@@ -149,7 +151,7 @@
                     <td width="10%">
                         Feet
                     </td>
-                    <td width="30%" style="color:@(items.Feet.Quality == 4 ? "purple" : (items.Feet.Quality == 3 ? "blue" : (items.Feet.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Feet.Quality == 6 ? "#cd7f32" : (items.Feet.Quality == 5 ? "orange" : (items.Feet.Quality == 4 ? "purple" : (items.Feet.Quality == 3 ? "blue" : (items.Feet.Quality == 2 ? "green" : "White")))))">
                         @items.Feet.Name
                     </td>
                     <td width="10%">
@@ -160,7 +162,7 @@
                     <td width="10%">
                         Finger1
                     </td>
-                    <td width="30%" style="color:@(items.Finger1.Quality == 4 ? "purple" : (items.Finger1.Quality == 3 ? "blue" : (items.Finger1.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Finger1.Quality == 6 ? "#cd7f32" : (items.Finger1.Quality == 5 ? "orange" : (items.Finger1.Quality == 4 ? "purple" : (items.Finger1.Quality == 3 ? "blue" : (items.Finger1.Quality == 2 ? "green" : "White")))))">
                         @items.Finger1.Name
                     </td>
                     <td width="10%">
@@ -171,7 +173,7 @@
                     <td width="10%">
                         Finger2
                     </td>
-                    <td width="30%" style="color:@(items.Finger2.Quality == 4 ? "purple" : (items.Finger2.Quality == 3 ? "blue" : (items.Finger2.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Finger2.Quality == 6 ? "#cd7f32" : (items.Finger2.Quality == 5 ? "orange" : (items.Finger2.Quality == 4 ? "purple" : (items.Finger2.Quality == 3 ? "blue" : (items.Finger2.Quality == 2 ? "green" : "White")))))">
                         @items.Finger2.Name
                     </td>
                     <td width="10%">
@@ -182,7 +184,7 @@
                     <td width="10%">
                         Trinket1
                     </td>
-                    <td width="30%" style="color:@(items.Trinket1.Quality == 4 ? "purple" : (items.Trinket1.Quality == 3 ? "blue" : (items.Trinket1.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Trinket1.Quality == 6 ? "#cd7f32" : (items.Trinket1.Quality == 5 ? "orange" : (items.Trinket1.Quality == 4 ? "purple" : (items.Trinket1.Quality == 3 ? "blue" : (items.Trinket1.Quality == 2 ? "green" : "White")))))">
                         @items.Trinket1.Name
                     </td>
                     <td width="10%">
@@ -193,7 +195,7 @@
                     <td width="10%">
                         Trinket2
                     </td>
-                    <td width="30%" style="color:@(items.Trinket2.Quality == 4 ? "purple" : (items.Trinket2.Quality == 3 ? "blue" : (items.Trinket2.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.Trinket2.Quality == 6 ? "#cd7f32" : (items.Trinket2.Quality == 5 ? "orange" : (items.Trinket2.Quality == 4 ? "purple" : (items.Trinket2.Quality == 3 ? "blue" : (items.Trinket2.Quality == 2 ? "green" : "White")))))">
                         @items.Trinket2.Name
                     </td>
                     <td width="10%">
@@ -204,7 +206,7 @@
                     <td width="10%">
                         Weapon
                     </td>
-                    <td width="30%" style="color:@(items.MainHand.Quality == 4 ? "purple" : (items.MainHand.Quality == 3 ? "blue" : (items.MainHand.Quality == 3 ? "green" : "White")))">
+                    <td width="30%" style="color:@(items.MainHand.Quality == 6 ? "#cd7f32" : (items.MainHand.Quality == 5 ? "orange" : (items.MainHand.Quality == 4 ? "purple" : (items.MainHand.Quality == 3 ? "blue" : (items.MainHand.Quality == 2 ? "green" : "White")))))">
                         @items.MainHand.Name
                     </td>
                     <td width="10%">
@@ -217,7 +219,7 @@
                         <td width="10%">
                             Off Hand
                         </td>
-                        <td width="30%" style="color:@(items.OffHand.Quality == 4 ? "purple" : (items.OffHand.Quality == 3 ? "blue" : (items.OffHand.Quality == 3 ? "green" : "White")))">
+                        <td width="30%" style="color:@(items.OffHand.Quality == 6 ? "#cd7f32" : (items.OffHand.Quality == 5 ? "orange" : (items.OffHand.Quality == 4 ? "purple" : (items.OffHand.Quality == 3 ? "blue" : (items.OffHand.Quality == 2 ? "green" : "White")))))">
                             @items.OffHand.Name
                         </td>
                         <td width="10%">
@@ -235,7 +237,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-2">
-                        <div class="@(items.Head.Quality == 4 ? "card-purple" : (items.Head.Quality == 3 ? "card-blue" : (items.Head.Quality == 2 ? "card-green" : "card")))">
+                        <div class="@(items.Head.Quality == 6 ? "card-bronze" : (items.Head.Quality == 5 ? "card-orange" : (items.Head.Quality == 4 ? "card-purple" : (items.Head.Quality == 3 ? "card-blue" : (items.Head.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Head</h5>
                             <h6 class="card-subtitle text-muted">@items.Head.ItemLevel</h6>
                             <p class="card-text">@items.Head.Name</p>
@@ -245,7 +247,7 @@
                         2 of 3
                     </div>
                     <div class="col-sm-2">
-                        <div class="@(items.Hands.Quality == 4 ? "card-purple" : (items.Hands.Quality == 3 ? "card-blue" : (items.Hands.Quality == 2 ? "card-green" : "card")))">
+                        <div class="@(items.Hands.Quality == 6 ? "card-bronze" : (items.Hands.Quality == 5 ? "card-orange" : (items.Hands.Quality == 4 ? "card-purple" : (items.Hands.Quality == 3 ? "card-blue" : (items.Hands.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Hands</h5>
                             <h6 class="card-subtitle text-muted">@items.Hands.ItemLevel</h6>
                             <p class="card-text">@items.Hands.Name</p>
@@ -264,7 +266,7 @@
                         2 of 3
                     </div>
                     <div class="col-sm-2">
-                        <div class="@(items.Waist.Quality == 4 ? "card-purple" : (items.Waist.Quality == 3 ? "card-blue" : (items.Waist.Quality == 2 ? "card-green" : "card")))">
+                        <div class="@(items.Waist.Quality == 6 ? "card-bronze" : (items.Waist.Quality == 5 ? "card-orange" : (items.Waist.Quality == 4 ? "card-purple" : (items.Waist.Quality == 3 ? "card-blue" : (items.Waist.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Waist</h5>
                             <h6 class="card-subtitle text-muted">@items.Waist.ItemLevel</h6>
                             <p class="card-text">@items.Waist.Name</p>
@@ -273,7 +275,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-2">
-                        <div class="@(items.Shoulder.Quality == 4 ? "card-purple" : (items.Shoulder.Quality == 3 ? "card-blue" : (items.Shoulder.Quality == 2 ? "card-green" : "card")))">
+                        <div class="@(items.Shoulder.Quality == 6 ? "card-bronze" : (items.Shoulder.Quality == 5 ? "card-orange" : (items.Shoulder.Quality == 4 ? "card-purple" : (items.Shoulder.Quality == 3 ? "card-blue" : (items.Shoulder.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Shoulder</h5>
                             <h6 class="card-subtitle text-muted">@items.Shoulder.ItemLevel</h6>
                             <p class="card-text">@items.Shoulder.Name</p>
@@ -283,10 +285,29 @@
                         2 of 3
                     </div>
                     <div class="col-sm-2">
-                        <div class="@(items.Legs.Quality == 4 ? "card-purple" : (items.Legs.Quality == 3 ? "card-blue" : (items.Legs.Quality == 2 ? "card-green" : "card")))">
+                        <div class="@(items.Legs.Quality == 6 ? "card-bronze" : (items.Legs.Quality == 5 ? "card-orange" : (items.Legs.Quality == 4 ? "card-purple" : (items.Legs.Quality == 3 ? "card-blue" : (items.Legs.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Legs</h5>
                             <h6 class="card-subtitle text-muted">@items.Legs.ItemLevel</h6>
                             <p class="card-text">@items.Legs.Name</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="@(items.Back.Quality == 6 ? "card-bronze" : (items.Back.Quality == 5 ? "card-orange" : (items.Back.Quality == 4 ? "card-purple" : (items.Back.Quality == 3 ? "card-blue" : (items.Back.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Back</h5>
+                            <h6 class="card-subtitle text-muted">@items.Back.ItemLevel</h6>
+                            <p class="card-text">@items.Back.Name</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        2 of 3
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="@(items.Feet.Quality == 6 ? "card-bronze" : (items.Feet.Quality == 5 ? "card-orange" : (items.Feet.Quality == 4 ? "card-purple" : (items.Feet.Quality == 3 ? "card-blue" : (items.Feet.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Feet</h5>
+                            <h6 class="card-subtitle text-muted">@items.Feet.ItemLevel</h6>
+                            <p class="card-text">@items.Feet.Name</p>
                         </div>
                     </div>
                 </div>

@@ -578,10 +578,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/WGO.dll">
-      <publishTime>09/14/2018 15:06:12</publishTime>
+      <publishTime>09/15/2018 11:19:47</publishTime>
     </File>
     <File Include="bin/WGO.pdb">
-      <publishTime>09/14/2018 15:06:12</publishTime>
+      <publishTime>09/15/2018 11:19:47</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css">
       <publishTime>09/09/2018 10:59:39</publishTime>
@@ -623,7 +623,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2018 10:32:43</publishTime>
     </File>
     <File Include="favicon.ico">
-      <publishTime>09/01/2018 13:36:48</publishTime>
+      <publishTime>09/11/2018 16:05:11</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>09/01/2018 13:36:48</publishTime>
@@ -851,7 +851,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/02/2018 08:21:12</publishTime>
     </File>
     <File Include="Views/WGO/Character.cshtml">
-      <publishTime>09/14/2018 15:05:58</publishTime>
+      <publishTime>09/15/2018 11:18:12</publishTime>
     </File>
     <File Include="Views/WGO/DatabaseTest.cshtml">
       <publishTime>09/05/2018 16:17:34</publishTime>
