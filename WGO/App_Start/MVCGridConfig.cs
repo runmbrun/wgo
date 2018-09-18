@@ -395,10 +395,10 @@ namespace WGO
 
             if (date != null)
             {
-                // Is this date less than 2 hours old?  All Central Time Zone
+                // Is this date less than 4 hours old?  All Central Time Zone
                 DateTime clientDateTime = DateTime.Now;
                 DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(clientDateTime, "Central Standard Time");
-                if (centralDateTime.AddHours(-2) <= date.Value)
+                if (centralDateTime.AddHours(-4) <= date.Value)
                 {
                     result = true;
                 }

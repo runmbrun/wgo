@@ -23,7 +23,9 @@ textarea {
     max-width: 280px;
 }
 
-/* From MVCGrid.Net - Needed to move them here because of Bootstrap Upgrade to 4 disabled how they were viewed. */
+/* 
+    From MVCGrid.Net - Needed to move them here because of Bootstrap Upgrade to 4 disabled how they were viewed. 
+*/
 .pull-right {
     float: right !important;
 }
@@ -103,12 +105,11 @@ textarea {
     border-bottom-right-radius: 3px
 }
 
+.form-inline, .label {
+    font-weight: 700;
+}
 
 /********/
-
-/*.bg-purple {
-    background-color: purple!important;
-}*/
 
 .text-purple {
     background-color: purple;

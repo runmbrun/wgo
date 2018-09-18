@@ -1,55 +1,10 @@
 ﻿@{
     ViewBag.Title = "About";
 }
+
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
 <p>
     Use this area to provide additional information.
 </p>
-<br />
-<br />
-<p>
-    @Html.ActionLink("Test the Database Connection...", "DatabaseTest", "WGO")
-</p>
-<p>
-    @Html.ActionLink("Retrieve the Secondnorth Guild...", "GuildRosterRetrieve", "WGO")
-</p>
-<p>
-    @Html.ActionLink("Delete the Guild Roster...", "DeleteGuildRoster", "WGO")
-</p>
-<p>
-    @Html.ActionLink("Delete the Raid Roster...", "DeleteRaidRoster", "WGO")
-</p>
-<p>
-    @Html.ActionLink("Delete all Rosters...", "DeleteAllRosters", "WGO")
-</p>
-
-
-<button class="btn btn-primary" id="reloadGuildButton" style="margin: 1em 0em 1em 0em">Rescan Guild Roster</button>
-
-
-<p style="padding-top:5em;">
-    Current Time is: @DateTime.Now
-    <br />
-    Current Central Time is: @TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time")
-</p>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryblock")
-    <script type="text/javascript">
-        $(function () {
-            $('#reloadGuildButton').click(function () {
-                $.blockUI();
-                window.location.href = '/WGO/GuildRosterRetrieve';
-            });
-        });
-        function showLoading() {
-            $.blockUI();
-        }
-        function hideLoading() {
-            $.unblockUI();
-        }
-    </script>
-}

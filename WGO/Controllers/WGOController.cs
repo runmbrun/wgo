@@ -130,7 +130,7 @@ namespace WGO.Controllers
                 else
                 {
                     // Reload just 1 character
-                    this.RetrieveCharacter(name, realm, roster, roster == JSONBase.Rosters.Raid && string.IsNullOrWhiteSpace(role) ? role : string.Empty);
+                    this.RetrieveCharacter(name, realm, roster, roster == JSONBase.Rosters.Raid && !string.IsNullOrWhiteSpace(role) ? role : string.Empty);
                 }
             }
 
@@ -296,7 +296,7 @@ namespace WGO.Controllers
                 }
                 else if (roster == JSONBase.Rosters.Raid)
                 {
-                    search= db.Characters.Where(s => s.Roster == 2 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm && s.Role == role).ToList();
+                    search= db.Characters.Where(s => s.Roster == 2 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
                 }
 
                 if (search.Count() > 0)
@@ -326,7 +326,8 @@ namespace WGO.Controllers
                         searchChar.Race = JSONBase.ConvertRace(charFromWeb.Race);
                         searchChar.AchievementPoints = charFromWeb.AchievementPoints;
 
-                        if (roster == JSONBase.Rosters.Raid && role != search[0].Role)
+                        // Only check for updates on these fields if it's the guild roster or it's the raid roster and the role is the same
+                        if (roster == JSONBase.Rosters.Guild || (roster == JSONBase.Rosters.Raid && role == search[0].Role))
                         {
                             // This is a different Role than we are tracking... so don't update these fields
                             if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
@@ -449,19 +450,50 @@ namespace WGO.Controllers
             {
                 // Store the Character data
                 model.Character = chars.First();
-
-                // Now get the Audit Data
-                JSONCharacterAudit audit = JSONBase.GetCharacterAuditJSON(model.Character.Name, model.Character.Realm);
-                if (audit != null)
-                {
-                    model.Audit = audit;
-                }
             }
 
             return View(model);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="realm"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Audit(string name, string realm)
+        {
+            JSONCharacterAudit audit = JSONBase.GetCharacterAuditJSON(name, realm);
+            string html = string.Empty;
+
+            if (audit != null)
+            {
+                html =
+                    $"<div class=\"card-body\"><h2>Audit</h2><table border=\"1\"> " +
+                    $"<tr><td width=\"20%\"><b>Number of Issues</b></td><td width=\"30%\"><b>{audit.Audit.NumberOfIssues}</b></td></tr>" +
+                    $"<tr><td width=\"20%\">Empty Glyph Slots</td><td width=\"30%\">{audit.Audit.EmptyGlyphSlots}</td></tr>" +
+                    $"<tr><td width=\"20%\">Unspent Talent Points</td><td width=\"30%\">{audit.Audit.UnspentTalentPoints}</td></tr>" +
+                    $"<tr><td width=\"20%\">No Spec</td><td width=\"30%\">{audit.Audit.NoSpec}</td></tr>" +
+                    $"<tr><td width=\"20%\">Empty Sockets</td><td width=\"30%\">{audit.Audit.EmptySockets}</td></tr>" +
+                    $"<tr><td width=\"20%\">Low Level Threshold</td><td width=\"30%\">{audit.Audit.LowLevelThreshold}</td></tr>" +
+                    $"</table></div>";
+            }
+
+            return Content(html);
+        }
+
         #region " About Menu - Debugging Functions "
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Admin()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -474,18 +506,18 @@ namespace WGO.Controllers
                 int guildRoster = JSONBase.GetGuildRoster();
                 int raidRoster = JSONBase.GetRaidRoster();
                 var dbChars = from m in db.Characters select m;
-                var guildCount = dbChars.Where(s => s.Roster == JSONBase.GetGuildRoster());
+                var guildCount = dbChars.Where(s => s.Roster == guildRoster);
                 var raidCount = dbChars.Where(s => s.Roster == raidRoster);
                 
                 ViewBag.GuildCount = 0;
                 ViewBag.RaidCount = 0;
 
-                if (guildCount.Count() > 0)
+                if (guildCount.Any())
                 {
                     ViewBag.GuildCount = guildCount.Count();
                 }
 
-                if (raidCount.Count() > 0)
+                if (raidCount.Any())
                 {
                     ViewBag.RaidCount = raidCount.Count();
                 }
@@ -612,14 +644,17 @@ namespace WGO.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        #endregion
 
+        /// <summary>
+        /// Get the current Central Standard Time value.
+        /// </summary>
+        /// <returns></returns>
         private DateTime GetCentralTime()
         {
-            DateTime clientDateTime = DateTime.Now;
-            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(clientDateTime, "Central Standard Time");
+            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time");
 
             return centralDateTime;
         }
+        #endregion
     }
 }

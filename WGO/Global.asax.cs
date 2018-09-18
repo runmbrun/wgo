@@ -21,7 +21,7 @@ namespace WGO
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer<Models.WGODBContext>(null);
 
-            //todo: AddReminderTask();
+            AddReminderTask();
         }
 
         public void Session_Start()
@@ -32,26 +32,61 @@ namespace WGO
             HttpContext.Current.Session["APIKey"] = System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void AddReminderTask()
         {
             OnCacheRemove = new System.Web.Caching.CacheItemRemovedCallback(CacheItemRemoved);
 
-            // Figure out time for next 8am...
+            // Figure out the time for next Scan...
+            //   Each day there will be 4 auto scans:
+            //   1.  7am
+            //   2. 12pm
+            //   3.  7pm
+            //   4. 12am
             int seconds = 0;
-            if (DateTime.Now.Hour < 8)
+            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time");
+
+            if (centralDateTime.Hour < 7)
             {
-                TimeSpan remind = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0) - DateTime.Now;
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 7, 0, 0) - centralDateTime;
+                seconds = Convert.ToInt32(remind.TotalSeconds);
+            }
+            else if (centralDateTime.Hour >= 7 && centralDateTime.Hour < 12)
+            {
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 12, 0, 0).AddDays(1) - centralDateTime;
+                seconds = Convert.ToInt32(remind.TotalSeconds);
+            }
+            else if (centralDateTime.Hour >= 12 && centralDateTime.Hour < 19)
+            {
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 19, 0, 0).AddDays(1) - centralDateTime;
+                seconds = Convert.ToInt32(remind.TotalSeconds);
+            }
+            else if (centralDateTime.Hour >= 19)
+            {
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 24, 0, 0).AddDays(1) - centralDateTime;
                 seconds = Convert.ToInt32(remind.TotalSeconds);
             }
             else
             {
-                TimeSpan remind = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0).AddDays(1) - DateTime.Now;
-                seconds = Convert.ToInt32(remind.TotalSeconds);
+                // Do it immediately
+                seconds = 1;
             }
 
-            HttpRuntime.Cache.Insert("RescanGuild", seconds, null, DateTime.Now.AddSeconds(seconds), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.NotRemovable, OnCacheRemove);
+            // Store it
+            System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] = centralDateTime.AddSeconds(seconds).ToString();
+
+            // Now set the cache for the future
+            HttpRuntime.Cache.Insert("RescanGuild", seconds, null, centralDateTime.AddSeconds(seconds), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.NotRemovable, OnCacheRemove);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="k"></param>
+        /// <param name="v"></param>
+        /// <param name="r"></param>
         public void CacheItemRemoved(string k, object v, System.Web.Caching.CacheItemRemovedReason r)
         {
             // Do a full pull of the guild

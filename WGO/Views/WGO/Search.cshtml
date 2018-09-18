@@ -35,14 +35,14 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group row">
-                    @Html.LabelFor(m => m.Realm, new { @class = "col-md-2 col-form-label" })
+                    @Html.LabelFor(m => m.Realm, new { @class = "col-md-2 col-form-label text-right font-weight-bold" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.Realm, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Realm, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
-                    @Html.LabelFor(m => m.Character, new { @class = "col-md-2 col-form-label" })
+                    @Html.LabelFor(m => m.Character, new { @class = "col-md-2 col-form-label text-right font-weight-bold" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.Character, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Character, "", new { @class = "text-danger" })

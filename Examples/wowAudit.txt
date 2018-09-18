@@ -1,0 +1,130 @@
+{"lastModified":1536611159000,"name":"Purdee","realm":"Thrall","battlegroup":"Rampage","class":2,"race":10,"gender":1,"level":120,"achievementPoints":13595,"thumbnail":"thrall/33/129401889-avatar.jpg","calcClass":"b","faction":1,"audit":{"numberOfIssues":5,"slots":{"2":1,"14":1,"4":1,"15":1,"5":1,"6":1,"7":2,"8":1,"9":1},"emptyGlyphSlots":4,"unspentTalentPoints":1,"noSpec":false,"unenchantedItems":{"2":1,"14":1,"4":1,"15":1,"6":1,"7":1,"8":1,"9":1},"emptySockets":1,"itemsWithEmptySockets":{"7":1},"appropriateArmorType":4,"inappropriateArmorType":{},"lowLevelItems":{},"lowLevelThreshold":0,"missingExtraSockets":{"5":1},"recommendedBeltBuckle":{"id":90046,"description":"","name":"Living Steel Belt Buckle","icon":"inv_belt_robe_pvpmage_d_01","stackable":20,"itemBind":0,"bonusStats":[],"itemSpells":[{"spellId":131467,"nCharges":1,"consumable":true,"categoryId":0,"trigger":"ON_USE","scaledDescription":"Permanently attach a living steel belt buckle onto a belt, adding a socket to the belt.\n\n\n\nAttaching the belt buckle causes the item to become soulbound. Cannot be applied to items higher than level 600."}],"buyPrice":220000,"itemClass":8,"itemSubClass":7,"containerSlots":0,"inventoryType":0,"equippable":false,"itemLevel":87,"maxCount":0,"maxDurability":0,"minFactionId":0,"minReputation":0,"quality":3,"sellPrice":55000,"requiredSkill":0,"requiredLevel":85,"requiredSkillRank":0,"itemSource":{"sourceId":122632,"sourceType":"CREATED_BY_SPELL"},"baseArmor":0,"hasSockets":false,"isAuctionable":true,"armor":0,"displayInfoId":0,"nameDescription":"","nameDescriptionColor":"000000","upgradable":true,"heroicTooltip":false,"context":"","bonusLists":[],"availableContexts":[""],"bonusSummary":{"defaultBonusLists":[],"chanceBonusLists":[],"bonusChances":[]},"artifactId":0},"missingBlacksmithSockets":{},"missingEnchanterEnchants":{},"missingEngineerEnchants":{},"missingScribeEnchants":{},"nMissingJewelcrafterGems":0,"missingLeatherworkerEnchants":{}},"totalHonorableKills":7316}
+
+
+
+{
+"lastModified":1536611159000,
+"name":"Purdee",
+"realm":"Thrall",
+"battlegroup":"Rampage",
+"class":2,
+"race":10,
+"gender":1,
+"level":120,
+"achievementPoints":13595,
+"thumbnail":"thrall/33/129401889-avatar.jpg",
+"calcClass":"b",
+"faction":1,
+"audit":
+  {
+  "numberOfIssues":5,
+  "slots":
+    {
+    "2":1,
+    "14":1,
+    "4":1,
+    "15":1,
+    "5":1,
+    "6":1,
+    "7":2,
+    "8":1,
+    "9":1
+    },
+  "emptyGlyphSlots":4,
+  "unspentTalentPoints":1,
+  "noSpec":false,
+  "unenchantedItems":
+    {
+    "2":1,
+    "14":1,
+    "4":1,
+    "15":1,
+    "6":1,
+    "7":1,
+    "8":1,
+    "9":1
+    },
+  "emptySockets":1,
+  "itemsWithEmptySockets":
+    {
+    "7":1
+    },
+  "appropriateArmorType":4,
+  "inappropriateArmorType":{},
+  "lowLevelItems":{},
+  "lowLevelThreshold":0,
+  "missingExtraSockets":
+    {
+    "5":1
+    },
+    
+    
+    
+  "recommendedBeltBuckle":
+    {
+    "id":90046,
+    "description":"",
+    "name":"Living Steel Belt Buckle",
+    "icon":"inv_belt_robe_pvpmage_d_01",
+    "stackable":20,
+    "itemBind":0,
+    "bonusStats":[],
+    "itemSpells":[
+      {
+      "spellId":131467,
+      "nCharges":1,
+      "consumable":true,
+      "categoryId":0,
+      "trigger":"ON_USE",
+      "scaledDescription":"Permanently attach a living steel belt buckle onto a belt, adding a socket to the belt.\n\n\n\nAttaching the belt buckle causes the item to become soulbound. Cannot be applied to items higher than level 600."
+      }],
+    "buyPrice":220000,
+    "itemClass":8,
+    "itemSubClass":7,
+    "containerSlots":0,
+    "inventoryType":0,
+    "equippable":false,
+    "itemLevel":87,
+    "maxCount":0,
+    "maxDurability":0,
+    "minFactionId":0,
+    "minReputation":0,
+    "quality":3,
+    "sellPrice":55000,
+    "requiredSkill":0,
+    "requiredLevel":85,
+    "requiredSkillRank":0,
+    "itemSource":
+      {
+      "sourceId":122632,
+      "sourceType":"CREATED_BY_SPELL"},
+      "baseArmor":0,
+      "hasSockets":false,
+      "isAuctionable":true,
+      "armor":0,
+      "displayInfoId":0,
+      "nameDescription":"",
+      "nameDescriptionColor":"000000",
+      upgradable":true,
+      "heroicTooltip":false,
+      "context":"",
+      "bonusLists":[],
+      "availableContexts":[""],
+      "bonusSummary":
+        {
+        "defaultBonusLists":[],
+        "chanceBonusLists":[],
+        "bonusChances":[]},
+        "artifactId":0
+        },
+      "missingBlacksmithSockets":{},
+      "missingEnchanterEnchants":{},
+      "missingEngineerEnchants":{},
+      "missingScribeEnchants":{},
+      "nMissingJewelcrafterGems":0,
+      "missingLeatherworkerEnchants":{}
+      },
+    "totalHonorableKills":7316
+    } // end - recommendedBeltBuckle
+    
+  

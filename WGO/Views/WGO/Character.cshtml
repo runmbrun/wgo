@@ -2,22 +2,18 @@
 
 @{
     string name = "Character could not be found.";
+    string realm = string.Empty;
     bool nameFound = false;
-    bool auditFound = false;
     WGO.JSON.JSONCharacterItems items = null;
     ViewBag.Title = "Character";
 
     if (Model.Character != null)
     {
         name = Model.Character.Name;
+        realm = Model.Character.Realm;
         ViewBag.Title = name;
         items = Newtonsoft.Json.JsonConvert.DeserializeObject<WGO.JSON.JSONCharacterItems>(Model.Character.Items);
         nameFound = true;
-    }
-
-    if (Model.Audit != null)
-    {
-        auditFound = true;
     }
 }
 
@@ -33,7 +29,7 @@
         <a href="https://worldofwarcraft.com/en-us/character/@Model.Character.Realm/@Model.Character.Name">Blizzard's Battle.Net Page</a>
     </p>
 
-    <div class="card">
+    <div class="card" id="tableDisplay">
         <div class="card-body">
             <h3>Gear</h3>
             <table border="1">
@@ -231,8 +227,8 @@
         </div>
     </div>
 
-    @* Test *@
-    <div class="container">
+    @* Test: Grid Display *@
+    <div class="container" id="gridDisplay" style="display:none;">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -314,62 +310,41 @@
             </div>
         </div>
     </div>
-}
-@if (auditFound)
-{
-    <div class="card">
-        <div class="card-body">
-            <h2>Audit</h2>
-            <table border="1">
-                <tr>
-                    <td width="20%">
-                        <b>Number of Issues</b>
-                    </td>
-                    <td width="30%">
-                        <b>@Model.Audit.Audit.NumberOfIssues</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="20%">
-                        Empty Glyph Slots
-                    </td>
-                    <td width="30%">
-                        @Model.Audit.Audit.EmptyGlyphSlots
-                    </td>
-                </tr>
-                <tr>
-                    <td width="20%">
-                        Unspent Talent Points
-                    </td>
-                    <td width="30%">
-                        @Model.Audit.Audit.UnspentTalentPoints
-                    </td>
-                </tr>
-                <tr>
-                    <td width="20%">
-                        No Spec
-                    </td>
-                    <td width="30%">
-                        @Model.Audit.Audit.NoSpec
-                    </td>
-                </tr>
-                <tr>
-                    <td width="20%">
-                        Empty Sockets
-                    </td>
-                    <td width="30%">
-                        @Model.Audit.Audit.EmptySockets
-                    </td>
-                </tr>
-                <tr>
-                    <td width="20%">
-                        Low Level Threshold
-                    </td>
-                    <td width="30%">
-                        @Model.Audit.Audit.LowLevelThreshold
-                    </td>
-                </tr>
-            </table>
-        </div>
+
+    <button class="btn btn-primary" id="auditButton" style="margin: 1em 0em 1em 0em">Perform Character Audit</button>
+    <button class="btn btn-primary" id="toggleButton" style="margin: 1em 0em 1em 0em">Toggle Character Display</button>
+
+    <div class="card" id="auditCard">
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryblock")
+    <script type="text/javascript">
+        $(function () {
+            $('#auditButton').click(function () {
+                $.blockUI();
+                $.ajax({
+                    url: "@(Url.Action("Audit", "WGO"))",
+                    type: "POST",
+                    data: { name: "@name", realm: "@realm" },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        if (data != "") {
+                            $('#auditCard').empty();
+                            $('<div class="newtable">').html(data).appendTo('#auditCard');
+                            $.unblockUI();
+                        }
+                    }
+                });
+            });
+
+            $('#toggleButton').click(function () {
+                $("#tableDisplay").toggle();
+                $("#gridDisplay").toggle();
+            });
+        });
+    </script>
 }
