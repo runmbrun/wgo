@@ -163,7 +163,7 @@ namespace WGO
                         .WithSorting(false)
                         .WithHeaderText(" ")
                         .WithValueExpression((p, c) => c.UrlHelper.Action("Rescan", "WGO", new { name = p.Name, realm = p.Realm }))
-                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button'>Reload</a>");
+                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button'>Rescan</a>");
                 })
                 .WithRetrieveDataMethod((context) =>
                 {

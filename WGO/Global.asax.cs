@@ -21,6 +21,8 @@ namespace WGO
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer<Models.WGODBContext>(null);
 
+            // This will setup a caching callback function that will act like a timer.
+            //  The timer will be setup to run periodically throughout the day.
             AddReminderTask();
         }
 
@@ -48,6 +50,9 @@ namespace WGO
             int seconds = 0;
             DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time");
 
+            // DEBUGGING
+            //centralDateTime = new DateTime(2018, 9, 21, 13, 0, 0);
+
             if (centralDateTime.Hour < 7)
             {
                 TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 7, 0, 0) - centralDateTime;
@@ -55,17 +60,17 @@ namespace WGO
             }
             else if (centralDateTime.Hour >= 7 && centralDateTime.Hour < 12)
             {
-                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 12, 0, 0).AddDays(1) - centralDateTime;
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 12, 0, 0) - centralDateTime;
                 seconds = Convert.ToInt32(remind.TotalSeconds);
             }
             else if (centralDateTime.Hour >= 12 && centralDateTime.Hour < 19)
             {
-                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 19, 0, 0).AddDays(1) - centralDateTime;
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 19, 0, 0) - centralDateTime;
                 seconds = Convert.ToInt32(remind.TotalSeconds);
             }
             else if (centralDateTime.Hour >= 19)
             {
-                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 24, 0, 0).AddDays(1) - centralDateTime;
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 24, 0, 0) - centralDateTime;
                 seconds = Convert.ToInt32(remind.TotalSeconds);
             }
             else
