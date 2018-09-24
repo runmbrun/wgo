@@ -7,8 +7,6 @@ General
   - Make CSS changes to match site before Bootstrap 4 changes.
     - On Guild page - Page Size and Search are bolded and on top of combo box and textbox respectively. (Need to update MVCGrid.Net DLL)
     - On Guild page - Fields button needs to work. (Need to update MVCGrid.Net DLL)
-  - About page
-    - Move extra functionality to new page.
   - Register/Login pages
     - Does this work?
     - Is it needed?
@@ -17,17 +15,16 @@ General
       - Show all the items, grid or pretty?
       - Show race, class, level, professions, talents?
   - Character Audit
-      - Show all the Audit info
-      - Ajax functionality via button click to get Audit info?
+      - Show all the Audit info: Total # of issues, Unspect Talents, No Spec, Empty Sockets, missing Enchants, etc.
   - Add item functionality: 
       - need new item table 
       - new field in the character table for the character item JSON data
-  - Move all test functionality to another page that can't be reached via link.
-  - Examples
-    - Get examples of Audit, Character and Guild JSON data and save in git.
+  - JSONRaid Data - Get the current raid, and a list of bosses, and what the bosses drop. 
+    - Show potential upgrades for entire raid
   
 Guild tab
   - Put a guild check on a timer: 7am, 12pm, 7pm, 12am.
+    - Not working perfectly... works for a bit, and then stops.
   
 Raid Roster tab
   - Raid Check

@@ -20,15 +20,15 @@
   "numberOfIssues":5,
   "slots":
     {
-    "2":1,
-    "14":1,
-    "4":1,
-    "15":1,
-    "5":1,
-    "6":1,
-    "7":2,
-    "8":1,
-    "9":1
+    "2":1, [shoulder]
+    "14":1,[trinket1]
+    "4":1, [chest]
+    "15":1,[trinket2]
+    "5":1, [tabard]
+    "6":1, [shirt]
+    "7":2, [wrist]
+    "8":1, [hands]
+    "9":1  [waist]
     },
   "emptyGlyphSlots":4,
   "unspentTalentPoints":1,
