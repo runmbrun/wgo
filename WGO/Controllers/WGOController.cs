@@ -88,6 +88,7 @@ namespace WGO.Controllers
         {
             JSONBase.Rosters roster = JSONBase.Rosters.None;
             string returnTo = string.Empty;
+            string returnToParams = string.Empty;
 
             // Calculate the UrlReferrer link, for a return Url
             if (System.Web.HttpContext.Current.Request.UrlReferrer != null)
@@ -95,14 +96,21 @@ namespace WGO.Controllers
                 if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Guild"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Guild";
+                    ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
                     roster = JSONBase.Rosters.Guild;
                     returnTo = "Guild";
                 }
                 else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Raid"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Raid";
+                    ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
                     roster = JSONBase.Rosters.Raid;
                     returnTo = "Raid";
+                }
+
+                if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("?page="))
+                {
+                    returnToParams = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("?page=") + "?page=".Length);
                 }
             }
 
@@ -134,7 +142,14 @@ namespace WGO.Controllers
                 }
             }
 
-            return RedirectToAction(returnTo);
+            if (!string.IsNullOrWhiteSpace(returnToParams))
+            {
+                return RedirectToAction(returnTo, new { page=returnToParams });
+            }
+            else
+            {
+                return RedirectToAction(returnTo);
+            }
         }
 
         /// <summary>
@@ -423,6 +438,8 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult Character(string name, string realm)
         {
+            int roster = 1;
+
             // Calculate the UrlReferrer link, for a return Url
             if (System.Web.HttpContext.Current.Request.UrlReferrer != null)
             {
@@ -434,17 +451,21 @@ namespace WGO.Controllers
                 if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Guild"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Guild";
+                    ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
+                    roster = 1;
                 }
                 else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Raid"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Raid";
+                    ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
+                    roster = 2;
                 }
             }
 
             // Get the Character info
             CharacterViewModel model = new CharacterViewModel();
             model.Character = null;
-            var chars = db.Characters.Where(s => s.Name == name && s.Realm == realm);
+            var chars = db.Characters.Where(s => s.Name == name && s.Realm == realm && s.Roster == roster);
 
             if (chars.Any())
             {

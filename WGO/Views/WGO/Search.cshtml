@@ -58,7 +58,10 @@
     </div>
 </div>
 
-@Html.MVCGrid("SearchGrid", new { name = searchName, realm = searchRealm })
+@if (!string.IsNullOrWhiteSpace(searchName) && !string.IsNullOrWhiteSpace(searchRealm))
+{
+    @Html.MVCGrid("SearchGrid", new { name = searchName, realm = searchRealm })
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

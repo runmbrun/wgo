@@ -13,23 +13,17 @@ namespace WGO.JSON
     public class JSONAudit
     {
         public int NumberOfIssues { get; set; }
-        public IList<JSONAuditSlot> Slots { get; set; }
+        public Dictionary<string, int> Slots { get; set; }
         public int EmptyGlyphSlots { get; set; }
         public int UnspentTalentPoints { get; set; }
         public bool NoSpec { get; set; }
-        public IList<JSONAuditSlot> UnenchantedItems { get; set; }
+        public Dictionary<string, int> UnenchantedItems { get; set; }
         public int EmptySockets { get; set; }
-        public IList<JSONAuditSlot> ItemsWithEmptySockets { get; set; }
+        public Dictionary<string, int> ItemsWithEmptySockets { get; set; }
         public int AppropriateArmorType { get; set; }
-        public IList<JSONAuditSlot> InappropriateArmorType { get; set; }
-        public IList<JSONAuditSlot> LowLevelItems { get; set; }
+        public Dictionary<string, int> InappropriateArmorType { get; set; }
+        public Dictionary<string, int> LowLevelItems { get; set; }
         public int LowLevelThreshold { get; set; }
-        public IList<JSONAuditSlot> MissingExtraSockets { get; set; }
-    }
-
-    public class JSONAuditSlot
-    {
-        public string Slot { get; set; }
-        public int Value { get; set; }
+        public Dictionary<string, int> MissingExtraSockets { get; set; }
     }
 }

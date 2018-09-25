@@ -15,11 +15,16 @@
         {
             MVCGridName = "GuildRoster",
             PageSize = true,
-            ColumnVisibility = true,
-            Export = true,
+            ColumnVisibility = false,
+            Export = false,
             GlobalSearch = true
         })
         @Html.MVCGrid("GuildRoster")
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryblock")
+}
 

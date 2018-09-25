@@ -89,6 +89,7 @@ namespace WGO
                 })
                 .WithPageParameterNames("name")
                 .WithPageParameterNames("realm")
+                //.WithQueryOnPageLoad(false) // this does not seem to work - Grid will flash, but then will disappear
                 .WithPreloadData(false)
                 .WithSorting(true, "EquippediLevel")
                 .WithRetrieveDataMethod((context) =>
@@ -163,7 +164,7 @@ namespace WGO
                         .WithSorting(false)
                         .WithHeaderText(" ")
                         .WithValueExpression((p, c) => c.UrlHelper.Action("Rescan", "WGO", new { name = p.Name, realm = p.Realm }))
-                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button'>Rescan</a>");
+                        .WithValueTemplate("<a href='{Value}' class='btn btn-primary' role='button' onclick=$.blockUI()>Rescan</a>");
                 })
                 .WithRetrieveDataMethod((context) =>
                 {
