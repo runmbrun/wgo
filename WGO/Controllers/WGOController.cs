@@ -490,6 +490,18 @@ namespace WGO.Controllers
 
             if (audit != null)
             {
+                // Parse the audit data...
+                int issueCount = 0;
+
+                issueCount += audit.Audit.ItemsWithEmptySockets.Count > 0 ? 1 : 0;
+                issueCount += audit.Audit.UnenchantedItems.Count > 0 ? 1 : 0;
+
+                /*
+                 * 15 = Weapon or Hands
+                 * 9 = Weapon or Hands
+                 */
+
+                /* Old Way - Table
                 html =
                     $"<div class=\"card-body\"><h2>Audit</h2><table border=\"1\"> " +
                     $"<tr><td width=\"20%\"><b>Number of Issues</b></td><td width=\"30%\"><b>{audit.Audit.NumberOfIssues}</b></td></tr>" +
@@ -498,7 +510,48 @@ namespace WGO.Controllers
                     $"<tr><td width=\"20%\">No Spec</td><td width=\"30%\">{audit.Audit.NoSpec}</td></tr>" +
                     $"<tr><td width=\"20%\">Empty Sockets</td><td width=\"30%\">{audit.Audit.EmptySockets}</td></tr>" +
                     $"<tr><td width=\"20%\">Low Level Threshold</td><td width=\"30%\">{audit.Audit.LowLevelThreshold}</td></tr>" +
-                    $"</table></div>";
+                    $"</table></div>";*/
+
+                // New Way - Grid via Bootstrap
+                if (issueCount == 0)
+                {
+                    html = $"<div class=\"container\"><h1>Character Audit</h1><p class=\"lead text-muted bg-success\">Issues found: {issueCount}</p></div>";
+                }
+                else
+                {
+                    html = $"<div class=\"container\"><h1>Character Audit</h1><p class=\"bg-danger text-white col-sm-2\">Issues found: {issueCount}</p></div>";
+                    html += $"<div class=\"container\">";
+
+                    // Display Missing Sockets - if needed
+                    if (audit.Audit.ItemsWithEmptySockets.Count > 0)
+                    {
+                        html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Sockets:</h4></div><div class=\"card-body\"><ul>";
+
+                        foreach (KeyValuePair<string, int> entry in audit.Audit.ItemsWithEmptySockets)
+                        {
+                            html += $"<li>{entry.Key}</li>";
+                        }
+
+                        html += $"</ul></div></div>";
+                    }
+
+                    // Display Missing Enchants - if needed
+                    if (audit.Audit.UnenchantedItems.Count > 0)
+                    {
+                        html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Enchants:</h4></div><div class=\"card-body\"><ul>";
+
+                        foreach (KeyValuePair<string, int> entry in audit.Audit.UnenchantedItems)
+                        {
+                            html += $"<li>{entry.Key}</li>";
+                        }
+
+                        html += $"</ul></div></div>";
+                    }
+
+                    // Finish up the missing html
+                    html += $"</div>";
+                }
+
             }
 
             return Content(html);

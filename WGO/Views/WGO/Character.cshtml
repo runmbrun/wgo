@@ -239,8 +239,8 @@
                             <p class="card-text">@items.Head.Name</p>
                         </div>
                     </div>
-                    <div class="col-sm-8">
-                        2 of 3
+                    <div class="col-sm-8 text-center">
+                        <h4></h4>
                     </div>
                     <div class="col-sm-2">
                         <div class="@(items.Hands.Quality == 6 ? "card-bronze" : (items.Hands.Quality == 5 ? "card-orange" : (items.Hands.Quality == 4 ? "card-purple" : (items.Hands.Quality == 3 ? "card-blue" : (items.Hands.Quality == 2 ? "card-green" : "card")))))">
@@ -304,6 +304,25 @@
                             <h5 class="card-title">Feet</h5>
                             <h6 class="card-subtitle text-muted">@items.Feet.ItemLevel</h6>
                             <p class="card-text">@items.Feet.Name</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="@(items.Chest.Quality == 6 ? "card-bronze" : (items.Chest.Quality == 5 ? "card-orange" : (items.Chest.Quality == 4 ? "card-purple" : (items.Chest.Quality == 3 ? "card-blue" : (items.Chest.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Chest</h5>
+                            <h6 class="card-subtitle text-muted">@items.Chest.ItemLevel</h6>
+                            <p class="card-text">@items.Chest.Name</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        2 of 3
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="@(items.Finger1.Quality == 6 ? "card-bronze" : (items.Finger1.Quality == 5 ? "card-orange" : (items.Finger1.Quality == 4 ? "card-purple" : (items.Finger1.Quality == 3 ? "card-blue" : (items.Finger1.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Finger1</h5>
+                            <h6 class="card-subtitle text-muted">@items.Finger1.ItemLevel</h6>
+                            <p class="card-text">@items.Finger1.Name</p>
                         </div>
                     </div>
                 </div>
