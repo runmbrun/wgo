@@ -717,7 +717,7 @@ namespace WGO.Controllers
                 missingGem = true;
                 issueCount++;
             }
-            if (items.OffHand.BonusLists.Contains(4802) && items.OffHand.ToolTipParams.Gem0 == null)
+            if (items.OffHand != null && items.OffHand.BonusLists.Contains(4802) && items.OffHand.ToolTipParams.Gem0 == null)
             {
                 if (!missingGem)
                 {

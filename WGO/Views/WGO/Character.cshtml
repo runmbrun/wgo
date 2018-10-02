@@ -257,7 +257,7 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="@(items.Neck.Quality == 6 ? "card-bronze" : (items.Neck.Quality == 5 ? "card-orange" : (items.Neck.Quality == 4 ? "card-purple" : (items.Neck.Quality == 3 ? "card-blue" : (items.Neck.Quality == 2 ? "card-green" : "card")))))">
-                            <h5 class="card-title">Neck @(items.Neck.Quality == 6 ? $"[{items.Neck.AzeriteItem.AzeriteLevel}]" : "")</h5>
+                            <h5 class="card-title">Neck @(items.Neck.Quality == 6 && items.Neck.AzeriteItem != null ? $"[{items.Neck.AzeriteItem.AzeriteLevel}]" : "")</h5>
                             <h6 class="card-subtitle text-muted">@items.Neck.ItemLevel</h6>
                             <p class="card-text">@items.Neck.Name</p>
                         </div>
@@ -399,11 +399,14 @@
                     <div class="col-sm-4 text-center">
                     </div>
                     <div class="col-sm-4 text-left">
-                        <div class="@(items.OffHand.Quality == 6 ? "card-bronze" : (items.OffHand.Quality == 5 ? "card-orange" : (items.OffHand.Quality == 4 ? "card-purple" : (items.OffHand.Quality == 3 ? "card-blue" : (items.OffHand.Quality == 2 ? "card-green" : "card")))))">
-                            <h5 class="card-title">OffHand</h5>
-                            <h6 class="card-subtitle text-muted">@items.OffHand.ItemLevel</h6>
-                            <p class="card-text">@items.OffHand.Name</p>
-                        </div>
+                        @if (items.OffHand != null)
+                        {
+                            <div class="@(items.OffHand.Quality == 6 ? "card-bronze" : (items.OffHand.Quality == 5 ? "card-orange" : (items.OffHand.Quality == 4 ? "card-purple" : (items.OffHand.Quality == 3 ? "card-blue" : (items.OffHand.Quality == 2 ? "card-green" : "card")))))">
+                                <h5 class="card-title">OffHand</h5>
+                                <h6 class="card-subtitle text-muted">@items.OffHand.ItemLevel</h6>
+                                <p class="card-text">@items.OffHand.Name</p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
