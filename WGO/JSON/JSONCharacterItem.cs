@@ -42,6 +42,7 @@ namespace WGO.JSON
         public string Context { get; set; }
         public IList<int> BonusLists { get; set; }
         public int ArtifactId { get; set; }
+        public JSONAzeriteItem AzeriteItem { get; set; }
     }
 
     public class JSONItemStats
@@ -59,9 +60,9 @@ namespace WGO.JSON
 
     public class JSONCharacterItemToolTipParams
     {
-        public int Gem0 { get; set; }
-        public int Gem1 { get; set; }
-        public int Enchant { get; set; }
+        public int? Gem0 { get; set; }
+        public int? Gem1 { get; set; }
+        public int? Enchant { get; set; }
         public IList<int> Set { get; set; }
         public int TimewalkerLevel { get; set; }
     }

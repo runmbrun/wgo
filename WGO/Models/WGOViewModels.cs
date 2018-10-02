@@ -28,6 +28,7 @@ namespace WGO.Models
     public class CharacterViewModel
     {
         public Character Character { get; set; }
-        public JSON.JSONCharacterAudit Audit { get; set; }
+        //public JSON.JSONCharacterAudit Audit { get; set; }
+        public string AuditHtml { get; set; }
     }
 }

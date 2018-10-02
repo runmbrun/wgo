@@ -5,16 +5,16 @@
 
 General:
   - Make CSS changes to match site before Bootstrap 4 changes.
-    - On Guild page - Page Size and Search are bolded and on top of combo box and textbox respectively. (Need to update MVCGrid.Net DLL?)
+    - On Guild page - Page Size and Search are bolded and on top of combo box and textbox respectively (but not at MVCGrid.net?). (Need to update MVCGrid.Net DLL?)
   - Register/Login pages
     - Does this still work with all my changes? Connected to correct DB?
     - Is it needed?
     - Could create a special My Roster for each separate login.
   - Character View 
       - Show all the items, in table or grid format?
-      - Show race, class, level, professions, talents.
+      - Show professions and talents.
   - Character Audit
-      - Show all the Audit info: Total # of issues, Unspect Talents, No Spec, Empty Sockets, missing Enchants, etc.
+      - Show all the Audit info: Missing Talents, No Spec, wrong armor type
   - Add item functionality: 
       - need new item table 
       - new field in the character table for the character item JSON data

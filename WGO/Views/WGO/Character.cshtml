@@ -4,6 +4,7 @@
     string name = "Character could not be found.";
     string realm = string.Empty;
     bool nameFound = false;
+
     WGO.JSON.JSONCharacterItems items = null;
     ViewBag.Title = "Character";
 
@@ -29,7 +30,8 @@
         <a href="https://worldofwarcraft.com/en-us/character/@Model.Character.Realm/@Model.Character.Name" target="_blank">Blizzard's Battle.Net Page</a>
     </p>
 
-    <div class="card" id="tableDisplay">
+    @* Table Display *@
+    <div class="card" id="tableDisplay" style="display:none;">
         <div class="card-body">
             <h3>Gear</h3>
             <table border="1">
@@ -57,7 +59,7 @@
                 </tr>
                 <tr>
                     <td width="10%">
-                        Head
+                        Neck
                     </td>
                     <td width="30%" style="color:@(items.Neck.Quality == 6 ? "#cd7f32" : (items.Neck.Quality == 5 ? "orange" : (items.Neck.Quality == 4 ? "purple" : (items.Neck.Quality == 3 ? "blue" : (items.Neck.Quality == 2 ? "green" : "White")))))">
                         @items.Neck.Name
@@ -227,22 +229,24 @@
         </div>
     </div>
 
-    @* Test: Grid Display *@
-    <div class="container" id="gridDisplay" style="display:none;">
+    @* Grid Display *@
+    <div class="container" id="gridDisplay">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="@(items.Head.Quality == 6 ? "card-bronze" : (items.Head.Quality == 5 ? "card-orange" : (items.Head.Quality == 4 ? "card-purple" : (items.Head.Quality == 3 ? "card-blue" : (items.Head.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Head</h5>
                             <h6 class="card-subtitle text-muted">@items.Head.ItemLevel</h6>
                             <p class="card-text">@items.Head.Name</p>
                         </div>
                     </div>
-                    <div class="col-sm-8 text-center">
-                        <h4></h4>
+                    <div class="col-sm-6 text-center">
+                        <h4>@Model.Character.Name</h4>
+                        <h6>Level @Model.Character.Level</h6>
+                        <h6>@Model.Character.Race @Model.Character.Class</h6>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="@(items.Hands.Quality == 6 ? "card-bronze" : (items.Hands.Quality == 5 ? "card-orange" : (items.Hands.Quality == 4 ? "card-purple" : (items.Hands.Quality == 3 ? "card-blue" : (items.Hands.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Hands</h5>
                             <h6 class="card-subtitle text-muted">@items.Hands.ItemLevel</h6>
@@ -253,13 +257,14 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="@(items.Neck.Quality == 6 ? "card-bronze" : (items.Neck.Quality == 5 ? "card-orange" : (items.Neck.Quality == 4 ? "card-purple" : (items.Neck.Quality == 3 ? "card-blue" : (items.Neck.Quality == 2 ? "card-green" : "card")))))">
-                            <h5 class="card-title">Neck</h5>
+                            <h5 class="card-title">Neck @(items.Neck.Quality == 6 ? $"[{items.Neck.AzeriteItem.AzeriteLevel}]" : "")</h5>
                             <h6 class="card-subtitle text-muted">@items.Neck.ItemLevel</h6>
                             <p class="card-text">@items.Neck.Name</p>
                         </div>
                     </div>
-                    <div class="col-sm-8">
-                        2 of 3
+                    <div class="col-sm-8 text-center">
+                        <h6>Equipped iLevel @Model.Character.Equipped_iLevel</h6>
+                        <h6>Max iLevel @Model.Character.Max_iLevel</h6>
                     </div>
                     <div class="col-sm-2">
                         <div class="@(items.Waist.Quality == 6 ? "card-bronze" : (items.Waist.Quality == 5 ? "card-orange" : (items.Waist.Quality == 4 ? "card-purple" : (items.Waist.Quality == 3 ? "card-blue" : (items.Waist.Quality == 2 ? "card-green" : "card")))))">
@@ -277,8 +282,7 @@
                             <p class="card-text">@items.Shoulder.Name</p>
                         </div>
                     </div>
-                    <div class="col-sm-8">
-                        2 of 3
+                    <div class="col-sm-8 text-center">
                     </div>
                     <div class="col-sm-2">
                         <div class="@(items.Legs.Quality == 6 ? "card-bronze" : (items.Legs.Quality == 5 ? "card-orange" : (items.Legs.Quality == 4 ? "card-purple" : (items.Legs.Quality == 3 ? "card-blue" : (items.Legs.Quality == 2 ? "card-green" : "card")))))">
@@ -296,8 +300,7 @@
                             <p class="card-text">@items.Back.Name</p>
                         </div>
                     </div>
-                    <div class="col-sm-8">
-                        2 of 3
+                    <div class="col-sm-8 text-center">
                     </div>
                     <div class="col-sm-2">
                         <div class="@(items.Feet.Quality == 6 ? "card-bronze" : (items.Feet.Quality == 5 ? "card-orange" : (items.Feet.Quality == 4 ? "card-purple" : (items.Feet.Quality == 3 ? "card-blue" : (items.Feet.Quality == 2 ? "card-green" : "card")))))">
@@ -315,14 +318,91 @@
                             <p class="card-text">@items.Chest.Name</p>
                         </div>
                     </div>
-                    <div class="col-sm-8">
-                        2 of 3
+                    <div class="col-sm-8 text-center">
                     </div>
                     <div class="col-sm-2">
                         <div class="@(items.Finger1.Quality == 6 ? "card-bronze" : (items.Finger1.Quality == 5 ? "card-orange" : (items.Finger1.Quality == 4 ? "card-purple" : (items.Finger1.Quality == 3 ? "card-blue" : (items.Finger1.Quality == 2 ? "card-green" : "card")))))">
                             <h5 class="card-title">Finger1</h5>
                             <h6 class="card-subtitle text-muted">@items.Finger1.ItemLevel</h6>
                             <p class="card-text">@items.Finger1.Name</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        @if (items.Shirt != null)
+                        {
+                            <div class="@(items.Shirt.Quality == 6 ? "card-bronze" : (items.Shirt.Quality == 5 ? "card-orange" : (items.Shirt.Quality == 4 ? "card-purple" : (items.Shirt.Quality == 3 ? "card-blue" : (items.Shirt.Quality == 2 ? "card-green" : "card")))))">
+                                <h5 class="card-title">Shirt</h5>
+                                <h6 class="card-subtitle text-muted">@items.Shirt.ItemLevel</h6>
+                                <p class="card-text">@items.Shirt.Name</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-sm-8 text-center">
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="@(items.Finger2.Quality == 6 ? "card-bronze" : (items.Finger2.Quality == 5 ? "card-orange" : (items.Finger2.Quality == 4 ? "card-purple" : (items.Finger2.Quality == 3 ? "card-blue" : (items.Finger2.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Finger2</h5>
+                            <h6 class="card-subtitle text-muted">@items.Finger2.ItemLevel</h6>
+                            <p class="card-text">@items.Finger2.Name</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        @if (items.Tabard != null)
+                        {
+                        <div class="@(items.Tabard.Quality == 6 ? "card-bronze" : (items.Tabard.Quality == 5 ? "card-orange" : (items.Tabard.Quality == 4 ? "card-purple" : (items.Tabard.Quality == 3 ? "card-blue" : (items.Tabard.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Tabard</h5>
+                            <h6 class="card-subtitle text-muted">@items.Tabard.ItemLevel</h6>
+                            <p class="card-text">@items.Tabard.Name</p>
+                        </div>
+                        }
+                    </div>
+                    <div class="col-sm-8 text-center">
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="@(items.Trinket1.Quality == 6 ? "card-bronze" : (items.Trinket1.Quality == 5 ? "card-orange" : (items.Trinket1.Quality == 4 ? "card-purple" : (items.Trinket1.Quality == 3 ? "card-blue" : (items.Trinket1.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Trinket1</h5>
+                            <h6 class="card-subtitle text-muted">@items.Trinket1.ItemLevel</h6>
+                            <p class="card-text">@items.Trinket1.Name</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="@(items.Wrist.Quality == 6 ? "card-bronze" : (items.Wrist.Quality == 5 ? "card-orange" : (items.Wrist.Quality == 4 ? "card-purple" : (items.Wrist.Quality == 3 ? "card-blue" : (items.Wrist.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Wrist</h5>
+                            <h6 class="card-subtitle text-muted">@items.Wrist.ItemLevel</h6>
+                            <p class="card-text">@items.Wrist.Name</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 text-center">
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="@(items.Trinket2.Quality == 6 ? "card-bronze" : (items.Trinket2.Quality == 5 ? "card-orange" : (items.Trinket2.Quality == 4 ? "card-purple" : (items.Trinket2.Quality == 3 ? "card-blue" : (items.Trinket2.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">Trinket2</h5>
+                            <h6 class="card-subtitle text-muted">@items.Trinket2.ItemLevel</h6>
+                            <p class="card-text">@items.Trinket2.Name</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 text-right">
+                        <div class="@(items.MainHand.Quality == 6 ? "card-bronze" : (items.MainHand.Quality == 5 ? "card-orange" : (items.MainHand.Quality == 4 ? "card-purple" : (items.MainHand.Quality == 3 ? "card-blue" : (items.MainHand.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">MainHand</h5>
+                            <h6 class="card-subtitle text-muted">@items.MainHand.ItemLevel</h6>
+                            <p class="card-text">@items.MainHand.Name</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                    </div>
+                    <div class="col-sm-4 text-left">
+                        <div class="@(items.OffHand.Quality == 6 ? "card-bronze" : (items.OffHand.Quality == 5 ? "card-orange" : (items.OffHand.Quality == 4 ? "card-purple" : (items.OffHand.Quality == 3 ? "card-blue" : (items.OffHand.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">OffHand</h5>
+                            <h6 class="card-subtitle text-muted">@items.OffHand.ItemLevel</h6>
+                            <p class="card-text">@items.OffHand.Name</p>
                         </div>
                     </div>
                 </div>
@@ -334,6 +414,7 @@
     <button class="btn btn-primary" id="toggleButton" style="margin: 1em 0em 1em 0em">Toggle Character Display</button>
 
     <div class="card" id="auditCard">
+        @Html.Raw(Model.AuditHtml)
     </div>
 }
 
@@ -341,29 +422,29 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryblock")
     <script type="text/javascript">
-        $(function () {
-            $('#auditButton').click(function () {
-                $.blockUI();
-                $.ajax({
-                    url: "@(Url.Action("Audit", "WGO"))",
-                    type: "POST",
-                    data: { name: "@name", realm: "@realm" },
-                    cache: false,
-                    async: true,
-                    success: function (data) {
-                        if (data != "") {
-                            $('#auditCard').empty();
-                            $('<div class="newtable">').html(data).appendTo('#auditCard');
-                            $.unblockUI();
+            $(function () {
+                @*$('#auditButton').click(function () {
+                    $.blockUI();
+                    $.ajax({
+                        url: "@(Url.Action("Audit", "WGO"))",
+                        type: "POST",
+                        data: { name: "@name", realm: "@realm" },
+                        cache: false,
+                        async: true,
+                        success: function (data) {
+                            if (data != "") {
+                                $('#auditCard').empty();
+                                $('<div class="newtable">').html(data).appendTo('#auditCard');
+                                $.unblockUI();
+                            }
                         }
-                    }
+                    });
+                });*@
+
+                $('#toggleButton').click(function () {
+                    $("#tableDisplay").toggle();
+                    $("#gridDisplay").toggle();
                 });
             });
-
-            $('#toggleButton').click(function () {
-                $("#tableDisplay").toggle();
-                $("#gridDisplay").toggle();
-            });
-        });
-    </script>
+        </script>
 }

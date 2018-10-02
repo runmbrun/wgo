@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -57,7 +55,7 @@ namespace WGO
             //   3.  7pm
             //   4. 12am
             int seconds = 0;
-            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time").AddHours(1);
+            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time");
 
             // DEBUGGING
             //centralDateTime = new DateTime(2018, 9, 21, 13, 0, 0);
@@ -65,27 +63,27 @@ namespace WGO
             if (centralDateTime.Hour >= 0 && centralDateTime.Hour < 7)
             {
                 TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 7, 0, 0) - centralDateTime;
-                seconds = Convert.ToInt32(remind.TotalSeconds);
+                seconds = Convert.ToInt32(remind.TotalSeconds) + 60;
             }
             else if (centralDateTime.Hour >= 7 && centralDateTime.Hour < 12)
             {
                 TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 12, 0, 0) - centralDateTime;
-                seconds = Convert.ToInt32(remind.TotalSeconds);
+                seconds = Convert.ToInt32(remind.TotalSeconds) + 60;
             }
             else if (centralDateTime.Hour >= 12 && centralDateTime.Hour < 19)
             {
                 TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 19, 0, 0) - centralDateTime;
-                seconds = Convert.ToInt32(remind.TotalSeconds);
+                seconds = Convert.ToInt32(remind.TotalSeconds) + 60;
             }
             else if (centralDateTime.Hour >= 19)
             {
                 TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 23, 59, 59) - centralDateTime;
-                seconds = Convert.ToInt32(remind.TotalSeconds);
+                seconds = Convert.ToInt32(remind.TotalSeconds) + 60;
             }
             else
             {
                 // Do it immediately
-                seconds = 1;
+                seconds = 60;
             }
 
             // Store it

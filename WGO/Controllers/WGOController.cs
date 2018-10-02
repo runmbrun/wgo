@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using WGO.JSON;
 using WGO.Models;
@@ -471,6 +467,8 @@ namespace WGO.Controllers
             {
                 // Store the Character data
                 model.Character = chars.First();
+
+                model.AuditHtml = this.CalculateAuditHtml(model.Character);
             }
 
             return View(model);
@@ -478,6 +476,283 @@ namespace WGO.Controllers
 
         /// <summary>
         /// 
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
+        private string CalculateAuditHtml(Character character)
+        {
+            int issueCount = 0;
+            bool missingEnchant = false;
+            bool missingGem = false;
+            string html = string.Empty;
+            JSONCharacterItems items = null;
+
+            items = JsonConvert.DeserializeObject<JSONCharacterItems>(character.Items);
+
+            #region " Check for missing enchants - 1 weapon enchant and 2 ring enchants "
+            if (items.MainHand.ToolTipParams.Enchant == null)
+            {
+                if (!missingEnchant)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Enchants:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Main Hand</li>";
+
+                missingEnchant = true;
+                issueCount++;
+            }
+
+            if (items.Finger1.ToolTipParams.Enchant == null)
+            {
+                if (!missingEnchant)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Enchants:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Finger 1</li>";
+
+                missingEnchant = true;
+                issueCount++;
+            }
+
+            if (items.Finger2.ToolTipParams.Enchant == null)
+            {
+                if (!missingEnchant)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Enchants:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Finger 2</li>";
+
+                missingEnchant = true;
+                issueCount++;
+            }
+
+            // Close the Missing Enchants section
+            if (missingEnchant)
+            {
+                html += $"</ul></div></div>";
+            }
+            #endregion
+
+            #region " Check for missing gems - go through every slot to make sure... "
+            if (items.Head.BonusLists.Contains(4802) && items.Head.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Head</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Neck.BonusLists.Contains(4802) && items.Neck.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Neck</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Shoulder.BonusLists.Contains(4802) && items.Shoulder.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Shoulder</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Back.BonusLists.Contains(4802) && items.Back.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Back</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Chest.BonusLists.Contains(4802) && items.Chest.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Chest</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Wrist.BonusLists.Contains(4802) && items.Wrist.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Wrist</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Hands.BonusLists.Contains(4802) && items.Hands.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Hands</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Waist.BonusLists.Contains(4802) && items.Waist.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Waist</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Legs.BonusLists.Contains(4802) && items.Legs.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Legs</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Feet.BonusLists.Contains(4802) && items.Feet.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Feet</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Finger1.BonusLists.Contains(4802) && items.Finger1.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Finger1</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Finger2.BonusLists.Contains(4802) && items.Finger2.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Finger2</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Trinket1.BonusLists.Contains(4802) && items.Trinket1.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Trinket1</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.Trinket2.BonusLists.Contains(4802) && items.Trinket2.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Trinket2</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.MainHand.BonusLists.Contains(4802) && items.MainHand.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Main Hand</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+            if (items.OffHand.BonusLists.Contains(4802) && items.OffHand.ToolTipParams.Gem0 == null)
+            {
+                if (!missingGem)
+                {
+                    html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
+                }
+
+                html += $"<li>Off Hand</li>";
+
+                missingGem = true;
+                issueCount++;
+            }
+
+            // Close the Missing Gems section
+            if (missingGem)
+            {
+                html += $"</ul></div></div>";
+            }
+            #endregion
+
+            // Now add to the Audit section
+            if (issueCount > 0)
+            {
+                html = $"<div class=\"container\"><h1>Character Audit</h1><p class=\"bg-danger text-white col-sm-2\">Issues found: {issueCount}</p></div><div class=\"container row m-3\">{html}</div>";
+            }
+            else
+            {
+                html = $"<div class=\"container\"><h1>Character Audit</h1><p class=\"bg-success text-white col-sm-2\">Issues found: {issueCount}</p></div>";
+            }
+
+            return html;
+        }
+
+        /// <summary>
+        /// Audit - This is a separate call via the wow api.  Doesn't seem to have been updated lately.  
+        ///   Doesn't seem to be worth using at this point, especially since the audit will only happen for the current spec.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="realm"></param>
@@ -577,7 +852,7 @@ namespace WGO.Controllers
             return Content(html);
         }
 
-        #region " About Menu - Debugging Functions "
+        #region " Admin Menu - Debugging Functions "
         /// <summary>
         /// 
         /// </summary>
