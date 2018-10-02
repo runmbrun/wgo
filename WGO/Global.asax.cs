@@ -11,8 +11,14 @@ namespace WGO
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private static System.Web.Caching.CacheItemRemovedCallback OnCacheRemove = null;
         
+        /// <summary>
+        /// 
+        /// </summary>
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -26,6 +32,9 @@ namespace WGO
             AddReminderTask();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Session_Start()
         {
             // Initialization
@@ -48,12 +57,12 @@ namespace WGO
             //   3.  7pm
             //   4. 12am
             int seconds = 0;
-            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time");
+            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time").AddHours(1);
 
             // DEBUGGING
             //centralDateTime = new DateTime(2018, 9, 21, 13, 0, 0);
 
-            if (centralDateTime.Hour < 7)
+            if (centralDateTime.Hour >= 0 && centralDateTime.Hour < 7)
             {
                 TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 7, 0, 0) - centralDateTime;
                 seconds = Convert.ToInt32(remind.TotalSeconds);
@@ -70,7 +79,7 @@ namespace WGO
             }
             else if (centralDateTime.Hour >= 19)
             {
-                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 24, 0, 0) - centralDateTime;
+                TimeSpan remind = new DateTime(centralDateTime.Year, centralDateTime.Month, centralDateTime.Day, 23, 59, 59) - centralDateTime;
                 seconds = Convert.ToInt32(remind.TotalSeconds);
             }
             else
@@ -94,14 +103,14 @@ namespace WGO
         /// <param name="r"></param>
         public void CacheItemRemoved(string k, object v, System.Web.Caching.CacheItemRemovedReason r)
         {
+            // re-add our task so it reoccurs
+            AddReminderTask();
+
             // Do a full pull of the guild
             using (Controllers.WGOController wgo = new Controllers.WGOController())
             {
                 wgo.RetrieveGuild("Secondnorth", "Thrall");
             }
-
-            // re-add our task so it reoccurs
-            AddReminderTask();
         }
     }
 }

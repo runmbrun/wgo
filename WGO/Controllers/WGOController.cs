@@ -337,8 +337,8 @@ namespace WGO.Controllers
 
                         // Update Character
                         searchChar.Level = charFromWeb.Level;
-                        searchChar.Class = JSONBase.ConvertClass(charFromWeb.Class);
-                        searchChar.Race = JSONBase.ConvertRace(charFromWeb.Race);
+                        searchChar.Class = WoWConverter.ConvertClass(charFromWeb.Class);
+                        searchChar.Race = WoWConverter.ConvertRace(charFromWeb.Race);
                         searchChar.AchievementPoints = charFromWeb.AchievementPoints;
 
                         // Only check for updates on these fields if it's the guild roster or it's the raid roster and the role is the same
@@ -386,8 +386,8 @@ namespace WGO.Controllers
                     Character charToDB = new Character();
                     charToDB.Name = charFromWeb.Name;
                     charToDB.Level = charFromWeb.Level;
-                    charToDB.Class = JSONBase.ConvertClass(charFromWeb.Class);
-                    charToDB.Race = JSONBase.ConvertRace(charFromWeb.Race);
+                    charToDB.Class = WoWConverter.ConvertClass(charFromWeb.Class);
+                    charToDB.Race = WoWConverter.ConvertRace(charFromWeb.Race);
                     charToDB.AchievementPoints = charFromWeb.AchievementPoints;
                     charToDB.Max_iLevel = charFromWeb.Items.AverageItemLevel;
                     charToDB.Equipped_iLevel = charFromWeb.Items.AverageItemLevelEquipped;
@@ -491,10 +491,30 @@ namespace WGO.Controllers
             if (audit != null)
             {
                 // Parse the audit data...
+                //  Currently Audit tracks the following issues:
+                //  1.  numberOfIssues - Not all are relevant so do our own count
+                //  2.  emptyGlyphSlots - Glyphs are not comestic so ignore
+                //  3.  unspentTalentPoints - Need to calculate this because this could be 1 if PvP talents aren't picked or used.
+                //  4.  noSpec - Import so count this
+                //  5.  unenchantedItems - Import so count this
+                //  6.  emptySockets - Import so count this
+                //  7.  itemsWithEmptySockets - Import so count this
+                //  8.  appropriateArmorType - Import so count this
+                //  9.  inappropriateArmorType - Import so count this
+                //  10. lowLevelItems - Import so count this
+                //  11. lowLevelThreshold - Import so count this
+                //  12. missingExtraSockets - No Belt Buckles in BFA so ignore
+                //  13. recommendedBeltBuckle - No Belt Buckles in BFA so ignore
+
+                // Count the number of relevant issues...
                 int issueCount = 0;
 
-                issueCount += audit.Audit.ItemsWithEmptySockets.Count > 0 ? 1 : 0;
+                // unspentTalentPoints
+                // noSpec
                 issueCount += audit.Audit.UnenchantedItems.Count > 0 ? 1 : 0;
+                issueCount += audit.Audit.ItemsWithEmptySockets.Count > 0 ? 1 : 0;
+                // appropriateArmorType
+                // lowLevelItems
 
                 /*
                  * 15 = Weapon or Hands

@@ -61,7 +61,15 @@ namespace WGO.JSON
     {
         public int Gem0 { get; set; }
         public int Gem1 { get; set; }
+        public int Enchant { get; set; }
         public IList<int> Set { get; set; }
         public int TimewalkerLevel { get; set; }
+    }
+
+    public class JSONAzeriteItem
+    {
+        public int AzeriteLevel { get; set; }
+        public int AzeriteExperience { get; set; }
+        public int AzeriteExperienceRemaining { get; set; }
     }
 }
