@@ -852,6 +852,15 @@ namespace WGO.Controllers
             return Content(html);
         }
 
+        /// <summary>
+        /// Test View.
+        /// </summary>
+        /// <returns>Action Result.</returns>
+        public ActionResult Test()
+        {
+            return View();
+        }
+
         #region " Admin Menu - Debugging Functions "
         /// <summary>
         /// 
