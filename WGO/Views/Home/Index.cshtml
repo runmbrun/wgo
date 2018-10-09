@@ -11,23 +11,27 @@
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Search</h2>
-            <p>
-                Search for an individual character's data...
-            </p>
-            <p><a class="btn btn-primary" href='@Url.Action("Search", "WGO")'>Learn more &raquo;</a></p>
+    <div class="card-deck">
+        <div class="card col-md-4">
+            <div class="card-body">
+                <h2 class="card-title">Search</h2>
+                <p class="card-text">Search for an individual character's data...</p>
+            </div>
+            <div class="card-footer"><a class="btn btn-primary" href='@Url.Action("Search", "WGO")'>Learn more &raquo;</a></div>
         </div>
-        <div class="col-md-4">
-            <h2>Guild Roster</h2>
-            <p>View all characters from a guild.</p>
-            <p><a class="btn btn-primary" href='@Url.Action("Guild", "WGO")'>Learn more &raquo;</a></p>
+        <div class="card col-md-4">
+            <div class="card-body">
+                <h2 class="card-title">Guild Roster</h2>
+                <p class="card-text">View all characters from a guild.</p>
+            </div>
+            <div class="card-footer"><a class="btn btn-primary" href='@Url.Action("Guild", "WGO")'>Learn more &raquo;</a></div>
         </div>
-        <div class="col-md-4">
-            <h2>Raid Roster</h2>
-            <p>View a the current raid roster, and do an audit check.</p>
-            <p><a class="btn btn-primary" href='@Url.Action("Raid", "WGO")' role="button">Learn more &raquo;</a></p>
+        <div class="card col-md-4">
+            <div class="card-body">
+                <h2 class="card-title">Raid Roster</h2>
+                <p class="card-text">View a the current raid roster, and do an audit check.</p>
+            </div>
+            <div class="card-footer"><a class="btn btn-primary" href='@Url.Action("Raid", "WGO")' role="button">Learn more &raquo;</a></div>
         </div>
     </div>
 </div>
