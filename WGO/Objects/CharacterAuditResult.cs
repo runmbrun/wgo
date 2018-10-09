@@ -9,12 +9,15 @@ namespace WGO
 {
     public class CharacterAuditResult
     {
+        public string Name { get; set; }
+        public string Realm { get; set; }
+        public string Role { get; set; }
         public int IssueCount { get; set; }
         public bool MissingEnchant { get; set; }
         public bool MissingGem { get; set; }
 
-        public List<string> MissingEnchants { get; set; }
-        public List<string> MissingGems { get; set; }
+        public List<string> MissingEnchants { get; set; } = new List<string>();
+        public List<string> MissingGems { get; set; } = new List<string>();
 
         /// <summary>
         /// 
@@ -28,13 +31,18 @@ namespace WGO
 
             try
             {
+                // Store the name and realm
+                this.Name = character.Name;
+                this.Realm = character.Realm;
+                this.Role = character.Role;
+
                 // Get the item data
                 items = JsonConvert.DeserializeObject<JSONCharacterItems>(character.Items);
 
                 #region " Check for missing enchants - 1 weapon enchant and 2 ring enchants "
                 if (items.MainHand.ToolTipParams.Enchant == null)
                 {
-                    this.MissingEnchants.Add("MainHand");
+                    this.MissingEnchants.Add("Main Hand");
                     this.MissingEnchant = true;
                     this.IssueCount++;
                 }
@@ -156,7 +164,7 @@ namespace WGO
                 // If we got here, then success!
                 result = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // No Op
             }

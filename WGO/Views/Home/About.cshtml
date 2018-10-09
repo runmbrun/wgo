@@ -1,10 +1,34 @@
 ﻿@{
     ViewBag.Title = "About";
+    ViewBag.Message = "The World of Warcraft Guild Organizer";
 }
 
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<p>
-    Use this area to provide additional information.
-</p>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-sm-3">
+            Current Time
+        </div>
+        <div class="col-sm-3">
+            @DateTime.Now
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            Current Central Time
+        </div>
+        <div class="col-sm-3">
+            @TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            Next Guild Scan
+        </div>
+        <div class="col-sm-3">
+            @(System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] == null ? "Not set." : System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"])
+        </div>
+    </div>
+</div>

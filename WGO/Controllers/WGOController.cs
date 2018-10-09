@@ -467,7 +467,6 @@ namespace WGO.Controllers
             {
                 // Store the Character data
                 model.Character = chars.First();
-
                 model.AuditHtml = this.CalculateAuditHtml(model.Character);
             }
 
@@ -505,11 +504,11 @@ namespace WGO.Controllers
                     }
 
                     // Check for missing gems - go through every slot to make sure... 
-                    if (audit.MissingEnchant)
+                    if (audit.MissingGem)
                     {
                         html += $"<div class=\"card border-danger mb-3 col-sm-3\"><div class=\"card-header\"><h4 class=\"text-danger\">Missing Gems:</h4></div><div class=\"card-body\"><ul>";
 
-                        foreach (string slot in audit.MissingEnchants)
+                        foreach (string slot in audit.MissingGems)
                         {
                             html += $"<li>{slot}</li>";
                         }
@@ -535,7 +534,25 @@ namespace WGO.Controllers
         /// <returns></returns>
         public ActionResult RaidRosterAudit()
         {
-            return View();
+            List<CharacterAuditResult> auditRoster = new List<CharacterAuditResult>();
+            var chars = db.Characters.Where(s => s.Roster == 2);
+
+            if (chars.Any())
+            {
+                // Store the Character data
+                
+                foreach (Character raider in chars)
+                {
+                    CharacterAuditResult audit = new CharacterAuditResult();
+
+                    if (audit.DoAudit(raider))
+                    {
+                        auditRoster.Add(audit);
+                    }
+                }
+            }
+
+            return View(auditRoster);
         }
 
         /// <summary>
