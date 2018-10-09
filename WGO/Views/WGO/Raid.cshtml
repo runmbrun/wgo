@@ -14,6 +14,7 @@
 </div>
 
 <button class="btn btn-primary" id="reloadButton" style="margin: 1em 0em 1em 0em">Rescan Raid Roster</button>
+@Html.ActionLink("Raid Roster Audit", "RaidRosterAudit", "WGO", new { Metric = 3 }, new { @class = "btn btn-primary" })
 
 @using (Html.BeginForm("Raid", "WGO"))
 {
