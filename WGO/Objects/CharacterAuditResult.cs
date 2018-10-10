@@ -164,7 +164,7 @@ namespace WGO
                 // If we got here, then success!
                 result = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // No Op
             }

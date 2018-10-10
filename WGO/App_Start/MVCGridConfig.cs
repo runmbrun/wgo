@@ -173,7 +173,7 @@ namespace WGO
                     // Return QueryResult object containing IEnumerable<YouModelItem>
                     var options = context.QueryOptions;
                     string globalSearch = options.GetAdditionalQueryOptionString("search") == null ? string.Empty : options.GetAdditionalQueryOptionString("search");
-                    string sortColumn = options.GetSortColumnData<string>() == null ? string.Empty : options.GetSortColumnData<string>();
+                    string sortColumn = options.GetSortColumnData<string>() == null ? string.Empty : options.GetSortColumnData<string>().ToLower();
                     var result = new QueryResult<Models.Character>();
                     int guildRoster = JSONBase.GetGuildRoster();
 
