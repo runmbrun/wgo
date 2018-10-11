@@ -41,7 +41,7 @@ namespace WGO.Controllers
             }
             else
             {
-                if (this.RetrieveCharacter(model.Character, model.Realm, JSONBase.Rosters.Guild) == 0)
+                if (this.RetrieveCharacter(model.Character, model.Realm, WGOConstants.GuildRoster) == 0)
                 {
                     return View(model);
                 }
@@ -71,6 +71,7 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult Guild(string reload)
         {
+            ViewBag.PageNumber = (Request.QueryString["grid-page"] == null) ? "1" : Request.QueryString["grid-page"];
             return View();
         }
 
@@ -82,7 +83,7 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult Rescan(string name, string realm, string role)
         {
-            JSONBase.Rosters roster = JSONBase.Rosters.None;
+            int roster = 0;
             string returnTo = string.Empty;
             string returnToParams = string.Empty;
 
@@ -93,14 +94,14 @@ namespace WGO.Controllers
                 {
                     ViewBag.ReturnUrl = "/WGO/Guild";
                     ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
-                    roster = JSONBase.Rosters.Guild;
+                    roster = WGOConstants.GuildRoster;
                     returnTo = "Guild";
                 }
                 else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/Raid"))
                 {
                     ViewBag.ReturnUrl = "/WGO/Raid";
                     ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
-                    roster = JSONBase.Rosters.Raid;
+                    roster = WGOConstants.RaidRoster;
                     returnTo = "Raid";
                 }
 
@@ -117,7 +118,7 @@ namespace WGO.Controllers
                     // Rescan all the characters
                     List<Character> rescan = null;
 
-                    if (roster == JSONBase.Rosters.Guild)
+                    if (roster == WGOConstants.GuildRoster)
                     {
                         rescan = (from m in db.Characters where m.Roster == 1 select m).ToList();
                     }
@@ -128,13 +129,13 @@ namespace WGO.Controllers
 
                     foreach (Character c in rescan)
                     {
-                        this.RetrieveCharacter(c.Name, c.Realm, roster, roster == JSONBase.Rosters.Raid ? c.Role : string.Empty);
+                        this.RetrieveCharacter(c.Name, c.Realm, roster, roster == WGOConstants.RaidRoster ? c.Role : string.Empty);
                     }
                 }
                 else
                 {
                     // Reload just 1 character
-                    this.RetrieveCharacter(name, realm, roster, roster == JSONBase.Rosters.Raid && !string.IsNullOrWhiteSpace(role) ? role : string.Empty);
+                    this.RetrieveCharacter(name, realm, roster, roster == WGOConstants.RaidRoster && !string.IsNullOrWhiteSpace(role) ? role : string.Empty);
                 }
             }
 
@@ -194,7 +195,7 @@ namespace WGO.Controllers
 
                 foreach (Character c in delete)
                 {
-                    if (c.Roster == JSONBase.GetRaidRoster())
+                    if (c.Roster == WGOConstants.RaidRoster)
                     {
                         db.Characters.Remove(c);
                     }
@@ -247,7 +248,7 @@ namespace WGO.Controllers
             }
             else
             {
-                if (this.RetrieveCharacter(model.Character, model.Realm, JSONBase.Rosters.Raid, model.Role) == 0)
+                if (this.RetrieveCharacter(model.Character, model.Realm, WGOConstants.RaidRoster, model.Role) == 0)
                 {
                     return View(model);
                 }
@@ -265,7 +266,7 @@ namespace WGO.Controllers
         /// <param name="character"></param>
         /// <param name="realm"></param>
         /// <returns></returns>
-        private int RetrieveCharacter(string character, string realm, JSONBase.Rosters roster, string charRole = "")
+        private int RetrieveCharacter(string character, string realm, int roster, string charRole = "")
         {
             int result = 0;
             JSONCharacter charFromWeb = JSONBase.GetCharacterJSON(character, realm);
@@ -301,11 +302,11 @@ namespace WGO.Controllers
 
                 List<Character> search = null;
 
-                if (roster == JSONBase.Rosters.Guild)
+                if (roster == WGOConstants.GuildRoster)
                 {
                     search = db.Characters.Where(s => s.Roster == 1 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
                 }
-                else if (roster == JSONBase.Rosters.Raid)
+                else if (roster == WGOConstants.RaidRoster)
                 {
                     search= db.Characters.Where(s => s.Roster == 2 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
                 }
@@ -338,7 +339,7 @@ namespace WGO.Controllers
                         searchChar.AchievementPoints = charFromWeb.AchievementPoints;
 
                         // Only check for updates on these fields if it's the guild roster or it's the raid roster and the role is the same
-                        if (roster == JSONBase.Rosters.Guild || (roster == JSONBase.Rosters.Raid && role == search[0].Role))
+                        if (roster == WGOConstants.GuildRoster || (roster == WGOConstants.RaidRoster && role == search[0].Role))
                         {
                             // This is a different Role than we are tracking... so don't update these fields
                             if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
@@ -355,13 +356,13 @@ namespace WGO.Controllers
                         searchChar.Max_iLevel = charFromWeb.Items.AverageItemLevel;
                         searchChar.LastUpdated = GetCentralTime();
                         
-                        if (roster == JSONBase.Rosters.Guild)
+                        if (roster == WGOConstants.GuildRoster)
                         {
-                            searchChar.Roster = JSONBase.GetGuildRoster();
+                            searchChar.Roster = WGOConstants.GuildRoster;
                         }
-                        else if (roster == JSONBase.Rosters.Raid)
+                        else if (roster == WGOConstants.RaidRoster)
                         {
-                            searchChar.Roster = JSONBase.GetRaidRoster();
+                            searchChar.Roster = WGOConstants.RaidRoster;
                         }
                     }
 
@@ -376,7 +377,7 @@ namespace WGO.Controllers
                         ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
-                else if ((roster == JSONBase.Rosters.Guild) || (roster == JSONBase.Rosters.Raid && charRole == role))
+                else if ((roster == WGOConstants.GuildRoster) || (roster == WGOConstants.RaidRoster && charRole == role))
                 {
                     // Now insert the data inot the database
                     Character charToDB = new Character();
@@ -396,13 +397,13 @@ namespace WGO.Controllers
                     charToDB.Modified_Max_iLevel = GetCentralTime();
                     charToDB.Modified_Level = GetCentralTime();
 
-                    if (roster == JSONBase.Rosters.Guild)
+                    if (roster == WGOConstants.GuildRoster)
                     {
-                        charToDB.Roster = JSONBase.GetGuildRoster();
+                        charToDB.Roster = WGOConstants.GuildRoster;
                     }
-                    else if (roster == JSONBase.Rosters.Raid)
+                    else if (roster == WGOConstants.RaidRoster)
                     {
-                        charToDB.Roster = JSONBase.GetRaidRoster();
+                        charToDB.Roster = WGOConstants.RaidRoster;
                     }
 
                     // Items = List<CharacterItems> 
@@ -686,11 +687,9 @@ namespace WGO.Controllers
         {
             try
             {
-                int guildRoster = JSONBase.GetGuildRoster();
-                int raidRoster = JSONBase.GetRaidRoster();
                 var dbChars = from m in db.Characters select m;
-                var guildCount = dbChars.Where(s => s.Roster == guildRoster);
-                var raidCount = dbChars.Where(s => s.Roster == raidRoster);
+                var guildCount = dbChars.Where(s => s.Roster == WGOConstants.GuildRoster);
+                var raidCount = dbChars.Where(s => s.Roster == WGOConstants.RaidRoster);
                 
                 ViewBag.GuildCount = 0;
                 ViewBag.RaidCount = 0;
@@ -746,7 +745,7 @@ namespace WGO.Controllers
                 {
                     foreach (JSONGuildCharacter guildie in data.Members)
                     {
-                        if (RetrieveCharacter(guildie.Character.Name, realm, JSONBase.Rosters.Guild) == 0)
+                        if (RetrieveCharacter(guildie.Character.Name, realm, WGOConstants.GuildRoster) == 0)
                         {
                             ModelState.AddModelError(string.Empty, $"Error: retrieving character data for: {guildie.Character.Name}");
                             break;
@@ -772,7 +771,7 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult DeleteGuildRoster()
         {
-            var test = db.Characters.Where(s => s.Roster == (int)JSONBase.Rosters.Guild);
+            var test = db.Characters.Where(s => s.Roster == WGOConstants.GuildRoster);
             if (test.Count() > 0)
             {
                 foreach (Character c in test)
@@ -793,7 +792,7 @@ namespace WGO.Controllers
         [HttpGet]
         public ActionResult DeleteRaidRoster()
         {
-            var test = db.Characters.Where(s => s.Roster == (int)JSONBase.Rosters.Raid);
+            var test = db.Characters.Where(s => s.Roster == WGOConstants.RaidRoster);
             if (test.Count() > 0)
             {
                 foreach (Character c in test)

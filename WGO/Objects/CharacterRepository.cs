@@ -20,7 +20,7 @@ namespace WGO
         {
             using (Models.WGODBContext db = new Models.WGODBContext())
             {
-                var query = db.Characters.AsQueryable().Where(s => s.Roster == 1 || s.Roster == 3);
+                var query = db.Characters.AsQueryable().Where(s => s.Roster == 1);
 
                 if (!string.IsNullOrWhiteSpace(globalSearch))
                 {

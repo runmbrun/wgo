@@ -23,62 +23,6 @@ namespace WGO.JSON
         public static bool CharacterNotFound { get; set; } = false;
         #endregion
 
-        #region " Enums "
-        /// <summary>
-        /// 
-        /// </summary>
-        public enum Rosters
-        {
-            /// <summary>
-            /// 
-            /// </summary>
-            None,
-
-            /// <summary>
-            /// 
-            /// </summary>
-            Guild,
-
-            /// <summary>
-            /// 
-            /// </summary>
-            Raid,
-
-            /// <summary>
-            /// 
-            /// </summary>
-            My
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        static public int GetGuildRoster()
-        {
-            return (int)Rosters.Guild;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        static public int GetRaidRoster()
-        {
-            return (int)Rosters.Raid;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        static public int GetMyRoster()
-        {
-            return (int)Rosters.My;
-        }
-        #endregion
-
-
         /// <summary>
         /// Example: https://us.api.battle.net/wow/character/Thrall/Purdee?fields=items%2Cprofessions%2Ctalents&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
         /// </summary>

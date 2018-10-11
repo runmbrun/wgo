@@ -41,8 +41,6 @@ namespace WGO.Models
             return new WGODBContext();
         }
 
-        //public System.Data.Entity.DbSet<WGO.Models.Character> Characters { get; set; }
-
         public DbSet<Character> Characters { get; set; }
     }
 }

@@ -5,7 +5,6 @@ namespace WGO
     using System;
     using System.Linq;
     using System.Web.Mvc;
-    using JSON;
     using MVCGrid.Models;
     using MVCGrid.Web;
 
@@ -119,6 +118,14 @@ namespace WGO
             #endregion
 
             #region " The Guild Page Grid "
+            //int rowNumber = 0;
+            //int pageSize = 5;
+            //int pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            //if ((pageNumber) > 1)
+            //{
+            //    rowNumber = (pageSize * (pageNumber - 1)) + rowNumber;
+            //}
+
             // The Guild Page
             MVCGridDefinitionTable.Add("GuildRoster", new MVCGridBuilder<WGO.Models.Character>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
@@ -128,6 +135,18 @@ namespace WGO
                 .AddColumns(cols =>
                 {
                     // Add your columns here
+                    //cols.Add().WithColumnName("Order")
+                    //    .WithValueTemplate()
+                    //    .RenderValueAs(o =>
+                    //    {
+                    //        rowNumber++;
+                    //        return @<text>@rowNumber </text>;
+                    //    });
+                    cols.Add().WithColumnName("RowNumber")
+                        .WithHeaderText("#")
+                        //.WithValueTemplate("{Model.ID}", false);
+                        //.WithValueTemplate("{Model.FindIndex(e => e.ID = Model.ID )}", false);
+                        .WithValueTemplate("1", false);
                     cols.Add().WithColumnName("Name")
                         .WithHeaderText("Name")
                         .WithSorting(true)
@@ -175,10 +194,8 @@ namespace WGO
                     string globalSearch = options.GetAdditionalQueryOptionString("search") == null ? string.Empty : options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>() == null ? string.Empty : options.GetSortColumnData<string>().ToLower();
                     var result = new QueryResult<Models.Character>();
-                    int guildRoster = JSONBase.GetGuildRoster();
 
                     // Dependency Testing...
-                    //CharacterRepository charRepo2 = new CharacterRepository();
                     int totalRecords = 0;
                     var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
 
@@ -188,7 +205,7 @@ namespace WGO
                         System.Diagnostics.Debug.WriteLine($"DEBUG: TotalRecords = {totalRecords}.");
 
                         result.TotalRecords = totalRecords;
-                        result.Items = test;
+                        result.Items = test.ToList();
                     }
                     else
                     {
@@ -196,7 +213,7 @@ namespace WGO
                         using (var db = new Models.WGODBContext())
                         {
                             // Get the data
-                            var query = db.Characters.AsQueryable().Where(s => s.Roster == guildRoster);
+                            var query = db.Characters.AsQueryable().Where(s => s.Roster == WGOConstants.GuildRoster);
 
                             // Sort the data
                             switch (options.SortColumnName.ToLower())
@@ -218,11 +235,11 @@ namespace WGO
                                     break;
 
                                 case "maxilevel":
-                                    query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Max_iLevel).ThenBy(p => p.Name);
+                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Max_iLevel) : query.OrderByDescending(p => p.Max_iLevel);
                                     break;
 
                                 case "equippedilevel":
-                                    query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
+                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Equipped_iLevel) : query.OrderByDescending(p => p.Equipped_iLevel);
                                     break;
 
                                 case "lastmodified":
@@ -316,13 +333,12 @@ namespace WGO
                     string globalSearch = options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>();
                     var result = new QueryResult<Models.Character>();
-                    int raidRoster = JSONBase.GetRaidRoster();
                     
                     // Get the current data now...
                     using (var db = new Models.WGODBContext())
                     {
                         // Get the data
-                        var query = db.Characters.AsQueryable().Where(s => s.Roster == raidRoster);
+                        var query = db.Characters.AsQueryable().Where(s => s.Roster == WGOConstants.RaidRoster);
 
                         // Sort the data
                         switch (options.SortColumnName.ToLower())

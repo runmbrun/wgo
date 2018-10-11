@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Objects\WGOConstants.cs" />
     <Compile Include="Objects\CharacterAuditResult.cs" />
     <Compile Include="Objects\DefaultDependencyResolver.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
