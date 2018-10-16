@@ -1,8 +1,17 @@
-﻿using System;
-using System.Data.Entity;
+﻿// <copyright file="WGOModels.cs" company="Secondnorth.com">
+//     Secondnorth.com. All rights reserved.
+// </copyright>
+// <author>Fainn</author>
 
 namespace WGO.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity;
+
+    /// <summary>
+    /// Model of data for a character.
+    /// </summary>
     public class Character
     {
         public int ID { get; set; }
@@ -25,6 +34,12 @@ namespace WGO.Models
         public int Roster { get; set; }
         public string Role { get; set; }
         public string Items { get; set; }
+
+        /// <summary>
+        /// This is not from the database, but will help some pages rank the characters
+        /// </summary>
+        [NotMapped]
+        public int Rank { get; set; }
     }
 
     /// <summary>
@@ -32,15 +47,25 @@ namespace WGO.Models
     /// </summary>
     public class WGODBContext : DbContext
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public WGODBContext() : base("WGOConnection")
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static WGODBContext Create()
         {
             return new WGODBContext();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DbSet<Character> Characters { get; set; }
     }
 }

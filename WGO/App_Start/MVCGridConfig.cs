@@ -16,39 +16,39 @@ namespace WGO
         public static void RegisterGrids()
         {
             #region " MVCGrid.Net Example "
-            /* Example: 
-            MVCGridDefinitionTable.Add("UsageExample", new MVCGridBuilder<YourModelItem>()
-                .WithAuthorizationType(AuthorizationType.AllowAnonymous)
-                .AddColumns(cols =>
-                {
-                    // Add your columns here
-                    cols.Add().WithColumnName("UniqueColumnName")
-                        .WithHeaderText("Any Header")
-                        .WithValueExpression(i => i.YourProperty); // use the Value Expression to return the cell text for this column
-                    cols.Add().WithColumnName("UrlExample")
-                        .WithHeaderText("Edit")
-                        .WithValueExpression((i, c) => c.UrlHelper.Action("detail", "demo", new { id = i.Id }));
-                })
-                .WithRetrieveDataMethod((context) =>
-                {
-                    // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
-                    // Use Entity Framework, a module from your IoC Container, or any other method.
-                    // Return QueryResult object containing IEnumerable<YouModelItem>
+        /* Example: 
+        MVCGridDefinitionTable.Add("UsageExample", new MVCGridBuilder<YourModelItem>()
+            .WithAuthorizationType(AuthorizationType.AllowAnonymous)
+            .AddColumns(cols =>
+            {
+                // Add your columns here
+                cols.Add().WithColumnName("UniqueColumnName")
+                    .WithHeaderText("Any Header")
+                    .WithValueExpression(i => i.YourProperty); // use the Value Expression to return the cell text for this column
+                cols.Add().WithColumnName("UrlExample")
+                    .WithHeaderText("Edit")
+                    .WithValueExpression((i, c) => c.UrlHelper.Action("detail", "demo", new { id = i.Id }));
+            })
+            .WithRetrieveDataMethod((context) =>
+            {
+                // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
+                // Use Entity Framework, a module from your IoC Container, or any other method.
+                // Return QueryResult object containing IEnumerable<YouModelItem>
 
-                    return new QueryResult<YourModelItem>()
-                    {
-                        Items = new List<YourModelItem>(),
-                        TotalRecords = 0 // if paging is enabled, return the total number of records of all pages
-                    };
+                return new QueryResult<YourModelItem>()
+                {
+                    Items = new List<YourModelItem>(),
+                    TotalRecords = 0 // if paging is enabled, return the total number of records of all pages
+                };
 
-                })
-            );
-            */
-            #endregion
+            })
+        );
+        */
+        #endregion
 
             #region " The Search Page Grid "
-            // The Search Page
-            MVCGridDefinitionTable.Add("SearchGrid", new MVCGridBuilder<Models.Character>()
+        // The Search Page
+        MVCGridDefinitionTable.Add("SearchGrid", new MVCGridBuilder<Models.Character>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
                 .AddColumns(cols =>
                 {
@@ -118,16 +118,8 @@ namespace WGO
             #endregion
 
             #region " The Guild Page Grid "
-            //int rowNumber = 0;
-            //int pageSize = 5;
-            //int pageNumber = Convert.ToInt32(ViewBag.PageNumber);
-            //if ((pageNumber) > 1)
-            //{
-            //    rowNumber = (pageSize * (pageNumber - 1)) + rowNumber;
-            //}
-
             // The Guild Page
-            MVCGridDefinitionTable.Add("GuildRoster", new MVCGridBuilder<WGO.Models.Character>()
+            MVCGridDefinitionTable.Add("GuildRoster", new MVCGridBuilder<Models.Character>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
                 .WithSorting(sorting: true, defaultSortColumn: "EquippediLevel", defaultSortDirection: SortDirection.Dsc)
                 .WithPaging(paging: true, itemsPerPage: 10, allowChangePageSize: true, maxItemsPerPage: 100)
@@ -135,18 +127,15 @@ namespace WGO
                 .AddColumns(cols =>
                 {
                     // Add your columns here
-                    //cols.Add().WithColumnName("Order")
-                    //    .WithValueTemplate()
-                    //    .RenderValueAs(o =>
-                    //    {
-                    //        rowNumber++;
-                    //        return @<text>@rowNumber </text>;
-                    //    });
-                    cols.Add().WithColumnName("RowNumber")
+                    /*cols.Add().WithColumnName("Order")
+                        .WithHeaderText(" ")
+                        .WithValueTemplate("{Model.ID}", false);*/
+                    //.WithValueTemplate("{Model.Rows.IndexOf(Model)}", false);
+                    //.WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name, realm = p.Realm }))
+                    //.WithValueExpression(i => i.Rank.ToString());
+                    cols.Add().WithColumnName("Rank")
                         .WithHeaderText("#")
-                        //.WithValueTemplate("{Model.ID}", false);
-                        //.WithValueTemplate("{Model.FindIndex(e => e.ID = Model.ID )}", false);
-                        .WithValueTemplate("1", false);
+                        .WithValueExpression(i => i.Rank.ToString());
                     cols.Add().WithColumnName("Name")
                         .WithHeaderText("Name")
                         .WithSorting(true)
@@ -178,7 +167,8 @@ namespace WGO
                     cols.Add().WithColumnName("LastModified")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
-                        .WithValueExpression(i => i.LastUpdated.ToString());
+                        .WithValueExpression(i => i.LastUpdated.ToString())
+                        .WithCellCssClassExpression(i => "small");
                     cols.Add("Rescan").WithHtmlEncoding(false)
                         .WithSorting(false)
                         .WithHeaderText(" ")
@@ -188,28 +178,33 @@ namespace WGO
                 .WithRetrieveDataMethod((context) =>
                 {
                     // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
-                    // Use Entity Framework, a module from your IoC Container, or any other method.
-                    // Return QueryResult object containing IEnumerable<YouModelItem>
                     var options = context.QueryOptions;
                     string globalSearch = options.GetAdditionalQueryOptionString("search") == null ? string.Empty : options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>() == null ? string.Empty : options.GetSortColumnData<string>().ToLower();
                     var result = new QueryResult<Models.Character>();
 
-                    // Dependency Testing...
+                    // Dependency Setup...
                     int totalRecords = 0;
-                    var repo = DependencyResolver.Current.GetService<ICharacterRepository>();
+                    var repo = DependencyResolver.Current.GetService<IRankedCharacterRepository>();
 
+                    // Check to see if the dependency was found
                     if (repo != null)
                     {
-                        var test = repo.GetData(out totalRecords, globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(), sortColumn, options.SortDirection == SortDirection.Asc);
+                        var test = repo.GetData(out totalRecords, WGOConstants.GuildRoster, globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(), sortColumn, options.SortDirection == SortDirection.Asc);
                         System.Diagnostics.Debug.WriteLine($"DEBUG: TotalRecords = {totalRecords}.");
+
+                        int rank = 1;
+                        foreach (Models.Character c in test)
+                        {
+                            //c.Rank = rank++;
+                        }
 
                         result.TotalRecords = totalRecords;
                         result.Items = test.ToList();
                     }
                     else
                     {
-                        // Get the current data now...
+                        // Backup - Dependency didn't work so get the current data now...
                         using (var db = new Models.WGODBContext())
                         {
                             // Get the data
@@ -251,9 +246,10 @@ namespace WGO
                                     break;
                             }
 
+                            // Get the Count
                             result.TotalRecords = query.Count();
 
-                            // Paging
+                            // Setup the Paging
                             if (options.GetLimitOffset().HasValue)
                             {
                                 query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);

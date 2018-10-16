@@ -1,7 +1,6 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Owin;
 using Owin;
-using System.Web.Services.Description;
-using Microsoft.Extensions.DependencyInjection;
 using System.Web.Mvc;
 
 [assembly: OwinStartupAttribute(typeof(WGO.Startup))]
@@ -23,7 +22,7 @@ namespace WGO
         public void ConfigureServices(IServiceCollection services)
         {
             // Add application services.
-            services.AddTransient<ICharacterRepository, CharacterRepository>();
+            services.AddTransient<IRankedCharacterRepository, RankedCharacterRepository>();
         }
     }
 }
