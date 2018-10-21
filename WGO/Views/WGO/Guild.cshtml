@@ -2,14 +2,6 @@
 
 @{
     ViewBag.Title = "Guild";
-
-    int rowNumber = 0;
-    int pageSize = 10;
-    int pageNumber = Convert.ToInt32(ViewBag.PageNumber);
-    if ((pageNumber) > 1)
-    {
-        rowNumber = (pageSize * (pageNumber - 1)) + rowNumber;
-    }
 }
 
 <h2>Guild Roster</h2>

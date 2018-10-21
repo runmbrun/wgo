@@ -25,6 +25,14 @@
     </div>
     <div class="row">
         <div class="col-sm-3">
+            Last Guild Scan
+        </div>
+        <div class="col-sm-3">
+            @(System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"] == null ? "Not set." : System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"])
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
             Next Guild Scan
         </div>
         <div class="col-sm-3">

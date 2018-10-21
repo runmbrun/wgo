@@ -296,8 +296,14 @@ namespace WGO.Controllers
 
                 if (charFromWeb.Talents != null && charFromWeb.Talents.Count > 0)
                 {
-                    spec = charFromWeb.Talents[0].Spec.Name;
-                    role = charFromWeb.Talents[0].Spec.Role;
+                    foreach (JSONCharacterTalent talent in charFromWeb.Talents)
+                    {
+                        if (talent.Selected != null && talent.Selected == "true")
+                        {
+                            spec = talent.Spec.Name;
+                            role = talent.Spec.Role;
+                        }
+                    }
                 }
 
                 List<Character> search = null;

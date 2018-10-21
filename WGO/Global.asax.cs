@@ -87,6 +87,7 @@ namespace WGO
             }
 
             // Store it
+            System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"] = System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"];
             System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] = centralDateTime.AddSeconds(seconds).ToString();
 
             // Now set the cache for the future

@@ -578,10 +578,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/WGO.dll">
-      <publishTime>10/10/2018 15:40:12</publishTime>
+      <publishTime>10/18/2018 10:14:32</publishTime>
     </File>
     <File Include="bin/WGO.pdb">
-      <publishTime>10/10/2018 15:40:12</publishTime>
+      <publishTime>10/18/2018 10:14:32</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css">
       <publishTime>09/09/2018 10:59:39</publishTime>
@@ -806,7 +806,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 14:11:18</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
-      <publishTime>10/09/2018 13:58:53</publishTime>
+      <publishTime>10/18/2018 10:07:39</publishTime>
     </File>
     <File Include="Views/Home/Contact.cshtml">
       <publishTime>09/01/2018 13:12:58</publishTime>
@@ -863,7 +863,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/02/2018 12:10:00</publishTime>
     </File>
     <File Include="Views/WGO/Guild.cshtml">
-      <publishTime>10/10/2018 15:20:34</publishTime>
+      <publishTime>10/18/2018 10:13:39</publishTime>
     </File>
     <File Include="Views/WGO/Raid.cshtml">
       <publishTime>10/09/2018 11:19:01</publishTime>

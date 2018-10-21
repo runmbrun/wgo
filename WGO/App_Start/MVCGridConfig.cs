@@ -119,20 +119,13 @@ namespace WGO
 
             #region " The Guild Page Grid "
             // The Guild Page
-            MVCGridDefinitionTable.Add("GuildRoster", new MVCGridBuilder<Models.Character>()
+            MVCGridDefinitionTable.Add("GuildRoster", new MVCGridBuilder<Models.RankedCharacter>()
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)
-                .WithSorting(sorting: true, defaultSortColumn: "EquippediLevel", defaultSortDirection: SortDirection.Dsc)
+                .WithSorting(sorting: true, defaultSortColumn: "default", defaultSortDirection: SortDirection.Dsc)
                 .WithPaging(paging: true, itemsPerPage: 10, allowChangePageSize: true, maxItemsPerPage: 100)
                 .WithAdditionalQueryOptionNames("search")
                 .AddColumns(cols =>
                 {
-                    // Add your columns here
-                    /*cols.Add().WithColumnName("Order")
-                        .WithHeaderText(" ")
-                        .WithValueTemplate("{Model.ID}", false);*/
-                    //.WithValueTemplate("{Model.Rows.IndexOf(Model)}", false);
-                    //.WithValueExpression((p, c) => c.UrlHelper.Action("Character", "WGO", new { name = p.Name, realm = p.Realm }))
-                    //.WithValueExpression(i => i.Rank.ToString());
                     cols.Add().WithColumnName("Rank")
                         .WithHeaderText("#")
                         .WithValueExpression(i => i.Rank.ToString());
@@ -154,17 +147,17 @@ namespace WGO
                         .WithSorting(true)
                         .WithValueExpression(i => i.AchievementPoints.ToString())
                         .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_AchievementPoints) ? "table-success" : "");
-                    cols.Add().WithColumnName("MaxiLevel")
+                    cols.Add().WithColumnName("Max_iLevel")
                         .WithHeaderText("Max iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Max_iLevel.ToString())
                         .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Max_iLevel) ? "table-success" : "");
-                    cols.Add().WithColumnName("EquippediLevel")
+                    cols.Add().WithColumnName("Equipped_iLevel")
                         .WithHeaderText("Equipped iLevel")
                         .WithSorting(true)
                         .WithValueExpression(i => i.Equipped_iLevel.ToString())
                         .WithCellCssClassExpression(p => DateModifiedLately(p.Modified_Equipped_iLevel) ? "table-success" : "");
-                    cols.Add().WithColumnName("LastModified")
+                    cols.Add().WithColumnName("LastUpdated")
                         .WithHeaderText("Last Modified")
                         .WithSorting(true)
                         .WithValueExpression(i => i.LastUpdated.ToString())
@@ -181,7 +174,7 @@ namespace WGO
                     var options = context.QueryOptions;
                     string globalSearch = options.GetAdditionalQueryOptionString("search") == null ? string.Empty : options.GetAdditionalQueryOptionString("search");
                     string sortColumn = options.GetSortColumnData<string>() == null ? string.Empty : options.GetSortColumnData<string>().ToLower();
-                    var result = new QueryResult<Models.Character>();
+                    var result = new QueryResult<Models.RankedCharacter>();
 
                     // Dependency Setup...
                     int totalRecords = 0;
@@ -191,73 +184,8 @@ namespace WGO
                     if (repo != null)
                     {
                         var test = repo.GetData(out totalRecords, WGOConstants.GuildRoster, globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(), sortColumn, options.SortDirection == SortDirection.Asc);
-                        System.Diagnostics.Debug.WriteLine($"DEBUG: TotalRecords = {totalRecords}.");
-
-                        int rank = 1;
-                        foreach (Models.Character c in test)
-                        {
-                            //c.Rank = rank++;
-                        }
-
                         result.TotalRecords = totalRecords;
-                        result.Items = test.ToList();
-                    }
-                    else
-                    {
-                        // Backup - Dependency didn't work so get the current data now...
-                        using (var db = new Models.WGODBContext())
-                        {
-                            // Get the data
-                            var query = db.Characters.AsQueryable().Where(s => s.Roster == WGOConstants.GuildRoster);
-
-                            // Sort the data
-                            switch (options.SortColumnName.ToLower())
-                            {
-                                case "name":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
-                                    break;
-
-                                case "level":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Level) : query.OrderByDescending(p => p.Level);
-                                    break;
-
-                                case "class":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Class) : query.OrderByDescending(p => p.Class);
-                                    break;
-
-                                case "achievementpoints":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.AchievementPoints) : query.OrderByDescending(p => p.AchievementPoints);
-                                    break;
-
-                                case "maxilevel":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Max_iLevel) : query.OrderByDescending(p => p.Max_iLevel);
-                                    break;
-
-                                case "equippedilevel":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.Equipped_iLevel) : query.OrderByDescending(p => p.Equipped_iLevel);
-                                    break;
-
-                                case "lastmodified":
-                                    query = options.SortDirection == SortDirection.Asc ? query.OrderBy(p => p.LastUpdated) : query.OrderByDescending(p => p.LastUpdated);
-                                    break;
-
-                                default:
-                                    query = query.OrderByDescending(p => p.Level).ThenByDescending(p => p.Equipped_iLevel).ThenBy(p => p.Name);
-                                    break;
-                            }
-
-                            // Get the Count
-                            result.TotalRecords = query.Count();
-
-                            // Setup the Paging
-                            if (options.GetLimitOffset().HasValue)
-                            {
-                                query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
-                            }
-
-                            // Done!
-                            result.Items = query.ToList();
-                        }
+                        result.Items = test;
                     }
                     
                     return result;

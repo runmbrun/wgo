@@ -43,6 +43,28 @@ namespace WGO.Models
     }
 
     /// <summary>
+    /// Model of data for displaying the characters ranked.
+    /// </summary>
+    public class RankedCharacter
+    {
+        public long Count { get; set; }
+        public long Rank { get; set; }
+        public string Name { get; set; }
+        public int Level { get; set; }
+        public string Class { get; set; }
+        public int AchievementPoints { get; set; }
+        public int Max_iLevel { get; set; }
+        public int Equipped_iLevel { get; set; }
+        public DateTime? LastUpdated { get; set; }
+
+        public string Realm { get; set; }
+        public DateTime? Modified_Level { get; set; }
+        public DateTime? Modified_Max_iLevel { get; set; }
+        public DateTime? Modified_Equipped_iLevel { get; set; }
+        public DateTime? Modified_AchievementPoints { get; set; }
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     public class WGODBContext : DbContext
