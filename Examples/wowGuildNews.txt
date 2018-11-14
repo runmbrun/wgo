@@ -1,0 +1,31 @@
+https://us.api.battle.net/wow/guild/Thrall/Secondnorth?fields=news&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+
+{
+"lastModified":1542217922000,
+"name":"SecondNorth",
+"realm":"Thrall",
+"battlegroup":"Rampage",
+"level":25,
+"side":1,
+"achievementPoints":1535,
+"emblem":
+{
+  "icon":70,
+  "iconColor":"ff101517",
+  "iconColorId":15,
+  "border":3,
+  "borderColor":"ff0f1415",
+  "borderColorId":15,
+  "backgroundColor":"ff003582",
+  "backgroundColorId":32
+},
+"news":
+[{
+  "type":"itemLoot",
+  "character":"Brobdignag",
+  "timestamp":1542219360000,
+  "itemId":163426,
+  "context":"world-quest-4",
+  "bonusLists":[5125,1547,5136,5378]
+ },
+ {"type":"itemLoot","character":"Shickarl","timestamp":1542214860000,"itemId":163435,"context":"world-quest-4","bonusLists":[5125,1562,5136,5381]},{"type":"itemLoot","character":"Eridaedra","timestamp":1542155040000,"itemId":158152,"context":"world-quest-4","bonusLists":[4803,1532,4786]},{"type":"itemLoot","character":"Eridaedra","timestamp":1542147360000,"itemId":159459,"context":"challenge-mode-jackpot","bonusLists":[5006,1537,4783]},{"type":"itemLoot","character":"Cmonhitme","timestamp":1542145860000,"itemId":159432,"context":"challenge-mode-jackpot","bonusLists":[5049,1527,4786]},{"type":"itemLoot","character":"Shickarl","timestamp":1542145200000,"itemId":159652,"context":"challenge-mode-jackpot","bonusLists":[5006,1537,4783]},{"type":"itemLoot","character":"Purdee","timestamp":1542128040000,"itemId":159416,"context":"challenge-mode-jackpot","bonusLists":[5049,1527,4786]},{"type":"itemLoot","character":"Cmonhitme","timestamp":1541945400000,"itemId":159426,"context":"challenge-mode","bonusLists":[5005,1527,4786]},{"type":"itemLoot","character":"Purdee","timestamp":1541945400000,"itemId":159620,"context":"challenge-mode","bonusLists":[5005,1527,4786]},{"type":"itemLoot","character":"Vaeas","timestamp":1541941560000,"itemId":158152,"context":"world-quest-4","bonusLists":[4803,1532,4786]},{"type":"itemLoot","character":"Cmonhitme","timestamp":1541941080000,"itemId":158152,"context":"world-quest-4","bonusLists":[4803,1532,4786]},{"type":"itemLoot","character":"Shickarl","timestamp":1541940960000,"itemId":158152,"context":"world-quest-4","bonusLists":[4803,1532,4786]},{"type":"itemLoot","character":"Purdee","timestamp":1541903400000,"itemId":160698,"context":"raid-heroic","bonusLists":[4799,1492,4786]},{"type":"itemLoot","character":"Shickarl","timestamp":1541878800000,"itemId":157881,"context":"world-quest-4","bonusLists":[1562,5136,5381]},{"type":"itemLoot","character":"Eridaedra","timestamp":1541877240000,"itemId":161072,"context":"raid-heroic","bonusLists":[4799,1492,4786]},{"type":"itemLoot","character":"Eridaedra","timestamp":1541876940000,"itemId":160625,"context":"raid-heroic","bonusLists":[4799,1497,4783]},{"type":"itemLoot","character":"Eridaedra","timestamp":1541876940000,"itemId":160681,"context":"raid-heroic","bonusLists":[4799,1492,4786]},{"type":"itemLoot","character":"Shickarl","timestamp":1541876940000,"itemId":160625,"context":"raid-heroic","bonusLists":[4799,1492,4786]},{"type":"itemLoot","character":"Brobdignag","timestamp":1541856420000,"itemId":157873,"context":"world-quest-4","bonusLists":[1547,5136,5378]},{"type":"itemLoot","character":"Therapyman","timestamp":1541853960000,"itemId":157875,"context":"world-quest-4","bonusLists":[1562,5140,5382]},{"type":"itemLoot","character":"Cmonhitme","timestamp":1541841300000,"itemId":157897,"context":"world-quest-4","bonusLists":[1547,5136,5378]},{"type":"itemLoot","character":"Mervrick","timestamp":1541789040000,"itemId":157873,"context":"world-quest-4","bonusLists":[1532,5136]},{"type":"itemLoot","character":"Purdee","timestamp":1541783040000,"itemId":157897,"context":"world-quest-4","bonusLists":[1562,5136,5381]},{"type":"playerAchievement","character":"Purdee","timestamp":1541783040000,"context":"","bonusLists":[],"achievement":{"id":5723,"title":"50 Exalted Reputations","points":10,"description":"Raise 50 reputations to Exalted.","rewardItems":[],"icon":"achievement_reputation_08","criteria":[{"id":982,"description":"50 reputations to Exalted","orderIndex":1,"max":50}],"accountWide":false,"factionId":2}},{"type":"itemLoot","character":"Eridaedra","timestamp":1541771580000,"itemId":157881,"context":"world-quest-4","bonusLists":[1562,5136,5381]},{"type":"itemLoot","character":"Vaeas","timestamp":1541770260000,"itemId":157898,"context":"world-quest-4","bonusLists":[1547,5138,5380]},{"type":"itemLoot","character":"Purdee","timestamp":1541737200000,"itemId":162463,"context":"trade-skill","bonusLists":[1697]},{"type":"itemLoot","character":"Purdee","timestamp":1541736960000,"itemId":152810,"context":"trade-skill","bonusLists":[1694]},{"type":"itemLoot","character":"Eridaedra","timestamp":1541724720000,"itemId":159305,"context":"challenge-mode","bonusLists":[5006,4802,1527,4786]},{"type":"itemLoot","character":"Morivar","timestamp":1541724720000,"itemId":159612,"context":"challenge-mode","bonusLists":[5006,1527,4786]},{"type":"itemLoot","character":"Shickarl","timestamp":1541724720000,"itemId":159305,"context":"challenge-mode","bonusLists":[5006,1527,4786]},{"type":"itemLoot","character":"Eridaedra","timestamp":1541718840000,"itemId":163309,"context":"raid-heroic","bonusLists":[5125,1552,4784]},{"type":"itemLoot","character":"Eridaedra","timestamp":1541716320000,"itemId":163435,"context":"world-quest-4","bonusLists":[5125,1547,5136,5378]},{"type":"itemLoot","character":"Vaeas","timestamp":1541714220000,"itemId":163280,"context":"world-quest-4","bonusLists":[5125,1547,5138,5380]}]}
