@@ -89,6 +89,27 @@ namespace WGO.JSON
         }
 
         /// <summary>
+        /// Example: https://us.api.battle.net/wow/guild/Thrall/Secondnorth?fields=news&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+        /// </summary>
+        /// <param name="guild"></param>
+        /// /// <param name="realm"></param>
+        /// <returns></returns>
+        static public JSONGuildNews GetGuildNewsJSON(string guild, string realm)
+        {
+            JSONGuildNews result = null;
+            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}guild/{realm}/{guild}?fields=news&locale=en_US&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";
+            string responseData = GetJSONData(requestUrl);
+
+            // Convert the data to the proper object
+            if (!string.IsNullOrEmpty(responseData))
+            {
+                result = JsonConvert.DeserializeObject<JSONGuildNews>(responseData);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Requests data from a RESTful site.  Response is in string format and will need to be converted to class format.
         /// </summary>
         /// <param name="requestUrl"></param>

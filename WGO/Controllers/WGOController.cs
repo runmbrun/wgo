@@ -673,6 +673,71 @@ namespace WGO.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Test View.
+        /// </summary>
+        /// <returns>Action Result.</returns>
+        public ActionResult GuildNews()
+        {
+            GuildNewsViewModel model = new GuildNewsViewModel();
+            JSONGuildNews guildNews = RetrieveGuildNews("Secondnorth", "Thrall");
+
+            if (guildNews != null)
+            {
+                List<string> lines = new List<string>();
+                foreach (JSONGuildNewsItem item in guildNews.News)
+                {
+                    string htmlLine = string.Empty;
+
+                    if (item.Type == "itemLoot")
+                    {
+                        string bonuses = string.Empty;
+                        DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddMilliseconds(Convert.ToDouble(item.Timestamp)).ToLocalTime();
+
+                        htmlLine = $"<a href=\"//www.wowhead.com/item={item.ItemId}\"";
+
+                        if (item.BonusLists.Count > 0)
+                        {
+                            foreach (int i in item.BonusLists)
+                            {
+                                bonuses += $"{i}:";
+                            }
+
+                            htmlLine += $"data-wowhead=\"bonus={bonuses}\"";
+                        }
+
+                        htmlLine += $"></a> was obtained by <a href=\"Character/{item.Character}/Thrall\">{item.Character}</a> on {dt}";
+                    }
+
+                    lines.Add(htmlLine);
+                }
+
+                model.GuildNews = lines;
+            }
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Result = 0 -> Error
+        /// Result = 1 -> Success
+        /// Result = 2 -> Character not found, but no errors.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="realm"></param>
+        /// <returns></returns>
+        private JSONGuildNews RetrieveGuildNews(string guild, string realm)
+        {
+            JSONGuildNews result = JSONBase.GetGuildNewsJSON(guild, realm);
+
+            if (result == null)
+            {
+                ModelState.AddModelError(string.Empty, $"Guild {guild} from {realm} not found.");
+            }
+
+            return result;
+        }
+
         #region " Admin Menu - Debugging Functions "
         /// <summary>
         /// 

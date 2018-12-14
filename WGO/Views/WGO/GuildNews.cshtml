@@ -1,0 +1,57 @@
+﻿@model WGO.Models.GuildNewsViewModel
+
+@{
+    ViewBag.Title = "GuildNews";
+}
+
+<div data-toggle="collapse" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+    <h4>Recent Guild News</h4>
+    <ul data-role="listview" data-inset="false">
+        @foreach (string news in Model.GuildNews)
+        {
+            <li>@Html.Raw(news)</li>
+        }
+    </ul>
+</div>
+
+@*<div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Recent Guild News
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+@*<div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+        <h4>Recent News</h4>
+        <ul data-role="listview" data-inset="false">
+            @foreach (string news in Model.GuildNews)
+            {
+                <li>@news</li>
+            }
+        </ul>
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryblock")
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>var whTooltips = { colorLinks: true, iconizeLinks: true, renameLinks: true, iconSize: 'medium' };</script>
+    <script src="//www.wowhead.com/widgets/power.js" type="text/javascript"></script>
+}

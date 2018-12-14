@@ -6,10 +6,16 @@ using System.Web;
 
 namespace WGO.Models
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class WGOViewModels
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class SearchViewModel
     {
         [Required]
@@ -25,10 +31,21 @@ namespace WGO.Models
         public IEnumerable<System.Web.Mvc.SelectListItem> Roles { get; set; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class CharacterViewModel
     {
         public Character Character { get; set; }
         //public JSON.JSONCharacterAudit Audit { get; set; }
         public string AuditHtml { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class GuildNewsViewModel
+    {
+        public IList<string> GuildNews { get; set; }
     }
 }
