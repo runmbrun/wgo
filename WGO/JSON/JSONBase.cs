@@ -19,10 +19,20 @@ namespace WGO.JSON
         /// 
         /// </summary>
         public static bool CharacterNotFound { get; set; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string AccessToken { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static DateTime Expiration { get; set; }
         #endregion
 
         /// <summary>
-        /// Example: https://us.api.battle.net/wow/character/Thrall/Purdee?fields=items%2Cprofessions%2Ctalents&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+        /// Example: https://us.api.blizzard.com/wow/character/Thrall/Purdee?fields=items%2Cprofessions%2Ctalents&locale=en_US&access_token=jwhk8mw8kfpcng2y86as895gufku9kfa
         /// </summary>
         /// <param name="requestUrl"></param>
         /// <returns></returns>
@@ -32,7 +42,7 @@ namespace WGO.JSON
             CharacterNotFound = false;
 
             JSONCharacter result = null;
-            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=items,professions,talents&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";            
+            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=items,professions,talents&access_token={AccessToken}";            
             string responseData = GetJSONData(requestUrl);
 
             // Convert the data to the proper object
@@ -45,7 +55,7 @@ namespace WGO.JSON
         }
 
         /// <summary>
-        /// Example: https://us.api.battle.net/wow/character/Thrall/Purdee?fields=audit&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+        /// Example: https://us.api.blizzard.com/wow/character/Thrall/Purdee?fields=audit&locale=en_US&access_token=jwhk8mw8kfpcng2y86as895gufku9kfa
         /// </summary>
         /// <param name="requestUrl"></param>
         /// <returns></returns>
@@ -55,7 +65,7 @@ namespace WGO.JSON
             CharacterNotFound = false;
 
             JSONCharacterAudit result = null;
-            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=audit&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";
+            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}character/{realm}/{characterName}?fields=audit&access_token={AccessToken}";
             string responseData = GetJSONData(requestUrl);
 
             // Convert the data to the proper object
@@ -68,7 +78,7 @@ namespace WGO.JSON
         }
 
         /// <summary>
-        /// Example: https://us.api.battle.net/wow/guild/Thrall/Secondnorth?fields=members&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+        /// Example: https://us.api.blizzard.com/wow/guild/Thrall/Secondnorth?fields=members&locale=en_US&access_token=jwhk8mw8kfpcng2y86as895gufku9kfa
         /// </summary>
         /// <param name="guild"></param>
         /// /// <param name="realm"></param>
@@ -76,7 +86,7 @@ namespace WGO.JSON
         static public JSONGuild GetGuildJSON(string guild, string realm)
         {
             JSONGuild result = null;
-            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}guild/{realm}/{guild}?fields=members&locale=en_US&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";
+            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}guild/{realm}/{guild}?fields=members&locale=en_US&access_token={AccessToken}";
             string responseData = GetJSONData(requestUrl);
 
             // Convert the data to the proper object
@@ -89,7 +99,7 @@ namespace WGO.JSON
         }
 
         /// <summary>
-        /// Example: https://us.api.battle.net/wow/guild/Thrall/Secondnorth?fields=news&locale=en_US&apikey=jwhk8mw8kfpcng2y86as895gufku9kfa
+        /// Example: https://us.api.blizzard.com/wow/guild/Thrall/Secondnorth?fields=news&locale=en_US&access_token=jwhk8mw8kfpcng2y86as895gufku9kfa
         /// </summary>
         /// <param name="guild"></param>
         /// /// <param name="realm"></param>
@@ -97,7 +107,7 @@ namespace WGO.JSON
         static public JSONGuildNews GetGuildNewsJSON(string guild, string realm)
         {
             JSONGuildNews result = null;
-            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}guild/{realm}/{guild}?fields=news&locale=en_US&apikey={System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString()}";
+            string requestUrl = $"{System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString()}guild/{realm}/{guild}?fields=news&locale=en_US&access_token={AccessToken}";
             string responseData = GetJSONData(requestUrl);
 
             // Convert the data to the proper object
@@ -120,11 +130,18 @@ namespace WGO.JSON
 
             try
             {
+                // First check the expiration in case we need to get a new access token
+                //   A new Access Token is needed every ~24 hours
+                JSONBase.CheckExpiration();
+
+                // Now setup the Security Protocol of the Web Request
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
 
+                // Clear all errors before we request data
                 Errors.Clear();
 
+                // Request the Data
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -190,12 +207,143 @@ namespace WGO.JSON
                 {
                     // This is a 404 error, usually because a character hasn't been logged into for a while
                     //   collect this error for use in the function that is calling this function
-                    Errors.Add($"(404) {ex.Message} in Parse() in GetWebSiteData.cs");
+                    Errors.Add($"(404) {ex.Message} in Parse() in JSONBase.cs");
                 }
             }
             catch (Exception ex)
             {
-                Errors.Add($"ERROR: {ex.Message} in GetCharacterJSONData() in GetWebJSONData.cs");
+                Errors.Add($"ERROR: {ex.Message} in GetCharacterJSONData() in JSONBase.cs");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        static private void CheckExpiration()
+        {
+            // If Access Token is blank, the first time an API call is made or token has expired
+            if (string.IsNullOrWhiteSpace(JSONBase.AccessToken) || TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time") > JSONBase.Expiration)
+            {
+                // Get a new Token
+                bool goOn = JSONBase.GetAccessToken();
+            }
+        }
+
+        /// <summary>
+        /// Use this URL to get an Access Token:
+        /// https://us.battle.net/oauth/token?grant_type=client_credentials&client_id={clientID}&client_secret={clientSecret}
+        /// Can use this URL to see how long a Access_Token has before expiration:
+        /// https://us.battle.net/oauth/check_token?token={accessToken}
+        /// </summary>
+        /// <returns></returns>
+        static private bool GetAccessToken()
+        {
+            bool result = false;
+
+            try
+            {
+                string clientID = System.Configuration.ConfigurationManager.AppSettings["ClientID"].ToString();
+                string clientSecret = System.Configuration.ConfigurationManager.AppSettings["ClientSecret"].ToString();
+                string auth = clientID + ":" + clientSecret;
+
+                #region " Previous Examples "
+                /* Example #1
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://server.com/token");
+                request.Content = new FormUrlEncodedContent(new Dictionary<string, string> {
+                        { "client_id", "your client_id" },
+                        { "client_secret", "your client_secret" },
+                        { "grant_type", "client_credentials" }
+                    });
+
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                var token = payload.Value<string>("access_token");
+                */
+
+
+                /* Example #2
+                WebRequest myReq = WebRequest.Create(url);
+                CredentialCache mycache = new CredentialCache();
+                mycache.Add(new Uri(url), "client_credentials", new NetworkCredential(clientID, clientSecret));
+                myReq.Credentials = mycache;
+                myReq.Headers.Add("Authorization", "client_credentials " + Convert.ToBase64String(new ASCIIEncoding().GetBytes(auth)));
+
+                WebResponse wr = myReq.GetResponse();
+                Stream receiveStream = wr.GetResponseStream();
+                StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
+                string content = reader.ReadToEnd();
+                */
+
+                /* Example #3 
+                string fullurl = $"https://us.battle.net/oauth/token?grant_type=authorization_code&code={clientID}&scope=wow.profile&redirect_uri=http%3A%2F%2Flocalhost%3A11119%2Flogin";
+
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                string postData = $"client_id={clientID}&client_secret={clientSecret}";
+                byte[] data = Encoding.GetEncoding("UTF-8").GetBytes(postData);
+                WebRequest request = WebRequest.Create(url);
+                request.Method = "POST";
+                request.Credentials = new NetworkCredential(clientID, clientSecret);
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                Stream stream = request.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                string res = "";
+
+                WebResponse response = request.GetResponse();
+                using (stream = response.GetResponseStream())
+                {
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
+                        res = sr.ReadToEnd();
+                    }
+                }
+                stream.Close();
+                */
+                #endregion
+
+                /* Example #4 */
+                // Now need to use OAuth2 to authenticate before we can get JSON data
+                string fullurl = $"https://us.battle.net/oauth/token?grant_type=client_credentials&client_id={clientID}&client_secret={clientSecret}";
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                string postData = $"client_id={clientID}&client_secret={clientSecret}";
+                byte[] data = Encoding.GetEncoding("UTF-8").GetBytes(postData);
+                WebRequest request = WebRequest.Create(fullurl);
+                request.Method = "POST";
+                request.Credentials = new NetworkCredential(clientID, clientSecret);
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                Stream stream = request.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                string res = "";
+
+                WebResponse response = request.GetResponse();
+                using (stream = response.GetResponseStream())
+                {
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
+                        res = sr.ReadToEnd();
+                    }
+                }
+
+                stream.Close();
+
+                string accessToken = res.Substring(17, res.IndexOf("\"", 17) - 17);
+                JSONBase.AccessToken = accessToken;
+                JSONBase.Expiration = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time").AddDays(1);
+            }
+            catch (WebException wex)
+            {
+                Errors.Add($"WEB ERROR: {wex.Message} in GetAccessToken() in JSONBase.cs");
+            }
+            catch (Exception ex)
+            {
+                Errors.Add($"ERROR: {ex.Message} in GetAccessToken() in JSONBase.cs");
             }
 
             return result;

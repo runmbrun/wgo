@@ -6,10 +6,10 @@
 
 <div data-toggle="collapse" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
     <h4>Recent Guild News</h4>
-    <ul data-role="listview" data-inset="false">
+    <ul data-role="listview" data-inset="false" class="list-group">
         @foreach (string news in Model.GuildNews)
         {
-            <li>@Html.Raw(news)</li>
+            <li class="list-group-item">@Html.Raw(news)</li>
         }
     </ul>
 </div>
@@ -52,6 +52,6 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-    <script>var whTooltips = { colorLinks: true, iconizeLinks: true, renameLinks: true, iconSize: 'medium' };</script>
+    <script>var whTooltips = { colorLinks: true, iconizeLinks: true, renameLinks: true, iconSize: 'small' };</script>
     <script src="//www.wowhead.com/widgets/power.js" type="text/javascript"></script>
 }

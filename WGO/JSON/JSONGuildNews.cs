@@ -32,8 +32,7 @@ namespace WGO.JSON
         public int ItemId { get; set; }
         public string Context { get; set; }
         public IList<int> BonusLists { get; set; }
-
-        // "achievement":{"id":5723,"title":"50 Exalted Reputations","points":10,"description":"Raise 50 reputations to Exalted.","rewardItems":[],"icon":"achievement_reputation_08","criteria":[{"id":982,"description":"50 reputations to Exalted","orderIndex":1,"max":50
+        public JSONGuildNewsAchievement Achievement { get; set; }
     }
 
     /// <summary>

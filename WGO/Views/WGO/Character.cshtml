@@ -30,7 +30,77 @@
         <a href="https://worldofwarcraft.com/en-us/character/@Model.Character.Realm/@Model.Character.Name" target="_blank">Blizzard's Battle.Net Page</a>
     </p>
     <hr />
-    
+
+    @* Playing with a new design... *@
+    <div class="container" id="gridDisplay">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-sm-4 justify-content-center">
+                    <h4>@Model.Character.Name</h4>
+                    <h6>Level @Model.Character.Level</h6>
+                    <h6>@Model.Character.Race @Model.Character.Class</h6>
+                </div>
+
+                @{
+                    string helm = $"//www.wowhead.com/item={items.Head.Id}";
+                    string helmBonus = string.Empty;
+                    if (items.Head.BonusLists.Count > 0)
+                    {
+                        helmBonus = $"bonus={string.Join(":", items.Head.BonusLists)}";
+                    }
+                    if (items.Head.AzeriteEmpoweredItem != null && items.Head.AzeriteEmpoweredItem.AzeritePowers.Count > 0)
+                    {
+                        helmBonus += $"{(items.Head.AzeriteEmpoweredItem.AzeritePowers.Count > 0 ? "&" : "")}azerite-powers={WGO.WoWConverter.ConvertClass(Model.Character.Class)}";
+                        string powers = string.Empty;
+                        foreach (WGO.JSON.JSONAzeritePowers power in items.Head.AzeriteEmpoweredItem.AzeritePowers)
+                        {
+                            powers = $":{power.Id}{powers}";
+                        }
+                        helmBonus += powers;
+                    }
+
+                    string hands = $"//www.wowhead.com/item={items.Hands.Id}";
+                    string handsBonus = string.Empty;
+                    if (items.Hands.BonusLists.Count > 0)
+                    {
+                        handsBonus = $"bonus={string.Join(":", items.Hands.BonusLists)}";
+                    }
+
+                    string neck = $"//www.wowhead.com/item={items.Neck.Id}";
+                    string neckBonus = string.Empty;
+                    if (items.Neck.BonusLists.Count > 0)
+                    {
+                        neckBonus = $"bonus={string.Join(":", items.Neck.BonusLists)}";
+                    }
+                    if (items.Neck.AzeriteItem != null)
+                    {
+                        neckBonus += $"{(items.Neck.BonusLists.Count > 0 ? "&" : "")}ilvl={items.Neck.ItemLevel}";
+                    }
+                }
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a href=@helm data-wowhead=@helmBonus></a>
+                        <p>@items.Head.ItemLevel</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <a href=@hands data-wowhead=@handsBonus></a>
+                        <p>@items.Hands.ItemLevel</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a href=@neck data-wowhead=@neckBonus></a>
+                        <p>@items.Neck.ItemLevel</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="//www.wowhead.com/item=158122" data-wowhead="bonus=4803:1572:4786:"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
     @* Table Display *@
     <div class="card" id="tableDisplay" style="display:none;">
         <div class="card-body">
@@ -283,9 +353,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-2 @(items.Back.Quality == 6 ? "card-bronze" : (items.Back.Quality == 5 ? "card-orange" : (items.Back.Quality == 4 ? "card-purple" : (items.Back.Quality == 3 ? "card-blue" : (items.Back.Quality == 2 ? "card-green" : "card")))))">
-                            <h5 class="card-title">Back</h5>
-                            <h6 class="card-subtitle text-muted">@items.Back.ItemLevel</h6>
-                            <p class="card-text">@items.Back.Name</p>
+                        <h5 class="card-title">Back</h5>
+                        <h6 class="card-subtitle text-muted">@items.Back.ItemLevel</h6>
+                        <p class="card-text">@items.Back.Name</p>
                     </div>
                     <div class="col-sm-8 text-center">
                     </div>
@@ -351,39 +421,39 @@
                         <p class="card-text">@items.Trinket1.Name</p>
                     </div>
                 </div>
-                        <div class="row">
-                            <div class="col-sm-2 @(items.Wrist.Quality == 6 ? "card-bronze" : (items.Wrist.Quality == 5 ? "card-orange" : (items.Wrist.Quality == 4 ? "card-purple" : (items.Wrist.Quality == 3 ? "card-blue" : (items.Wrist.Quality == 2 ? "card-green" : "card")))))">
-                                <h5 class="card-title">Wrist</h5>
-                                <h6 class="card-subtitle text-muted">@items.Wrist.ItemLevel</h6>
-                                <p class="card-text">@items.Wrist.Name</p>
-                            </div>
-                            <div class="col-sm-8 text-center">
-                            </div>
-                            <div class="col-sm-2 @(items.Trinket2.Quality == 6 ? "card-bronze" : (items.Trinket2.Quality == 5 ? "card-orange" : (items.Trinket2.Quality == 4 ? "card-purple" : (items.Trinket2.Quality == 3 ? "card-blue" : (items.Trinket2.Quality == 2 ? "card-green" : "card")))))">
-                                <h5 class="card-title">Trinket2</h5>
-                                <h6 class="card-subtitle text-muted">@items.Trinket2.ItemLevel</h6>
-                                <p class="card-text">@items.Trinket2.Name</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-3 float-right @(items.MainHand.Quality == 6 ? "card-bronze" : (items.MainHand.Quality == 5 ? "card-orange" : (items.MainHand.Quality == 4 ? "card-purple" : (items.MainHand.Quality == 3 ? "card-blue" : (items.MainHand.Quality == 2 ? "card-green" : "card")))))">
-                                <h5 class="card-title">MainHand</h5>
-                                <h6 class="card-subtitle text-muted">@items.MainHand.ItemLevel</h6>
-                                <p class="card-text">@items.MainHand.Name</p>
-                            </div>
-                            <div class="col-sm-2 text-center">
-                            </div>
-                            @if (items.OffHand != null)
-                            {
-                                <div class="col-sm-3 text-left @(items.OffHand.Quality == 6 ? "card-bronze" : (items.OffHand.Quality == 5 ? "card-orange" : (items.OffHand.Quality == 4 ? "card-purple" : (items.OffHand.Quality == 3 ? "card-blue" : (items.OffHand.Quality == 2 ? "card-green" : "card")))))">
-                                    <h5 class="card-title">OffHand</h5>
-                                    <h6 class="card-subtitle text-muted">@items.OffHand.ItemLevel</h6>
-                                    <p class="card-text">@items.OffHand.Name</p>
-                                </div>
-                            }
-                        </div>
+                <div class="row">
+                    <div class="col-sm-2 @(items.Wrist.Quality == 6 ? "card-bronze" : (items.Wrist.Quality == 5 ? "card-orange" : (items.Wrist.Quality == 4 ? "card-purple" : (items.Wrist.Quality == 3 ? "card-blue" : (items.Wrist.Quality == 2 ? "card-green" : "card")))))">
+                        <h5 class="card-title">Wrist</h5>
+                        <h6 class="card-subtitle text-muted">@items.Wrist.ItemLevel</h6>
+                        <p class="card-text">@items.Wrist.Name</p>
                     </div>
+                    <div class="col-sm-8 text-center">
+                    </div>
+                    <div class="col-sm-2 @(items.Trinket2.Quality == 6 ? "card-bronze" : (items.Trinket2.Quality == 5 ? "card-orange" : (items.Trinket2.Quality == 4 ? "card-purple" : (items.Trinket2.Quality == 3 ? "card-blue" : (items.Trinket2.Quality == 2 ? "card-green" : "card")))))">
+                        <h5 class="card-title">Trinket2</h5>
+                        <h6 class="card-subtitle text-muted">@items.Trinket2.ItemLevel</h6>
+                        <p class="card-text">@items.Trinket2.Name</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-3 float-right @(items.MainHand.Quality == 6 ? "card-bronze" : (items.MainHand.Quality == 5 ? "card-orange" : (items.MainHand.Quality == 4 ? "card-purple" : (items.MainHand.Quality == 3 ? "card-blue" : (items.MainHand.Quality == 2 ? "card-green" : "card")))))">
+                        <h5 class="card-title">MainHand</h5>
+                        <h6 class="card-subtitle text-muted">@items.MainHand.ItemLevel</h6>
+                        <p class="card-text">@items.MainHand.Name</p>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                    </div>
+                    @if (items.OffHand != null)
+                    {
+                        <div class="col-sm-3 text-left @(items.OffHand.Quality == 6 ? "card-bronze" : (items.OffHand.Quality == 5 ? "card-orange" : (items.OffHand.Quality == 4 ? "card-purple" : (items.OffHand.Quality == 3 ? "card-blue" : (items.OffHand.Quality == 2 ? "card-green" : "card")))))">
+                            <h5 class="card-title">OffHand</h5>
+                            <h6 class="card-subtitle text-muted">@items.OffHand.ItemLevel</h6>
+                            <p class="card-text">@items.OffHand.Name</p>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 
@@ -393,12 +463,12 @@
     <div class="card" id="auditCard">
         @Html.Raw(Model.AuditHtml)
     </div>
-    }
+}
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/jqueryblock")
-        <script type="text/javascript">
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryblock")
+    <script type="text/javascript">
     $(function () {
         @*$('#auditButton').click(function () {
             $.blockUI();
@@ -417,11 +487,14 @@
                 }
             });
         });*@
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('#toggleButton').click(function () {
             $("#tableDisplay").toggle();
             $("#gridDisplay").toggle();
         });
     });
-        </script>
-    }
+    </script>
+    <script>var whTooltips = { colorLinks: true, iconizeLinks: true, renameLinks: true, iconSize: 'large' };</script>
+    <script src="//www.wowhead.com/widgets/power.js" type="text/javascript"></script>
+}

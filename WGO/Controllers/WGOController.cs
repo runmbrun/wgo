@@ -688,13 +688,14 @@ namespace WGO.Controllers
                 foreach (JSONGuildNewsItem item in guildNews.News)
                 {
                     string htmlLine = string.Empty;
+                    DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddMilliseconds(Convert.ToDouble(item.Timestamp)).ToLocalTime();
 
                     if (item.Type == "itemLoot")
                     {
                         string bonuses = string.Empty;
-                        DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddMilliseconds(Convert.ToDouble(item.Timestamp)).ToLocalTime();
 
-                        htmlLine = $"<a href=\"//www.wowhead.com/item={item.ItemId}\"";
+                        htmlLine = $"<a href=\"Character/{item.Character}/Thrall\">{item.Character}</a> obtained ";
+                        htmlLine += $"<a href=\"//www.wowhead.com/item={item.ItemId}\"";
 
                         if (item.BonusLists.Count > 0)
                         {
@@ -706,7 +707,22 @@ namespace WGO.Controllers
                             htmlLine += $"data-wowhead=\"bonus={bonuses}\"";
                         }
 
-                        htmlLine += $"></a> was obtained by <a href=\"Character/{item.Character}/Thrall\">{item.Character}</a> on {dt}";
+                        htmlLine += $"></a> on {dt}";
+                    }
+                    else if (item.Type == "playerAchievement" && item.Achievement != null)
+                    {
+                        // Purdee earned the achievement Professional Zandalari Master for 10 points
+                        htmlLine = $"<a href=\"Character/{item.Character}/Thrall\">{item.Character}</a> earned the achievement <a href=\"//www.wowhead.com/achievement={item.Achievement.Id}\">{ item.Achievement.Title}</a> for {item.Achievement.Points} points on {dt}";
+                    }
+                    else if (item.Type == "itemCraft")
+                    {
+                        // Purdee crafted item Stormsteel Girdle of the Peerless. 1 day ago
+                        htmlLine = $"<a href=\"Character/{item.Character}/Thrall\">{item.Character}</a> crafted item ";
+                        htmlLine += $"<a href=\"//www.wowhead.com/item={item.ItemId}\"";
+                    }
+                    else
+                    {
+                        htmlLine = $"Unknown news {item.Type} by {item.Character} on {dt}";
                     }
 
                     lines.Add(htmlLine);

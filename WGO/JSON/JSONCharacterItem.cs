@@ -43,6 +43,7 @@ namespace WGO.JSON
         public IList<int> BonusLists { get; set; }
         public int ArtifactId { get; set; }
         public JSONAzeriteItem AzeriteItem { get; set; }
+        public JSONAzeriteEmpoweredItem AzeriteEmpoweredItem { get; set; }
     }
 
     public class JSONItemStats
@@ -72,5 +73,18 @@ namespace WGO.JSON
         public int AzeriteLevel { get; set; }
         public int AzeriteExperience { get; set; }
         public int AzeriteExperienceRemaining { get; set; }
+    }
+
+    public class JSONAzeriteEmpoweredItem
+    {
+        public IList<JSONAzeritePowers> AzeritePowers { get; set; }
+    }
+
+    public class JSONAzeritePowers
+    {
+        public int Id { get; set; }
+        public int Tier { get; set; }
+        public int SpellId { get; set; }
+        public int BonusListId { get; set; }
     }
 }

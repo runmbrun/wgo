@@ -63,6 +63,58 @@ namespace WGO
         }
 
         /// <summary>
+        /// Converts a number from Blizzard's web site into a class type
+        /// </summary>
+        /// <param name="i">the numeric value of a wow class</param>
+        /// <returns>string value of the number passed in</returns>
+        public static int ConvertClass(string i)
+        {
+            int converted = -1;
+
+            switch (i)
+            {
+                case "Warrior":
+                    converted = 1;
+                    break;
+                case "Paladin":
+                    converted = 2;
+                    break;
+                case "Hunter":
+                    converted = 3;
+                    break;
+                case "Rogue":
+                    converted = 4;
+                    break;
+                case "Priest":
+                    converted = 5;
+                    break;
+                case "Death Knight":
+                    converted = 6;
+                    break;
+                case "Shaman":
+                    converted = 7;
+                    break;
+                case "Mage":
+                    converted = 8;
+                    break;
+                case "Warlock":
+                    converted = 9;
+                    break;
+                case "Monk":
+                    converted = 10;
+                    break;
+                case "Druid":
+                    converted = 11;
+                    break;
+                case "Demon Hunter":
+                    converted = 12;
+                    break;
+            }
+
+            return converted;
+        }
+
+        /// <summary>
         /// Converts a number from Blizzard's web site into a Race type
         /// </summary>
         /// <param name="i">The numeric value of a race passed in</param>

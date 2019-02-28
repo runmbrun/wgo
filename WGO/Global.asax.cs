@@ -37,8 +37,8 @@ namespace WGO
         {
             // Initialization
             HttpContext.Current.Session["WebSiteOnline"] = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["WebSiteOnline"]);
-            HttpContext.Current.Session["URLWowAPI"] = System.Configuration.ConfigurationManager.AppSettings["URLWowAPI"].ToString();
-            HttpContext.Current.Session["APIKey"] = System.Configuration.ConfigurationManager.AppSettings["APIKey"].ToString();
+            //HttpContext.Current.Session["ClientID"] = System.Configuration.ConfigurationManager.AppSettings["ClientID"].ToString();
+            //HttpContext.Current.Session["ClientSecret"] = System.Configuration.ConfigurationManager.AppSettings["ClientSecret"].ToString();
         }
 
         /// <summary>
