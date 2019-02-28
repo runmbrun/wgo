@@ -5,6 +5,25 @@
     string realm = string.Empty;
     bool nameFound = false;
 
+    string headBonus = string.Empty;
+    string handBonus = string.Empty;
+    string neckBonus = string.Empty;
+    string waistBonus = string.Empty;
+    string shoulderBonus = string.Empty;
+    string legBonus = string.Empty;
+    string backBonus = string.Empty;
+    string feetBonus = string.Empty;
+    string chestBonus = string.Empty;
+    string finger1Bonus = string.Empty;
+    string shirtBonus = string.Empty;
+    string finger2Bonus = string.Empty;
+    string tabardBonus = string.Empty;
+    string trinket1Bonus = string.Empty;
+    string wristBonus = string.Empty;
+    string trinket2Bonus = string.Empty;
+    string mainHandBonus = string.Empty;
+    string offHandBonus = string.Empty;
+
     WGO.JSON.JSONCharacterItems items = null;
     ViewBag.Title = "Character";
 
@@ -15,6 +34,94 @@
         ViewBag.Title = name;
         items = Newtonsoft.Json.JsonConvert.DeserializeObject<WGO.JSON.JSONCharacterItems>(Model.Character.Items);
         nameFound = true;
+
+        // Head
+        headBonus = items.Head != null && items.Head.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Head.BonusLists)}" : string.Empty;
+        if (items.Head != null && items.Head.AzeriteEmpoweredItem != null && items.Head.AzeriteEmpoweredItem.AzeritePowers.Count > 0)
+        {
+            headBonus += $"{(items.Head.AzeriteEmpoweredItem.AzeritePowers.Count > 0 ? "&" : "")}azerite-powers={WGO.WoWConverter.ConvertClass(Model.Character.Class)}";
+            string powers = string.Empty;
+            foreach (WGO.JSON.JSONAzeritePowers power in items.Head.AzeriteEmpoweredItem.AzeritePowers)
+            {
+                powers = $":{power.Id}{powers}";
+            }
+            headBonus += powers;
+        }
+
+        // Hands
+        handBonus = items.Hands != null && items.Hands.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Hands.BonusLists)}" : string.Empty;
+
+        // Neck
+        neckBonus = items.Neck != null && items.Neck.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Neck.BonusLists)}" : string.Empty;
+        if (items.Neck != null && items.Neck.AzeriteItem != null)
+        {
+            neckBonus += $"{(items.Neck.BonusLists.Count > 0 ? "&" : "")}ilvl={items.Neck.ItemLevel}";
+        }
+
+        // Waist
+        waistBonus = items.Waist != null && items.Waist.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Waist.BonusLists)}" : string.Empty;
+
+        // Shoulder
+        shoulderBonus = items.Shoulder != null && items.Shoulder.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Shoulder.BonusLists)}" : string.Empty;
+        if (items.Shoulder.AzeriteEmpoweredItem != null && items.Shoulder.AzeriteEmpoweredItem.AzeritePowers.Count > 0)
+        {
+            shoulderBonus += $"{(items.Shoulder.AzeriteEmpoweredItem.AzeritePowers.Count > 0 ? "&" : "")}azerite-powers={WGO.WoWConverter.ConvertClass(Model.Character.Class)}";
+            string powers = string.Empty;
+            foreach (WGO.JSON.JSONAzeritePowers power in items.Head.AzeriteEmpoweredItem.AzeritePowers)
+            {
+                powers = $":{power.Id}{powers}";
+            }
+            shoulderBonus += powers;
+        }
+
+        // Legs
+        legBonus = items.Legs != null && items.Legs.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Legs.BonusLists)}" : string.Empty;
+
+        // Back
+        backBonus = items.Back != null && items.Back.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Back.BonusLists)}" : string.Empty;
+
+        // Feet
+        feetBonus = items.Feet != null && items.Feet.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Feet.BonusLists)}" : string.Empty;
+
+        // Chest
+        chestBonus = items.Chest != null && items.Chest.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Chest.BonusLists)}" : string.Empty;
+        if (items.Chest != null && items.Chest.AzeriteEmpoweredItem != null && items.Chest.AzeriteEmpoweredItem.AzeritePowers.Count > 0)
+        {
+            chestBonus += $"{(items.Chest.AzeriteEmpoweredItem.AzeritePowers.Count > 0 ? "&" : "")}azerite-powers={WGO.WoWConverter.ConvertClass(Model.Character.Class)}";
+            string powers = string.Empty;
+            foreach (WGO.JSON.JSONAzeritePowers power in items.Chest.AzeriteEmpoweredItem.AzeritePowers)
+            {
+                powers = $":{power.Id}{powers}";
+            }
+            chestBonus += powers;
+        }
+
+        // Finger 1
+        finger1Bonus = items.Finger1 != null && items.Finger1.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Finger1.BonusLists)}" : string.Empty;
+
+        // Shirt
+        shirtBonus = items.Shirt != null && items.Shirt.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Shirt.BonusLists)}" : string.Empty;
+
+        // Finger 2
+        finger2Bonus = items.Finger2 != null && items.Finger2.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Finger2.BonusLists)}" : string.Empty;
+
+        // Tabard
+        tabardBonus = items.Shirt != null && items.Tabard.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Tabard.BonusLists)}" : string.Empty;
+
+        // Trinket 1
+        trinket1Bonus = items.Trinket1 != null && items.Trinket1.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Trinket1.BonusLists)}" : string.Empty;
+
+        // Wrists
+        wristBonus = items.Wrist != null && items.Wrist.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Wrist.BonusLists)}" : string.Empty;
+
+        // Trinket 2
+        trinket2Bonus = items.Trinket2 != null && items.Trinket2.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.Trinket2.BonusLists)}" : string.Empty;
+
+        // Main Hand Weapon
+        mainHandBonus = items.MainHand != null && items.MainHand.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.MainHand.BonusLists)}" : string.Empty;
+
+        // Off Hand
+        offHandBonus = items.OffHand != null && items.OffHand.BonusLists.Count > 0 ? $"bonus={string.Join(":", items.OffHand.BonusLists)}" : string.Empty;
     }
 }
 
@@ -39,61 +146,153 @@
                     <h4>@Model.Character.Name</h4>
                     <h6>Level @Model.Character.Level</h6>
                     <h6>@Model.Character.Race @Model.Character.Class</h6>
+                    <h6>Equipped iLevel @Model.Character.Equipped_iLevel</h6>
+                    <h6>Max iLevel @Model.Character.Max_iLevel</h6>
                 </div>
+                <hr />
 
-                @{
-                    string helm = $"//www.wowhead.com/item={items.Head.Id}";
-                    string helmBonus = string.Empty;
-                    if (items.Head.BonusLists.Count > 0)
-                    {
-                        helmBonus = $"bonus={string.Join(":", items.Head.BonusLists)}";
-                    }
-                    if (items.Head.AzeriteEmpoweredItem != null && items.Head.AzeriteEmpoweredItem.AzeritePowers.Count > 0)
-                    {
-                        helmBonus += $"{(items.Head.AzeriteEmpoweredItem.AzeritePowers.Count > 0 ? "&" : "")}azerite-powers={WGO.WoWConverter.ConvertClass(Model.Character.Class)}";
-                        string powers = string.Empty;
-                        foreach (WGO.JSON.JSONAzeritePowers power in items.Head.AzeriteEmpoweredItem.AzeritePowers)
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Head != null)
                         {
-                            powers = $":{power.Id}{powers}";
+                            <a href="//www.wowhead.com/item=@items.Head.Id" data-wowhead="@headBonus"></a>
+                            <p>@items.Head.ItemLevel</p>
                         }
-                        helmBonus += powers;
-                    }
-
-                    string hands = $"//www.wowhead.com/item={items.Hands.Id}";
-                    string handsBonus = string.Empty;
-                    if (items.Hands.BonusLists.Count > 0)
-                    {
-                        handsBonus = $"bonus={string.Join(":", items.Hands.BonusLists)}";
-                    }
-
-                    string neck = $"//www.wowhead.com/item={items.Neck.Id}";
-                    string neckBonus = string.Empty;
-                    if (items.Neck.BonusLists.Count > 0)
-                    {
-                        neckBonus = $"bonus={string.Join(":", items.Neck.BonusLists)}";
-                    }
-                    if (items.Neck.AzeriteItem != null)
-                    {
-                        neckBonus += $"{(items.Neck.BonusLists.Count > 0 ? "&" : "")}ilvl={items.Neck.ItemLevel}";
-                    }
-                }
-                <div class="row">
-                    <div class="col-sm-4">
-                        <a href=@helm data-wowhead=@helmBonus></a>
-                        <p>@items.Head.ItemLevel</p>
                     </div>
                     <div class="col-sm-4">
-                        <a href=@hands data-wowhead=@handsBonus></a>
-                        <p>@items.Hands.ItemLevel</p>
+                        @if (items.Hands != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Hands.Id" data-wowhead="@handBonus"></a>
+                            <p>@items.Hands.ItemLevel</p>
+                        }
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <a href=@neck data-wowhead=@neckBonus></a>
-                        <p>@items.Neck.ItemLevel</p>
+                        @if (items.Neck != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Neck.Id" data-wowhead="@neckBonus"></a>
+                            <p>@items.Neck.ItemLevel [@(items.Neck.AzeriteItem != null ? items.Neck.AzeriteItem.AzeriteLevel : 0)]</p>
+                        }
                     </div>
                     <div class="col-sm-4">
-                        <a href="//www.wowhead.com/item=158122" data-wowhead="bonus=4803:1572:4786:"></a>
+                        @if (items.Waist != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Waist.Id" data-wowhead="@waistBonus"></a>
+                            <p>@items.Waist.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Shoulder != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Shoulder.Id" data-wowhead="@shoulderBonus"></a>
+                            <p>@items.Shoulder.ItemLevel</p>
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        @if (items.Legs != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Legs.Id" data-wowhead="@legBonus"></a>
+                            <p>@items.Legs.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Back != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Back.Id" data-wowhead="@backBonus"></a>
+                            <p>@items.Back.ItemLevel</p>
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        @if (items.Feet != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Feet.Id" data-wowhead="@feetBonus"></a>
+                            <p>@items.Feet.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Chest != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Chest.Id" data-wowhead="@chestBonus"></a>
+                            <p>@items.Chest.ItemLevel</p>
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        @if (items.Finger1 != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Finger1.Id" data-wowhead="@finger1Bonus"></a>
+                            <p>@items.Finger1.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Shirt != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Shirt.Id" data-wowhead="@shirtBonus"></a>
+                            <p>@items.Shirt.ItemLevel</p>
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        @if (items.Finger2 != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Finger2.Id" data-wowhead="@finger2Bonus"></a>
+                            <p>@items.Finger2.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Tabard != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Tabard.Id" data-wowhead="@tabardBonus"></a>
+                            <p>@items.Tabard.ItemLevel</p>
+                        }
+                        </div>
+                    <div class="col-sm-4">
+                        @if (items.Trinket1 != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Trinket1.Id" data-wowhead="@trinket1Bonus"></a>
+                            <p>@items.Trinket1.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.Wrist != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Wrist.Id" data-wowhead="@wristBonus"></a>
+                            <p>@items.Wrist.ItemLevel</p>
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        @if (items.Trinket2 != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.Trinket2.Id" data-wowhead="@trinket2Bonus"></a>
+                            <p>@items.Trinket2.ItemLevel</p>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (items.MainHand != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.MainHand.Id" data-wowhead="@mainHandBonus"></a>
+                            <p>@items.MainHand.ItemLevel</p>
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        @if (items.OffHand != null)
+                        {
+                            <a href="//www.wowhead.com/item=@items.OffHand.Id"  data-wowhead="@offHandBonus"></a>
+                            <p>@items.OffHand.ItemLevel</p>
+                        }
                     </div>
                 </div>
             </div>
