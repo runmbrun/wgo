@@ -8,23 +8,19 @@ General:
     - On Guild page - Page Size and Search are bolded and on top of combo box and textbox respectively (but not at MVCGrid.net?). (Need to update MVCGrid.Net DLL?)
   - Register/Login pages
     - Does this still work with all my changes? Connected to correct DB?
-    - Is it needed?
-    - Could create a special My Roster for each separate login.
+    - Create a special My Roster for each separate login.
   - Character View 
-      - Show all the items, in table or grid format?
-      - Show professions and talents.
+  	- Show gems and enchants on items
+      - Show professions and talents.      
   - Character Audit
-      - Show all the Audit info: Missing Talents, No Spec, wrong armor type
-  - Add item functionality: 
-      - need new item table 
-      - new field in the character table for the character item JSON data
+      - Show more Audit info? Missing Talents, No Spec, wrong armor type, etc?
   - JSONRaid Data - Get the current raid, and a list of bosses, and what the bosses drop. 
     - Show potential upgrades for entire raid
   
 Guild Roster tab:
   - Put a guild check on a timer: 7am, 12pm, 7pm, 12am.
-    - Not working perfectly: works for 1 time and then stops.
+    - Not working perfectly: runs quite often... maybe too often?
   
 Raid Roster tab:
   - Raid Check
-    - New button that will take user to a new page, that will do an audit for entire raid roster.
+    - More info in the audit?

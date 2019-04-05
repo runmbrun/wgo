@@ -33,8 +33,9 @@
     <br />
     Current Central Time is: @TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time")
     <br />
-    @*Next Guild Scan will be: @(HttpContext.Current.Session["NextGuildScan"] == null ? "Not set." : Convert.ToDateTime(HttpContext.Current.Session["NextGuildScan"]).ToLongDateString())*@
-    Next Guild Scan will be: @(System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] == null ? "Not set." : System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"])
+    Last Guild Scan was: @(System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"] == null ? "Not complete yet." : System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"])
+    <br />
+    Next Guild Scan will be: @(System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] == null ? "Not set yet." : System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"])
 </p>
 
 @section Scripts {

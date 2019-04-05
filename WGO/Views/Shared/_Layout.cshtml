@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool loggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -23,6 +27,10 @@
                     <li>@Html.ActionLink("Guild Roster", "Guild", "WGO", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Guild News", "GuildNews", "WGO", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Raid Roster", "Raid", "WGO", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+                    @if (loggedIn)
+                    {
+                        <li>@Html.ActionLink("My Roster", "MyRoster", "WGO", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+                    }
                     <li>@Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
                 </ul>

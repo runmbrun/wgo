@@ -67,6 +67,15 @@ namespace WGO.Models
     /// <summary>
     /// 
     /// </summary>
+    public class Roster
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class WGODBContext : DbContext
     {
         /// <summary>
@@ -89,5 +98,10 @@ namespace WGO.Models
         /// 
         /// </summary>
         public DbSet<Character> Characters { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DbSet<Roster> Rosters { get; set; }
     }
 }

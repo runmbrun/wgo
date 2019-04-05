@@ -259,6 +259,57 @@ namespace WGO.Controllers
         }
 
         /// <summary>
+        /// The My Roster View.
+        /// </summary>
+        /// <returns>Action Result.</returns>
+        [HttpGet]
+        public ActionResult MyRoster()
+        {
+            var model = new SearchViewModel
+            {
+                Roles = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "DPS", Value = "DPS"},
+                    new SelectListItem { Selected = false, Text = "Tank", Value = "TANK"},
+                    new SelectListItem { Selected = false, Text = "Healing", Value = "HEALING"},
+                }, "Value", "Text", 1)
+            };
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Attempt to add a character to my roster.
+        /// </summary>
+        /// <param name="model">The object that contains the character name, realm and role.</param>
+        /// <returns>Action Result.</returns>
+        [HttpPost]
+        public ActionResult MyRoster(SearchViewModel model)
+        {
+            model.Roles = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Selected = true, Text = "DPS", Value = "DPS"},
+                new SelectListItem { Selected = false, Text = "Tank", Value = "TANK"},
+                new SelectListItem { Selected = false, Text = "Healing", Value = "HEALING"},
+            }, "Value", "Text", 1);
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                if (this.RetrieveCharacter(model.Character, model.Realm, WGOConstants.MyRoster, model.Role) == 0)
+                {
+                    return View(model);
+                }
+            }
+
+            // Now display it!
+            return View(model);
+        }
+
+        /// <summary>
         /// Result = 0 -> Error
         /// Result = 1 -> Success
         /// Result = 2 -> Character not found, but no errors.
@@ -316,6 +367,10 @@ namespace WGO.Controllers
                 {
                     search= db.Characters.Where(s => s.Roster == 2 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
                 }
+                else if (roster == WGOConstants.MyRoster)
+                {
+                    search = db.Characters.Where(s => s.Roster == 3 && s.Name == charFromWeb.Name && s.Realm == charFromWeb.Realm).ToList();
+                }
 
                 if (search.Count() > 0)
                 {
@@ -345,7 +400,9 @@ namespace WGO.Controllers
                         searchChar.AchievementPoints = charFromWeb.AchievementPoints;
 
                         // Only check for updates on these fields if it's the guild roster or it's the raid roster and the role is the same
-                        if (roster == WGOConstants.GuildRoster || (roster == WGOConstants.RaidRoster && role == search[0].Role))
+                        if (roster == WGOConstants.GuildRoster || 
+                            (roster == WGOConstants.RaidRoster && role == search[0].Role) ||
+                            (roster == WGOConstants.MyRoster && role == search[0].Role))
                         {
                             // This is a different Role than we are tracking... so don't update these fields
                             if (searchChar.Equipped_iLevel != charFromWeb.Items.AverageItemLevelEquipped)
@@ -370,6 +427,10 @@ namespace WGO.Controllers
                         {
                             searchChar.Roster = WGOConstants.RaidRoster;
                         }
+                        else if (roster == WGOConstants.MyRoster)
+                        {
+                            searchChar.Roster = WGOConstants.MyRoster;
+                        }
                     }
 
                     try
@@ -383,7 +444,9 @@ namespace WGO.Controllers
                         ModelState.AddModelError(string.Empty, $"Error saving character: {ex.Message}");
                     }
                 }
-                else if ((roster == WGOConstants.GuildRoster) || (roster == WGOConstants.RaidRoster && charRole == role))
+                else if ((roster == WGOConstants.GuildRoster) || 
+                    (roster == WGOConstants.RaidRoster && charRole == role) ||
+                    (roster == WGOConstants.MyRoster && charRole == role))
                 {
                     // Now insert the data inot the database
                     Character charToDB = new Character();
@@ -410,6 +473,10 @@ namespace WGO.Controllers
                     else if (roster == WGOConstants.RaidRoster)
                     {
                         charToDB.Roster = WGOConstants.RaidRoster;
+                    }
+                    else if (roster == WGOConstants.MyRoster)
+                    {
+                        charToDB.Roster = WGOConstants.MyRoster;
                     }
 
                     // Items = List<CharacterItems> 
@@ -462,6 +529,12 @@ namespace WGO.Controllers
                     ViewBag.ReturnUrl = "/WGO/Raid";
                     ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
                     roster = 2;
+                }
+                else if (System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Contains("/MyRoster"))
+                {
+                    ViewBag.ReturnUrl = "/WGO/MyRoster";
+                    ViewBag.ReturnUrl = System.Web.HttpContext.Current.Request.UrlReferrer.ToString().Substring(System.Web.HttpContext.Current.Request.UrlReferrer.ToString().IndexOf("/WGO"));
+                    roster = 3;
                 }
             }
 

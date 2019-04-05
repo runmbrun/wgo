@@ -9,5 +9,6 @@ namespace WGO
     {
         static public int GuildRoster = 1;
         static public int RaidRoster = 2;
+        static public int MyRoster = 3;
     }
 }

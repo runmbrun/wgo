@@ -348,6 +348,7 @@
     <Content Include="Views\WGO\Test.cshtml" />
     <Content Include="Views\WGO\RaidRosterAudit.cshtml" />
     <Content Include="Views\WGO\GuildNews.cshtml" />
+    <Content Include="Views\WGO\MyRoster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

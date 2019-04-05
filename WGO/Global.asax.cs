@@ -25,6 +25,10 @@ namespace WGO
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer<Models.WGODBContext>(null);
 
+            // Reset the guild scan timers
+            System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"] = null;
+            System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] = null;
+
             // This will setup a caching callback function that will act like a timer.
             //  The timer will be setup to run periodically throughout the day.
             AddReminderTask();
@@ -49,6 +53,14 @@ namespace WGO
             OnCacheRemove = new System.Web.Caching.CacheItemRemovedCallback(CacheItemRemoved);
 
             // Figure out the time for next Scan...
+            //  A scan happens every hour on the hour
+            int seconds = 0;
+            DateTime centralDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central Standard Time");
+
+            // Now calculate the next time the scan should run
+            seconds = (60 - DateTime.Now.Minute) * 60;
+            
+            /* Todo: This isn't working...
             //   Each day there will be 4 auto scans:
             //   1.  7am
             //   2. 12pm
@@ -85,13 +97,14 @@ namespace WGO
                 // Do it immediately
                 seconds = 60;
             }
+            */
 
             // Store it
             System.Configuration.ConfigurationManager.AppSettings["LastGuildScan"] = System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"];
             System.Configuration.ConfigurationManager.AppSettings["NextGuildScan"] = centralDateTime.AddSeconds(seconds).ToString();
 
             // Now set the cache for the future
-            HttpRuntime.Cache.Insert("RescanGuild", seconds, null, centralDateTime.AddSeconds(seconds), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.NotRemovable, OnCacheRemove);
+            HttpRuntime.Cache.Insert("RescanGuild", seconds, null, DateTime.Now.AddSeconds(seconds), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.NotRemovable, OnCacheRemove);
         }
 
         /// <summary>
@@ -102,14 +115,14 @@ namespace WGO
         /// <param name="r"></param>
         public void CacheItemRemoved(string k, object v, System.Web.Caching.CacheItemRemovedReason r)
         {
-            // re-add our task so it reoccurs
-            AddReminderTask();
-
             // Do a full pull of the guild
             using (Controllers.WGOController wgo = new Controllers.WGOController())
             {
                 wgo.RetrieveGuild("Secondnorth", "Thrall");
             }
+
+            // Re-add our task so it reoccurs
+            AddReminderTask();
         }
     }
 }
